@@ -1,0 +1,26 @@
+{
+  "name": "tera24-trump-midterms",
+  "private": true,
+  "scripts": {
+    "render": "remotion render src/index.ts Main ../output/TERA24_Trump_Midterms_MotionDesign.mp4"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.540",
+    "@remotion/paths": "4.0.540",
+    "@remotion/shapes": "4.0.540",
+    "@types/topojson-specification": "^1.0.5",
+    "d3-geo": "3.1.1",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "remotion": "4.0.540",
+    "topojson-client": "3.1.0",
+    "us-atlas": "3.0.1",
+    "world-atlas": "^2.0.2"
+  },
+  "devDependencies": {
+    "@types/d3-geo": "3.1.0",
+    "@types/react": "19.1.8",
+    "@types/topojson-client": "3.1.5",
+    "typescript": "5.8.3"
+  }
+}

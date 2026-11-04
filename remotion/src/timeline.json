@@ -1,0 +1,24 @@
+{
+  "fps": 30,
+  "duration": 80.82,
+  "scenes": [
+    ["Hook", 0.0, 7.25],
+    ["Depouillement", 7.25, 12.0],
+    ["Verdict", 12.0, 16.55],
+    ["Mobilisation", 16.55, 19.7],
+    ["Approbation", 19.7, 23.2],
+    ["Chambre", 23.2, 27.3],
+    ["Senat", 27.3, 30.35],
+    ["Texas", 30.35, 34.0],
+    ["MaisonBlanche", 34.0, 36.8],
+    ["Majorite", 36.8, 41.6],
+    ["Bloque", 41.6, 48.1],
+    ["Enquetes", 48.1, 52.4],
+    ["Jeffries", 52.4, 55.7],
+    ["Truth", 55.7, 59.35],
+    ["WallStreet", 59.35, 65.0],
+    ["Monde", 65.0, 71.2],
+    ["Question", 71.2, 77.0],
+    ["CTA", 77.0, 80.82]
+  ]
+}
