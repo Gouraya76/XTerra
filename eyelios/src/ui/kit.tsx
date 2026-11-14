@@ -1,6 +1,6 @@
 /** Composants Liquid Glass EYELIOS. */
 import React,{useEffect,useRef,useState} from 'react';
-import {Animated,Easing,Pressable,StyleProp,StyleSheet,Text,TextInput,TextInputProps,View,ViewStyle,ActivityIndicator,Modal,ScrollView,Platform,Image,useWindowDimensions} from 'react-native';
+import {Animated,Easing,Pressable,StyleProp,StyleSheet,Text,TextInput,TextInputProps,View,ViewStyle,ActivityIndicator,Modal,ScrollView,Platform,Image,useWindowDimensions,AccessibilityInfo} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import {BlurView} from 'expo-blur';
 import {Feather} from '@expo/vector-icons';
@@ -28,15 +28,34 @@ function Sheen({d,edge,id,o=1}:{d:string,edge:string,id:string,o?:number}){
     {[[9,0.06],[4,0.14],[1.4,0.8]].map(([sw,op])=><Path key={sw} d={edge} stroke={`url(#${id}e)`} strokeWidth={sw} strokeOpacity={op} fill="none"/>)}</>;
 }
 /** Fond : bleu acier (charbon → ardoise) avec grands reflets argentés diagonaux. */
+/** Oscillation lente et continue (sinusoïde) exécutée par le moteur natif. */
+function useDrift(duration:number,delay=0,enabled=true){
+  const v=useRef(new Animated.Value(0)).current;
+  useEffect(()=>{if(!enabled)return;const a=Animated.loop(Animated.sequence([
+    Animated.timing(v,{toValue:1,duration,delay,easing:Easing.inOut(Easing.sin),useNativeDriver:true}),
+    Animated.timing(v,{toValue:0,duration,easing:Easing.inOut(Easing.sin),useNativeDriver:true})]));a.start();return ()=>a.stop();},[enabled]);
+  return v;
+}
+let reduceMotion=false;AccessibilityInfo.isReduceMotionEnabled().then(r=>{reduceMotion=r;}).catch(()=>{});
+/** Fond animé : reflets argentés qui ondulent lentement (effet « vague de chaleur »). */
 export function Background({children}:{children?:React.ReactNode}){
-  const {width:w,height:h}=useWindowDimensions();
+  const {width:w,height:h}=useWindowDimensions();const on=!reduceMotion;
+  const a=useDrift(9000,0,on),b=useDrift(12000,1500,on),c=useDrift(10500,800,on),glow=useDrift(7000,0,on);
+  const layer=(v:Animated.Value,dx:number,dy:number,rot:number,sc:number)=>({position:'absolute' as const,left:-w*0.1,top:-h*0.05,width:w*1.2,height:h*1.1,transform:[
+    {translateX:v.interpolate({inputRange:[0,1],outputRange:[-dx,dx]})},{translateY:v.interpolate({inputRange:[0,1],outputRange:[-dy,dy]})},
+    {rotate:v.interpolate({inputRange:[0,1],outputRange:[`${-rot}deg`,`${rot}deg`]})},{scaleY:v.interpolate({inputRange:[0,0.5,1],outputRange:[1,sc,1]})}]});
+  const W=w*1.2,H=h*1.1;
   return <View style={{flex:1,backgroundColor:'#132033'}}>
     <LinearGradient colors={['#2B4364','#1C2D45','#141F31','#1A2A42']} locations={[0,0.35,0.7,1]} start={{x:0,y:0}} end={{x:1,y:1}} style={StyleSheet.absoluteFill}/>
-    <Svg pointerEvents="none" width={w} height={h} style={StyleSheet.absoluteFill}>
-      <Sheen id="s1" d={`M ${-w*0.1} ${h*0.33} C ${w*0.3} ${h*0.18}, ${w*0.6} ${h*0.06}, ${w*1.1} ${h*0.02} L ${w*1.1} ${h*0.13} C ${w*0.6} ${h*0.15}, ${w*0.3} ${h*0.25}, ${-w*0.1} ${h*0.42} Z`} edge={`M ${-w*0.1} ${h*0.33} C ${w*0.3} ${h*0.18}, ${w*0.6} ${h*0.06}, ${w*1.1} ${h*0.02}`}/>
-      <Sheen id="s2" o={0.8} d={`M ${-w*0.1} ${h*0.62} C ${w*0.35} ${h*0.5}, ${w*0.7} ${h*0.48}, ${w*1.1} ${h*0.36} L ${w*1.1} ${h*0.46} C ${w*0.7} ${h*0.58}, ${w*0.35} ${h*0.6}, ${-w*0.1} ${h*0.72} Z`} edge={`M ${-w*0.1} ${h*0.62} C ${w*0.35} ${h*0.5}, ${w*0.7} ${h*0.48}, ${w*1.1} ${h*0.36}`}/>
-      <Sheen id="s3" o={0.9} d={`M ${-w*0.1} ${h*1.02} C ${w*0.3} ${h*0.9}, ${w*0.7} ${h*0.86}, ${w*1.1} ${h*0.74} L ${w*1.1} ${h*0.86} C ${w*0.7} ${h*0.95}, ${w*0.3} ${h*1}, ${-w*0.1} ${h*1.1} Z`} edge={`M ${-w*0.1} ${h*1.02} C ${w*0.3} ${h*0.9}, ${w*0.7} ${h*0.86}, ${w*1.1} ${h*0.74}`}/>
-    </Svg>
+    <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFill,{opacity:glow.interpolate({inputRange:[0,1],outputRange:[0.55,1]})}]}>
+      <LinearGradient colors={['transparent',T.a(T.electric,0.12),'transparent']} start={{x:0,y:0.2}} end={{x:1,y:0.8}} style={StyleSheet.absoluteFill}/>
+    </Animated.View>
+    <Animated.View pointerEvents="none" style={layer(a,w*0.05,h*0.02,2.2,1.12)}><Svg width={W} height={H}>
+      <Sheen id="s1" d={`M ${-W*0.05} ${H*0.33} C ${W*0.3} ${H*0.18}, ${W*0.6} ${H*0.06}, ${W*1.05} ${H*0.02} L ${W*1.05} ${H*0.13} C ${W*0.6} ${H*0.15}, ${W*0.3} ${H*0.25}, ${-W*0.05} ${H*0.42} Z`} edge={`M ${-W*0.05} ${H*0.33} C ${W*0.3} ${H*0.18}, ${W*0.6} ${H*0.06}, ${W*1.05} ${H*0.02}`}/></Svg></Animated.View>
+    <Animated.View pointerEvents="none" style={layer(b,w*0.07,h*0.025,-2.8,1.18)}><Svg width={W} height={H}>
+      <Sheen id="s2" o={0.8} d={`M ${-W*0.05} ${H*0.62} C ${W*0.35} ${H*0.5}, ${W*0.7} ${H*0.48}, ${W*1.05} ${H*0.36} L ${W*1.05} ${H*0.46} C ${W*0.7} ${H*0.58}, ${W*0.35} ${H*0.6}, ${-W*0.05} ${H*0.72} Z`} edge={`M ${-W*0.05} ${H*0.62} C ${W*0.35} ${H*0.5}, ${W*0.7} ${H*0.48}, ${W*1.05} ${H*0.36}`}/></Svg></Animated.View>
+    <Animated.View pointerEvents="none" style={layer(c,w*0.06,h*0.02,2,1.14)}><Svg width={W} height={H}>
+      <Sheen id="s3" o={0.9} d={`M ${-W*0.05} ${H*0.98} C ${W*0.3} ${H*0.86}, ${W*0.7} ${H*0.82}, ${W*1.05} ${H*0.7} L ${W*1.05} ${H*0.82} C ${W*0.7} ${H*0.91}, ${W*0.3} ${H*0.96}, ${-W*0.05} ${H*1.06} Z`} edge={`M ${-W*0.05} ${H*0.98} C ${W*0.3} ${H*0.86}, ${W*0.7} ${H*0.82}, ${W*1.05} ${H*0.7}`}/></Svg></Animated.View>
     {children}
   </View>;
 }
