@@ -52,26 +52,11 @@ export function BrandMark({size=64}:{size?:number}){
 export function Fab({onPress,label='Ajouter'}:{onPress:()=>void,label?:string}){
   const ins=useSafeAreaInsets();
   return <Pressable onPress={()=>{haptic();onPress();}} accessibilityLabel={label} style={{position:'absolute',right:20,bottom:ins.bottom+104,width:58,height:58,borderRadius:29,alignItems:'center',justifyContent:'center',borderWidth:1.5,borderColor:T.a(T.ice,0.7),backgroundColor:T.a('#1C2D45',0.7),boxShadow:T.glowStrong} as any}>
-    <LinearGradient colors={[T.a(T.ice,0.35),'transparent']} start={{x:0.2,y:0}} end={{x:0.5,y:0.6}} style={[StyleSheet.absoluteFill,{borderRadius:29}]}/><Icon name="plus" size={28}/></Pressable>;
+    <Icon name="plus" size={28}/></Pressable>;
 }
 export const CheckDot=({ok=true,size=18}:{ok?:boolean,size?:number})=><View style={{width:size,height:size,borderRadius:size/2,alignItems:'center',justifyContent:'center',backgroundColor:ok?T.electric:'transparent',borderWidth:ok?0:1.5,borderColor:T.textMute,boxShadow:ok?T.glowShadow:'none'} as any}>{ok&&<Icon name="check" size={size*0.65} color={T.ice}/>}</View>;
 
 /** Carte de verre : remplissage translucide, contour lumineux, reflet supérieur. */
-/** Reflets du verre : bande diagonale principale, fin reflet secondaire, éclat de coin, et balayage lumineux à l'apparition. */
-export function Reflections({strong,sweep=true}:{strong?:boolean,sweep?:boolean}){
-  const x=useRef(new Animated.Value(0)).current;
-  useEffect(()=>{if(sweep)Animated.timing(x,{toValue:1,duration:1400,delay:250,easing:Easing.inOut(Easing.cubic),useNativeDriver:true}).start();},[]);
-  const k=strong?1.3:1;
-  return <View pointerEvents="none" style={StyleSheet.absoluteFill}>
-    <LinearGradient colors={['transparent',T.a(T.ice,0.0),T.a(T.ice,0.13*k),T.a(T.ice,0.02),'transparent']} locations={[0,0.28,0.36,0.44,1]} start={{x:0,y:0}} end={{x:1,y:0.85}} style={StyleSheet.absoluteFill}/>
-    <LinearGradient colors={['transparent',T.a(T.light,0.09*k),'transparent']} locations={[0.5,0.53,0.57]} start={{x:0,y:0}} end={{x:1,y:0.85}} style={StyleSheet.absoluteFill}/>
-    <LinearGradient colors={[T.a(T.ice,0.28*k),'transparent']} start={{x:0,y:0}} end={{x:0.32,y:0.38}} style={StyleSheet.absoluteFill}/>
-    <LinearGradient colors={['transparent',T.a(T.light,0.12*k)]} start={{x:0.6,y:0.6}} end={{x:1,y:1}} style={StyleSheet.absoluteFill}/>
-    {sweep&&<Animated.View style={[StyleSheet.absoluteFill,{opacity:x.interpolate({inputRange:[0,0.15,0.85,1],outputRange:[0,1,1,0]}),transform:[{translateX:x.interpolate({inputRange:[0,1],outputRange:[-420,420]})},{skewX:'-20deg'}]}]}>
-      <LinearGradient colors={['transparent',T.a(T.ice,0.22),'transparent']} start={{x:0,y:0.5}} end={{x:1,y:0.5}} style={{position:'absolute',top:0,bottom:0,left:'40%',width:70}}/>
-    </Animated.View>}
-  </View>;
-}
 export function Glass({children,style,onPress,onLongPress,strong,radius=T.r.lg,padding=16,disabled,blur=true}:{children?:React.ReactNode,style?:StyleProp<ViewStyle>,onPress?:()=>void,onLongPress?:()=>void,strong?:boolean,radius?:number,padding?:number,disabled?:boolean,blur?:boolean}){
   const scale=useRef(new Animated.Value(1)).current;
   const to=(v:number)=>Animated.spring(scale,{toValue:v,useNativeDriver:true,speed:40,bounciness:6}).start();
@@ -79,13 +64,9 @@ export function Glass({children,style,onPress,onLongPress,strong,radius=T.r.lg,p
     <View style={[StyleSheet.absoluteFill,{borderRadius:radius,overflow:'hidden'}]}>
       {blur&&<BlurView intensity={strong?22:14} tint="default" experimentalBlurMethod="dimezisBlurView" style={StyleSheet.absoluteFill}/>}
       <LinearGradient colors={strong?['rgba(170,195,228,0.30)','rgba(110,140,182,0.16)','rgba(80,108,150,0.12)']:['rgba(160,186,222,0.24)','rgba(100,130,172,0.12)','rgba(70,96,136,0.10)']} start={{x:0,y:0}} end={{x:0.8,y:1}} style={StyleSheet.absoluteFill}/>
-      <LinearGradient colors={[T.a(T.ice,0.14),'transparent']} start={{x:0,y:0}} end={{x:0,y:0.25}} style={StyleSheet.absoluteFill}/>
-      <LinearGradient colors={['transparent',T.a(T.electric,0.14)]} start={{x:0.3,y:0.5}} end={{x:1,y:1}} style={StyleSheet.absoluteFill}/>
-      <Reflections strong={strong}/>
-    </View>
+                </View>
     <View pointerEvents="none" style={[StyleSheet.absoluteFill,{borderRadius:radius,borderWidth:1.3,borderColor:strong?T.a(T.ice,0.5):T.a(T.ice,0.32)}]}/>
-    <View pointerEvents="none" style={{position:'absolute',top:0,left:radius*0.4,right:radius*0.4,height:1.6,backgroundColor:'#FFFFFF',opacity:0.85,boxShadow:'0px 0px 8px rgba(255,255,255,0.8)'} as any}/>
-    <View pointerEvents="none" style={{position:'absolute',bottom:0,left:radius,right:radius*1.4,height:1,backgroundColor:T.light,opacity:0.35}}/>
+    <View pointerEvents="none" style={{position:'absolute',top:0,left:radius*0.6,right:radius*0.6,height:1,backgroundColor:'#FFFFFF',opacity:0.45}}/>
     <View style={{padding}}>{children}</View>
   </Animated.View>;
   if(!onPress&&!onLongPress)return body;

@@ -53,7 +53,7 @@ export default function Home(){
     </View>
     <View style={{flexDirection:'row',gap:10,marginTop:12,alignItems:'flex-start'}}>
       <Glass style={{flex:1}} padding={10}>
-        <Pressable onPress={()=>router.push('/search')} style={{flexDirection:'row',alignItems:'center',gap:6,marginBottom:8}}><Icon name="clock" size={17}/><Text style={[font.h3,{flex:1,fontSize:13.5}]} numberOfLines={1} adjustsFontSizeToFit>Éléments récents</Text><Text style={{color:T.ice,fontSize:10}}>Tout voir ›</Text></Pressable>
+        <Pressable onPress={()=>router.push('/search')} style={{flexDirection:'row',alignItems:'center',gap:6,marginBottom:8}}><Icon name="clock" size={17}/><Text style={[font.h3,{flex:1,fontSize:13.5}]} numberOfLines={1} adjustsFontSizeToFit>Récents</Text><Text style={{color:T.ice,fontSize:10}}>Tout voir ›</Text></Pressable>
         {recent.length?recent.map(i=><Glass key={i.id} blur={false} padding={7} radius={14} style={{marginBottom:6}} onPress={()=>router.push(`/item/${i.id}`)}><View style={{flexDirection:'row',alignItems:'center',gap:8}}>
           <Tile size={32} letter={['password','api','card'].includes(i.type)?i.title[0]:undefined} icon={typeDef(i.type).icon}/>
           <View style={{flex:1,minWidth:0}}><Text style={{color:T.ice,fontWeight:'600',fontSize:13}} numberOfLines={1}>{i.title}</Text><Text style={{color:T.textDim,fontSize:9.5}} numberOfLines={1}>{typeDef(i.type).singular} · {ago(Math.max(i.updatedAt,i.viewedAt||0))}</Text></View>
