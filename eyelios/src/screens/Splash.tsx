@@ -1,18 +1,20 @@
-/** Écran de démarrage animé (design fourni par le propriétaire). L'anneau suit l'initialisation réelle et une animation minimale. */
+/** Écran de démarrage plein écran (visuel fourni par le propriétaire). Anneau et texte animés superposés à l'emplacement d'origine. */
 import React,{useEffect,useRef,useState} from 'react';
 import {Animated,Easing,Image,StyleSheet,Text,View,useWindowDimensions} from 'react-native';
 import {Ring} from '../ui/kit';
-import {T,font} from '../ui/theme';
+import {font} from '../ui/theme';
+const RATIO=1175/538; // proportions du visuel
 export default function Splash({ready,onDone}:{ready:boolean,onDone:()=>void}){
-  const {width}=useWindowDimensions();const fade=useRef(new Animated.Value(0)).current;const [p,setP]=useState(0.15);
-  useEffect(()=>{Animated.timing(fade,{toValue:1,duration:600,easing:Easing.out(Easing.cubic),useNativeDriver:true}).start();const t=setTimeout(()=>setP(0.6),350);return ()=>clearTimeout(t);},[]);
-  useEffect(()=>{if(!ready)return;const a=setTimeout(()=>setP(1),500);const b=setTimeout(onDone,1500);return ()=>{clearTimeout(a);clearTimeout(b);};},[ready]);
-  const w=Math.min(width*0.92,520);
-  return <View style={{flex:1,backgroundColor:'#000',alignItems:'center',justifyContent:'center'}}>
-    <Animated.View style={{alignItems:'center',opacity:fade,transform:[{scale:fade.interpolate({inputRange:[0,1],outputRange:[0.94,1]})}]}}>
-      <Image source={require('../../assets/splash-hero.png')} style={{width:w,height:w*470/546}} resizeMode="contain" accessibilityLabel="EYELIOS"/>
-      <View style={{height:44}}/><Ring value={p} size={86}/>
-      <Text style={[font.h3,{marginTop:16}]}>Démarrage d’EYELIOS…</Text>
+  const {width,height}=useWindowDimensions();const fade=useRef(new Animated.Value(0)).current;const [p,setP]=useState(0.12);
+  useEffect(()=>{Animated.timing(fade,{toValue:1,duration:500,easing:Easing.out(Easing.cubic),useNativeDriver:true}).start();const t=setTimeout(()=>setP(0.6),300);return ()=>clearTimeout(t);},[]);
+  useEffect(()=>{if(!ready)return;const a=setTimeout(()=>setP(1),450);const b=setTimeout(onDone,1500);return ()=>{clearTimeout(a);clearTimeout(b);};},[ready]);
+  // « cover » : on calcule la position réelle de la zone de l'anneau dans l'image affichée
+  const imgH=Math.max(height,width*RATIO);const top=(height-imgH)/2+imgH*0.645;
+  return <View style={{flex:1,backgroundColor:'#02040A'}}>
+    <Image source={require('../../assets/splash-full.png')} style={[StyleSheet.absoluteFill,{width:'100%',height:'100%'}]} resizeMode="cover" accessibilityLabel="EYELIOS — IA, analyse, sécurité, productivité"/>
+    <Animated.View style={{position:'absolute',top,left:0,right:0,alignItems:'center',opacity:fade}}>
+      <Ring value={p} size={Math.round(imgH*0.085)}/>
+      <Text style={[font.h3,{marginTop:14,fontSize:15}]}>Démarrage d’EYELIOS…</Text>
     </Animated.View>
   </View>;
 }
