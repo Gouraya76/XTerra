@@ -28,5 +28,5 @@ function TabBar({state}:any){
     </View>
   </View>;
 }
-export default function TabsLayout(){return <Tabs tabBar={p=><TabBar {...p}/>} screenOptions={{headerShown:false,sceneStyle:{backgroundColor:T.black},animation:'fade'}}>
+export default function TabsLayout(){return <Tabs tabBar={p=><TabBar {...p}/>} screenOptions={{headerShown:false,sceneStyle:{backgroundColor:T.black},animation:'none',freezeOnBlur:true,lazy:true}}>
   {TABS.map(t=><Tabs.Screen key={t.name} name={t.name}/>)}</Tabs>;}

@@ -13,7 +13,7 @@ import {haptic} from '../state/vault';
 import {tilt,startTilt} from './tilt';
 import {KbScroll,useKbReveal,useKeyboardHeight} from './keyboard';
 export {useKeyboardHeight};
-startTilt();
+// Capteur d'inclinaison désactivé (fluidité) : reflet statique.
 
 export type IconName=React.ComponentProps<typeof Feather>['name'];
 export const Icon=({name,size=20,color=T.ice,style}:{name:IconName|string,size?:number,color?:string,style?:any})=><Feather name={name as IconName} size={size} color={color} style={style}/>;
@@ -94,14 +94,12 @@ export function Glass({children,style,onPress,onLongPress,strong,radius=T.r.lg,p
   const scale=useRef(new Animated.Value(1)).current;
   const to=(v:number)=>Animated.spring(scale,{toValue:v,useNativeDriver:true,speed:40,bounciness:6}).start();
   const body=<Animated.View style={[{borderRadius:radius,transform:[{scale}],
-      boxShadow:(strong?'8px 16px 30px rgba(3,8,20,0.55), 0px 0px 26px rgba(59,155,255,0.22)':'6px 14px 26px rgba(3,8,20,0.48)')} as any,style]}>
+      boxShadow:strong?'8px 16px 30px rgba(3,8,20,0.55), 0px 0px 26px rgba(59,155,255,0.22)':(Platform.OS==='android'?'none':'6px 14px 26px rgba(3,8,20,0.48)')} as any,style]}>
     <View style={[StyleSheet.absoluteFill,{borderRadius:radius,overflow:'hidden'}]}>
       {blur&&Platform.OS!=='android'&&<BlurView intensity={strong?26:18} tint="default" experimentalBlurMethod="dimezisBlurView" style={StyleSheet.absoluteFill}/>}
-      <LinearGradient colors={strong?['rgba(225,236,250,0.20)','rgba(160,185,220,0.09)','rgba(140,170,215,0.12)']:['rgba(225,236,250,0.15)','rgba(160,185,220,0.06)','rgba(140,170,215,0.09)']} start={{x:0,y:0}} end={{x:0.8,y:1}} style={StyleSheet.absoluteFill}/>
-      <LinearGradient colors={['transparent','rgba(59,155,255,0.16)','rgba(140,203,255,0.10)']} locations={[0.45,0.85,1]} start={{x:0,y:0}} end={{x:1,y:1}} style={StyleSheet.absoluteFill}/>
-      <LinearGradient colors={['rgba(255,255,255,0.16)','rgba(255,255,255,0.04)','transparent']} locations={[0,0.18,0.42]} start={{x:0.5,y:0}} end={{x:0.5,y:1}} style={StyleSheet.absoluteFill}/>
+      <LinearGradient colors={strong?['rgba(240,246,255,0.30)','rgba(200,218,240,0.12)','rgba(160,185,220,0.09)','rgba(59,155,255,0.15)']:['rgba(240,246,255,0.24)','rgba(200,218,240,0.09)','rgba(160,185,220,0.06)','rgba(59,155,255,0.13)']} locations={[0,0.3,0.6,1]} start={{x:0.2,y:0}} end={{x:0.8,y:1}} style={StyleSheet.absoluteFill}/>
+      <Image source={REFLECTION} resizeMode="cover" fadeDuration={0} style={{position:'absolute',top:'-20%',left:'-20%',width:'140%',height:'140%',opacity:strong?0.3:0.24}}/>
     </View>
-    <WindowReflection radius={radius} opacity={strong?0.3:0.24}/>
     <LinearGradient pointerEvents="none" colors={['rgba(255,255,255,0)','rgba(255,255,255,0.95)','rgba(255,255,255,0)']} start={{x:0,y:0}} end={{x:1,y:0}} style={{position:'absolute',top:0,left:radius*0.5,right:radius*0.5,height:1.5,borderRadius:1}}/>
     <View pointerEvents="none" style={[StyleSheet.absoluteFill,{borderRadius:radius,borderWidth:1.6,borderColor:strong?'rgba(255,255,255,0.62)':'rgba(255,255,255,0.45)'}]}/>
     <View pointerEvents="none" style={{position:'absolute',top:3,left:3,right:3,bottom:3,borderRadius:Math.max(radius-3,4),borderWidth:1,borderColor:'rgba(255,255,255,0.10)'}}/>
@@ -136,8 +134,8 @@ export function Mirror({radius,strong}:{radius:number,strong?:boolean}){
   </View>;
 }
 export function Bubble({radius,tone='clear',children,style}:{radius:number,tone?:'clear'|'blue',children?:React.ReactNode,style?:StyleProp<ViewStyle>}){
-  const blue=tone==='blue';
-  return <View style={[{borderRadius:radius,boxShadow:blue
+  const blue=tone==='blue';const lite=Platform.OS==='android';
+  return <View style={[{borderRadius:radius,boxShadow:lite?(blue?'0px 6px 14px rgba(37,99,235,0.5)':'none'):blue
       ?'5px 12px 22px rgba(37,99,235,0.55), 0px 0px 22px rgba(59,155,255,0.45), inset 0px 2px 3px rgba(255,255,255,0.85), inset 0px -5px 10px rgba(10,40,110,0.5)'
       :'5px 11px 20px rgba(3,8,20,0.5), inset 0px 2px 3px rgba(255,255,255,0.7), inset 0px -4px 9px rgba(5,15,35,0.35)'} as any,style]}>
     <View pointerEvents="none" style={[StyleSheet.absoluteFill,{borderRadius:radius,overflow:'hidden'}]}>
@@ -199,7 +197,7 @@ export function Screen({title,subtitle,back=true,right,children,scroll=true,pad=
 
 export function FadeIn({children,delay=0,style}:{children:React.ReactNode,delay?:number,style?:StyleProp<ViewStyle>}){
   const v=useRef(new Animated.Value(0)).current;
-  useEffect(()=>{Animated.timing(v,{toValue:1,duration:380,delay,easing:Easing.out(Easing.cubic),useNativeDriver:true}).start();},[]);
+  useEffect(()=>{Animated.timing(v,{toValue:1,duration:240,delay:Math.min(delay,160),easing:Easing.out(Easing.cubic),useNativeDriver:true}).start();},[]);
   return <Animated.View style={[style,{opacity:v,transform:[{translateY:v.interpolate({inputRange:[0,1],outputRange:[14,0]})}]}]}>{children}</Animated.View>;
 }
 

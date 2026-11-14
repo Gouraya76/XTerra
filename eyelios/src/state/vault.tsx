@@ -21,7 +21,7 @@ const NC=NativeCrypto;if(NC){C.setNativeKdf((p,s,i,l)=>NC.pbkdf2Sha256(p,s,i,l))
 type Status='loading'|'new'|'locked'|'unlocked';
 export type Toast={id:number,text:string,icon?:string};
 type Ctx={
-  status:Status,busy:string,email:string,payload:M.Payload,bio:{available:boolean,enabled:boolean},toast:Toast|null,
+  status:Status,email:string,payload:M.Payload,bio:{available:boolean,enabled:boolean},
   create(email:string,password:string):Promise<void>,unlock(email:string,password:string):Promise<void>,unlockBio():Promise<void>,lock():void,
   saveItem(item:M.Item,log?:string):Promise<void>,deleteItem(id:string):Promise<void>,toggleFavorite(id:string):Promise<void>,markViewed(id:string):void,
   moveItem(id:string,vaultId:string):Promise<void>,
@@ -34,6 +34,9 @@ type Ctx={
 };
 const VaultCtx=createContext<Ctx>(null as any);
 export const useVault=()=>useContext(VaultCtx);
+/** Contexte séparé pour l'indicateur d'attente et les messages : leur changement ne redessine pas toute l'app. */
+const UiCtx=createContext<{busy:string,toast:Toast|null}>({busy:'',toast:null});
+export const useUi=()=>useContext(UiCtx);
 export const haptic=(k:'light'|'success'|'warning'='light')=>{if(Platform.OS==='web')return;(k==='light'?Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light):Haptics.notificationAsync(k==='success'?Haptics.NotificationFeedbackType.Success:Haptics.NotificationFeedbackType.Warning)).catch(()=>{});};
 const MIN_PW=12;
 
@@ -189,12 +192,13 @@ export function VaultProvider({children}:{children:React.ReactNode}){
     }finally{setBusy('');}},[email,persist]);
   const wipe=useCallback(async()=>{await S.disableBio();await DB.wipeAll();dek.current=null;header.current=null;setEmail('');setPayload(M.emptyPayload(''));setStatus('new');},[]);
 
-  const value=useMemo<Ctx>(()=>({status,busy,email,payload,bio,toast,create,unlock,unlockBio,lock,saveItem,deleteItem,toggleFavorite,markViewed,moveItem,
+  const value=useMemo<Ctx>(()=>({status,email,payload,bio,create,unlock,unlockBio,lock,saveItem,deleteItem,toggleFavorite,markViewed,moveItem,
     addVault,renameVault,deleteVault,moveVault,toggleVaultFavorite,importFile,readAttachment,openAttachment,copy,notify,updateSettings,setBio,changePassword,
     exportBackup,inspectBackup,restoreBackup,external,log,wipe}),
-    [status,busy,email,payload,bio,toast,create,unlock,unlockBio,lock,saveItem,deleteItem,toggleFavorite,markViewed,moveItem,addVault,renameVault,deleteVault,moveVault,
+    [status,email,payload,bio,create,unlock,unlockBio,lock,saveItem,deleteItem,toggleFavorite,markViewed,moveItem,addVault,renameVault,deleteVault,moveVault,
      toggleVaultFavorite,importFile,readAttachment,openAttachment,copy,notify,updateSettings,setBio,changePassword,exportBackup,inspectBackup,restoreBackup,external,log,wipe]);
-  return <VaultCtx.Provider value={value}>{children}</VaultCtx.Provider>;
+  const ui=useMemo(()=>({busy,toast}),[busy,toast]);
+  return <VaultCtx.Provider value={value}><UiCtx.Provider value={ui}>{children}</UiCtx.Provider></VaultCtx.Provider>;
 }
 
 /** Score de sécurité RÉEL, calculé à partir de l'état du coffre (aucune valeur fictive). */

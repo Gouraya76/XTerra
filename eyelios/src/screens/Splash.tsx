@@ -7,7 +7,7 @@ const RATIO=1175/538; // proportions du visuel
 export default function Splash({ready,onDone}:{ready:boolean,onDone:()=>void}){
   const {width,height}=useWindowDimensions();const fade=useRef(new Animated.Value(0)).current;const [p,setP]=useState(0.12);
   useEffect(()=>{Animated.timing(fade,{toValue:1,duration:500,easing:Easing.out(Easing.cubic),useNativeDriver:true}).start();const t=setTimeout(()=>setP(0.6),300);return ()=>clearTimeout(t);},[]);
-  useEffect(()=>{if(!ready)return;const a=setTimeout(()=>setP(1),450);const b=setTimeout(onDone,1500);return ()=>{clearTimeout(a);clearTimeout(b);};},[ready]);
+  useEffect(()=>{if(!ready)return;const a=setTimeout(()=>setP(1),150);const b=setTimeout(onDone,650);return ()=>{clearTimeout(a);clearTimeout(b);};},[ready]);
   // « cover » : on calcule la position réelle de la zone de l'anneau dans l'image affichée
   const imgH=Math.max(height,width*RATIO);const top=(height-imgH)/2+imgH*0.645;
   return <View style={{flex:1,backgroundColor:'#02040A'}}>

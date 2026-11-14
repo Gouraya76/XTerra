@@ -31,7 +31,7 @@ export default function Home(){
       <View style={{flexDirection:'row',alignItems:'center',gap:12,paddingHorizontal:18,paddingVertical:15}}><Icon name="search" size={24}/><Text style={[font.body,{flex:1,color:T.ice,fontSize:15.5}]} numberOfLines={1}>Rechercher (mot-clé, nom, tag…)</Text><Icon name="maximize" size={22}/></View>
     </Glass></FadeIn>
     <View style={{flexDirection:'row',flexWrap:'wrap',gap:10,marginTop:16}}>
-      {TYPES.map((t,i)=><FadeIn key={t.id} delay={140+i*40}><Glass padding={8} radius={22} style={{width:tileW,height:tileW*0.86}} onPress={()=>router.push(t.id==='password'?'/passwords':t.id==='photo'||t.id==='document'?`/category/gallery?f=${t.id}`:`/category/${t.id}`)}>
+      {TYPES.map((t,i)=><FadeIn key={t.id} delay={40+i*20}><Glass padding={8} radius={22} style={{width:tileW,height:tileW*0.86}} onPress={()=>router.push(t.id==='password'?'/passwords':t.id==='photo'||t.id==='document'?`/category/gallery?f=${t.id}`:`/category/${t.id}`)}>
         <View style={{alignItems:'center',justifyContent:'center',height:tileW*0.86-16}}>
           <Icon name={t.icon} size={32}/><Text style={{color:T.ice,fontWeight:'600',fontSize:14,textAlign:'center',marginTop:7}} numberOfLines={2} adjustsFontSizeToFit>{t.label}</Text>
           <Text style={{color:T.textDim,fontSize:12.5}}>{counts[t.id]} élément{counts[t.id]>1?'s':''}</Text></View>
