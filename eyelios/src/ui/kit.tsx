@@ -9,6 +9,8 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {router} from 'expo-router';
 import {T,font} from './theme';
 import {haptic} from '../state/vault';
+import {tilt,startTilt} from './tilt';
+startTilt();
 
 export type IconName=React.ComponentProps<typeof Feather>['name'];
 export const Icon=({name,size=20,color=T.ice,style}:{name:IconName|string,size?:number,color?:string,style?:any})=><Feather name={name as IconName} size={size} color={color} style={style}/>;
@@ -90,6 +92,7 @@ export function Glass({children,style,onPress,onLongPress,strong,radius=T.r.lg,p
       <LinearGradient colors={['transparent','rgba(59,155,255,0.16)','rgba(140,203,255,0.10)']} locations={[0.45,0.85,1]} start={{x:0,y:0}} end={{x:1,y:1}} style={StyleSheet.absoluteFill}/>
       <LinearGradient colors={['rgba(255,255,255,0.16)','rgba(255,255,255,0.04)','transparent']} locations={[0,0.18,0.42]} start={{x:0.5,y:0}} end={{x:0.5,y:1}} style={StyleSheet.absoluteFill}/>
     </View>
+    <WindowReflection radius={radius} opacity={strong?0.3:0.24}/>
     <LinearGradient pointerEvents="none" colors={['rgba(255,255,255,0)','rgba(255,255,255,0.95)','rgba(255,255,255,0)']} start={{x:0,y:0}} end={{x:1,y:0}} style={{position:'absolute',top:0,left:radius*0.5,right:radius*0.5,height:1.5,borderRadius:1}}/>
     <View pointerEvents="none" style={[StyleSheet.absoluteFill,{borderRadius:radius,borderWidth:1.6,borderColor:strong?'rgba(255,255,255,0.62)':'rgba(255,255,255,0.45)'}]}/>
     <View pointerEvents="none" style={{position:'absolute',top:3,left:3,right:3,bottom:3,borderRadius:Math.max(radius-3,4),borderWidth:1,borderColor:'rgba(255,255,255,0.10)'}}/>
@@ -104,6 +107,18 @@ export function Glass({children,style,onPress,onLongPress,strong,radius=T.r.lg,p
  * ombre intérieure en bas, ombre portée douce. Teinte bleue pour l'état actif / principal.
  */
 /** Voile miroir : reflet de vitre polie sur la moitié haute, bord inférieur net et arrondi. */
+const REFLECTION=require('../../assets/glass-reflection.png');
+/**
+ * Reflet de vitre : l'environnement (lumière de baie vitrée, montants, silhouette fantôme) se reflète faiblement
+ * dans le verre et glisse selon l'inclinaison du téléphone.
+ */
+export function WindowReflection({radius,opacity=0.16,travel=14}:{radius:number,opacity?:number,travel?:number}){
+  return <View pointerEvents="none" style={[StyleSheet.absoluteFill,{borderRadius:radius,overflow:'hidden'}]}>
+    <Animated.Image source={REFLECTION} resizeMode="cover" style={{position:'absolute',top:'-25%',left:'-25%',width:'150%',height:'150%',opacity,
+      transform:[{translateX:tilt.x.interpolate({inputRange:[-1,1],outputRange:[travel,-travel]})},{translateY:tilt.y.interpolate({inputRange:[-1,1],outputRange:[-travel,travel]})}]}}/>
+    <LinearGradient colors={['rgba(255,255,255,0.13)','rgba(255,255,255,0.03)','transparent']} locations={[0,0.45,0.75]} start={{x:0,y:0}} end={{x:1,y:1}} style={StyleSheet.absoluteFill}/>
+  </View>;
+}
 export function Mirror({radius,strong}:{radius:number,strong?:boolean}){
   return <View pointerEvents="none" style={[StyleSheet.absoluteFill,{borderRadius:radius,overflow:'hidden'}]}>
     <View style={{position:'absolute',top:1.5,left:'4%',right:'4%',height:'52%',overflow:'hidden',borderTopLeftRadius:radius,borderTopRightRadius:radius,borderBottomLeftRadius:999,borderBottomRightRadius:999}}>
@@ -120,6 +135,7 @@ export function Bubble({radius,tone='clear',children,style}:{radius:number,tone?
       <LinearGradient colors={blue?['rgba(125,190,255,0.95)','rgba(59,130,246,0.9)','rgba(29,78,216,0.95)']:['rgba(220,232,248,0.30)','rgba(150,175,210,0.16)','rgba(110,135,175,0.20)']} start={{x:0.2,y:0}} end={{x:0.8,y:1}} style={StyleSheet.absoluteFill}/>
     </View>
     <View pointerEvents="none" style={[StyleSheet.absoluteFill,{borderRadius:radius,borderWidth:1.6,borderColor:blue?'rgba(225,240,255,0.95)':'rgba(255,255,255,0.6)'}]}/>
+    <WindowReflection radius={radius} opacity={blue?0.22:0.2} travel={6}/>
     {children}
     <Mirror radius={radius} strong={blue}/>
   </View>;
