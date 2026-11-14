@@ -1,0 +1,38 @@
+{
+  "expo": {
+    "name": "JILANI VAULT",
+    "slug": "jilani-vault",
+    "version": "2.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "android": {
+      "package": "fr.jilani.vault",
+      "versionCode": 1,
+      "permissions": [
+        "USE_BIOMETRIC",
+        "USE_FINGERPRINT"
+      ],
+      "allowBackup": false,
+      "softwareKeyboardLayoutMode": "pan",
+      "edgeToEdgeEnabled": true
+    },
+    "plugins": [
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Déverrouiller votre coffre JILANI VAULT."
+        }
+      ],
+      [
+        "expo-secure-store",
+        {
+          "configureAndroidBackup": true,
+          "faceIDPermission": "Déverrouiller votre coffre JILANI VAULT."
+        }
+      ],
+      "expo-router"
+    ],
+    "scheme": "jilanivault"
+  }
+}
