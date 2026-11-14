@@ -62,7 +62,7 @@ export function Background({children}:{children?:React.ReactNode}){
 /** Marque EYELIOS de la maquette : « E » italique dans une orbite lumineuse. */
 export function BrandMark({size=64}:{size?:number}){
   return <Svg width={size*1.25} height={size} viewBox="0 0 125 100">
-    <Defs><SG id="bm" x1="0" y1="0" x2="1" y2="1"><Stop offset="0" stopColor="#FFFFFF"/><Stop offset="0.55" stopColor="#D6E4F5"/><Stop offset="1" stopColor="#8FA6C4"/></SG>
+    <Defs><SG id="bm" x1="0" y1="0" x2="0.35" y2="1"><Stop offset="0" stopColor="#FFFFFF"/><Stop offset="0.46" stopColor="#EEF4FC"/><Stop offset="0.47" stopColor="#9FB4CF"/><Stop offset="0.75" stopColor="#C9D8EA"/><Stop offset="1" stopColor="#7F95B3"/></SG>
       <SG id="bo" x1="0" y1="1" x2="1" y2="0"><Stop offset="0" stopColor="#FFFFFF" stopOpacity="0.95"/><Stop offset="0.6" stopColor={T.light} stopOpacity="0.9"/><Stop offset="1" stopColor={T.electric} stopOpacity="0.2"/></SG></Defs>
     <Path d="M8 78 C 2 60, 30 22, 82 10 C 108 4, 122 12, 112 26 C 118 12, 96 10, 74 18 C 40 30, 14 58, 18 76 Z" fill="url(#bo)"/>
     <Path d="M46 26 L96 26 L90 40 L62 40 L58 50 L84 50 L79 62 L53 62 L49 73 L80 73 L74 88 L26 88 Z" fill="url(#bm)"/>
@@ -103,6 +103,14 @@ export function Glass({children,style,onPress,onLongPress,strong,radius=T.r.lg,p
  * Surface « liquid glass » 3D (boutons, icônes, filtres) : remplissage translucide bombé, bord intérieur lumineux en haut,
  * ombre intérieure en bas, ombre portée douce. Teinte bleue pour l'état actif / principal.
  */
+/** Voile miroir : reflet de vitre polie sur la moitié haute, bord inférieur net et arrondi. */
+export function Mirror({radius,strong}:{radius:number,strong?:boolean}){
+  return <View pointerEvents="none" style={[StyleSheet.absoluteFill,{borderRadius:radius,overflow:'hidden'}]}>
+    <View style={{position:'absolute',top:1.5,left:'4%',right:'4%',height:'52%',overflow:'hidden',borderTopLeftRadius:radius,borderTopRightRadius:radius,borderBottomLeftRadius:999,borderBottomRightRadius:999}}>
+      <LinearGradient colors={[`rgba(255,255,255,${strong?0.65:0.55})`,`rgba(255,255,255,${strong?0.24:0.18})`,`rgba(255,255,255,${strong?0.1:0.07})`]} locations={[0,0.6,1]} style={StyleSheet.absoluteFill}/>
+    </View>
+  </View>;
+}
 export function Bubble({radius,tone='clear',children,style}:{radius:number,tone?:'clear'|'blue',children?:React.ReactNode,style?:StyleProp<ViewStyle>}){
   const blue=tone==='blue';
   return <View style={[{borderRadius:radius,boxShadow:blue
@@ -110,10 +118,10 @@ export function Bubble({radius,tone='clear',children,style}:{radius:number,tone?
       :'5px 11px 20px rgba(3,8,20,0.5), inset 0px 2px 3px rgba(255,255,255,0.7), inset 0px -4px 9px rgba(5,15,35,0.35)'} as any,style]}>
     <View pointerEvents="none" style={[StyleSheet.absoluteFill,{borderRadius:radius,overflow:'hidden'}]}>
       <LinearGradient colors={blue?['rgba(125,190,255,0.95)','rgba(59,130,246,0.9)','rgba(29,78,216,0.95)']:['rgba(220,232,248,0.30)','rgba(150,175,210,0.16)','rgba(110,135,175,0.20)']} start={{x:0.2,y:0}} end={{x:0.8,y:1}} style={StyleSheet.absoluteFill}/>
-      <LinearGradient colors={[blue?'rgba(255,255,255,0.45)':'rgba(255,255,255,0.32)','rgba(255,255,255,0)']} start={{x:0.5,y:0}} end={{x:0.5,y:0.5}} style={{position:'absolute',top:1,left:'12%',right:'12%',height:'55%',borderRadius:radius}}/>
     </View>
     <View pointerEvents="none" style={[StyleSheet.absoluteFill,{borderRadius:radius,borderWidth:1.6,borderColor:blue?'rgba(225,240,255,0.95)':'rgba(255,255,255,0.6)'}]}/>
     {children}
+    <Mirror radius={radius} strong={blue}/>
   </View>;
 }
 export function Btn({title,icon,onPress,kind='glass',small,disabled,style}:{title:string,icon?:string,onPress?:()=>void,kind?:'primary'|'glass'|'danger',small?:boolean,disabled?:boolean,style?:StyleProp<ViewStyle>}){
@@ -188,7 +196,7 @@ export function Chip({label,active,onPress,icon}:{label:string,active?:boolean,o
 export function Tile({icon,letter,size=46}:{icon?:string,letter?:string,size?:number}){
   return <View style={{width:size,height:size,borderRadius:size*0.26,overflow:'hidden',alignItems:'center',justifyContent:'center',borderWidth:1,borderColor:T.a(T.ice,0.18)}}>
     <LinearGradient colors={['#1A2436','#0B111C']} start={{x:0,y:0}} end={{x:1,y:1}} style={StyleSheet.absoluteFill}/>
-    {letter?<Text style={{color:T.ice,fontSize:size*0.42,fontWeight:'800'}}>{letter.toUpperCase()}</Text>:<Icon name={icon||'box'} size={size*0.45}/>}
+    {letter?<Text style={{color:T.ice,fontSize:size*0.42,fontWeight:'800'}}>{letter.toUpperCase()}</Text>:<Icon name={icon||'box'} size={size*0.45}/>}<Mirror radius={size*0.26}/>
   </View>;
 }
 
