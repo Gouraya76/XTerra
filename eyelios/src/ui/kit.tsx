@@ -34,6 +34,21 @@ export function Background({children}:{children?:React.ReactNode}){
 }
 
 /** Carte de verre : remplissage translucide, contour lumineux, reflet supérieur. */
+/** Reflets du verre : bande diagonale principale, fin reflet secondaire, éclat de coin, et balayage lumineux à l'apparition. */
+export function Reflections({strong,sweep=true}:{strong?:boolean,sweep?:boolean}){
+  const x=useRef(new Animated.Value(0)).current;
+  useEffect(()=>{if(sweep)Animated.timing(x,{toValue:1,duration:1400,delay:250,easing:Easing.inOut(Easing.cubic),useNativeDriver:true}).start();},[]);
+  const k=strong?1.3:1;
+  return <View pointerEvents="none" style={StyleSheet.absoluteFill}>
+    <LinearGradient colors={['transparent',T.a(T.ice,0.0),T.a(T.ice,0.13*k),T.a(T.ice,0.02),'transparent']} locations={[0,0.28,0.36,0.44,1]} start={{x:0,y:0}} end={{x:1,y:0.85}} style={StyleSheet.absoluteFill}/>
+    <LinearGradient colors={['transparent',T.a(T.light,0.09*k),'transparent']} locations={[0.5,0.53,0.57]} start={{x:0,y:0}} end={{x:1,y:0.85}} style={StyleSheet.absoluteFill}/>
+    <LinearGradient colors={[T.a(T.ice,0.28*k),'transparent']} start={{x:0,y:0}} end={{x:0.32,y:0.38}} style={StyleSheet.absoluteFill}/>
+    <LinearGradient colors={['transparent',T.a(T.light,0.12*k)]} start={{x:0.6,y:0.6}} end={{x:1,y:1}} style={StyleSheet.absoluteFill}/>
+    {sweep&&<Animated.View style={[StyleSheet.absoluteFill,{opacity:x.interpolate({inputRange:[0,0.15,0.85,1],outputRange:[0,1,1,0]}),transform:[{translateX:x.interpolate({inputRange:[0,1],outputRange:[-420,420]})},{skewX:'-20deg'}]}]}>
+      <LinearGradient colors={['transparent',T.a(T.ice,0.22),'transparent']} start={{x:0,y:0.5}} end={{x:1,y:0.5}} style={{position:'absolute',top:0,bottom:0,left:'40%',width:70}}/>
+    </Animated.View>}
+  </View>;
+}
 export function Glass({children,style,onPress,onLongPress,strong,radius=T.r.lg,padding=16,disabled,blur=true}:{children?:React.ReactNode,style?:StyleProp<ViewStyle>,onPress?:()=>void,onLongPress?:()=>void,strong?:boolean,radius?:number,padding?:number,disabled?:boolean,blur?:boolean}){
   const scale=useRef(new Animated.Value(1)).current;
   const to=(v:number)=>Animated.spring(scale,{toValue:v,useNativeDriver:true,speed:40,bounciness:6}).start();
@@ -43,6 +58,7 @@ export function Glass({children,style,onPress,onLongPress,strong,radius=T.r.lg,p
       <LinearGradient colors={strong?[T.a(T.ice,0.22),T.a(T.electric,0.08),T.a(T.ice,0.05)]:[T.a(T.ice,0.15),T.a(T.electric,0.05),T.a(T.ice,0.03)]} start={{x:0,y:0}} end={{x:0.8,y:1}} style={StyleSheet.absoluteFill}/>
       <LinearGradient colors={[T.a(T.ice,0.22),'transparent']} start={{x:0,y:0}} end={{x:0,y:0.3}} style={StyleSheet.absoluteFill}/>
       <LinearGradient colors={['transparent',T.a(T.electric,0.14)]} start={{x:0.3,y:0.5}} end={{x:1,y:1}} style={StyleSheet.absoluteFill}/>
+      <Reflections strong={strong}/>
     </View>
     <View pointerEvents="none" style={[StyleSheet.absoluteFill,{borderRadius:radius,borderWidth:1,borderColor:strong?T.edge:T.edgeSoft}]}/>
     <View pointerEvents="none" style={{position:'absolute',top:0,left:radius*0.5,right:radius*0.5,height:1.2,backgroundColor:T.ice,opacity:0.7}}/>
@@ -59,6 +75,7 @@ export function Btn({title,icon,onPress,kind='glass',small,disabled,style}:{titl
     <Animated.View style={[{borderRadius:16,opacity:disabled?0.45:1,transform:[{scale}],boxShadow:primary?T.glowStrong:'none'} as any]}>
       <LinearGradient colors={primary?[T.electric,T.deep]:kind==='danger'?[T.a(T.ice,0.1),T.a(T.ice,0.03)]:[T.a(T.ice,0.15),T.a(T.ice,0.05)]} start={{x:0,y:0}} end={{x:0,y:1}}
         style={{flexDirection:'row',alignItems:'center',justifyContent:'center',gap:8,paddingVertical:small?10:15,paddingHorizontal:small?12:18,borderRadius:16,borderWidth:1,borderColor:primary?T.light:T.edgeSoft}}>
+        <View pointerEvents="none" style={[StyleSheet.absoluteFill,{borderRadius:16,overflow:'hidden'}]}><LinearGradient colors={[T.a(T.ice,primary?0.35:0.18),'transparent']} start={{x:0,y:0}} end={{x:0,y:0.55}} style={StyleSheet.absoluteFill}/><LinearGradient colors={['transparent',T.a(T.ice,primary?0.22:0.1),'transparent']} locations={[0.3,0.4,0.5]} start={{x:0,y:0}} end={{x:1,y:1}} style={StyleSheet.absoluteFill}/></View>
         {icon&&<Icon name={icon} size={small?15:17} color={primary?T.ice:kind==='danger'?T.a(T.ice,0.85):T.ice}/>}
         <Text numberOfLines={1} style={{color:T.ice,fontWeight:'700',fontSize:small?13:15,textDecorationLine:kind==='danger'?'none':'none'}}>{title}</Text>
       </LinearGradient>
