@@ -1,33 +1,36 @@
-name: JILANI VAULT - APK Android
+name: EYELIOS - APK Android
 on:
   push:
-    paths: ['jv/jilani-vault-premium-offline/**', '.github/workflows/jilani-vault-apk.yml']
+    paths: ['eyelios/**', '.github/workflows/jilani-vault-apk.yml']
   workflow_dispatch:
 permissions:
   contents: write
 jobs:
   apk:
     runs-on: ubuntu-latest
-    defaults: { run: { working-directory: jv/jilani-vault-premium-offline } }
+    defaults: { run: { working-directory: eyelios } }
+    env:
+      ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+      ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+      BUILD_NUMBER: ${{ github.run_number }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 20 }
+        with: { node-version: 22 }
       - uses: actions/setup-java@v4
         with: { distribution: temurin, java-version: 17 }
+      - name: Vérifier la clé de signature
+        run: test -n "$ANDROID_KEYSTORE_BASE64" || (echo "Secret ANDROID_KEYSTORE_BASE64 manquant" && exit 1)
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
       - run: npx expo prebuild --platform android --no-install
       - run: cd android && ./gradlew assembleRelease --no-daemon
-      - uses: actions/upload-artifact@v4
-        with:
-          name: jilani-vault-apk
-          path: jv/jilani-vault-premium-offline/android/app/build/outputs/apk/release/*.apk
+      - run: mv android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/apk/release/EYELIOS-3.0.${{ github.run_number }}.apk
       - uses: softprops/action-gh-release@v2
         with:
-          tag_name: jilani-vault-v2.0.${{ github.run_number }}
-          name: JILANI VAULT v2.0 (build ${{ github.run_number }})
+          tag_name: eyelios-v3.0.${{ github.run_number }}
+          name: EYELIOS v3.0.${{ github.run_number }}
           target_commitish: ${{ github.sha }}
           prerelease: true
-          files: jv/jilani-vault-premium-offline/android/app/build/outputs/apk/release/*.apk
+          files: eyelios/android/app/build/outputs/apk/release/*.apk
