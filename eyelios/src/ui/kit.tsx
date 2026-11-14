@@ -75,16 +75,22 @@ export function Fab({onPress,label='Ajouter'}:{onPress:()=>void,label?:string}){
 export const CheckDot=({ok=true,size=18}:{ok?:boolean,size?:number})=><View style={{width:size,height:size,borderRadius:size/2,alignItems:'center',justifyContent:'center',backgroundColor:ok?T.electric:'transparent',borderWidth:ok?0:1.5,borderColor:T.textMute,boxShadow:ok?T.glowShadow:'none'} as any}>{ok&&<Icon name="check" size={size*0.65} color={T.ice}/>}</View>;
 
 /** Carte de verre : remplissage translucide, contour lumineux, reflet supérieur. */
+/**
+ * Verre glacé : très transparent, double liseré givré (bord extérieur blanc lumineux + bord intérieur),
+ * halo coloré qui transparaît, ombre portée longue et décalée (le verre « flotte » au-dessus du fond).
+ */
 export function Glass({children,style,onPress,onLongPress,strong,radius=T.r.lg,padding=16,disabled,blur=true}:{children?:React.ReactNode,style?:StyleProp<ViewStyle>,onPress?:()=>void,onLongPress?:()=>void,strong?:boolean,radius?:number,padding?:number,disabled?:boolean,blur?:boolean}){
   const scale=useRef(new Animated.Value(1)).current;
   const to=(v:number)=>Animated.spring(scale,{toValue:v,useNativeDriver:true,speed:40,bounciness:6}).start();
-  const body=<Animated.View style={[{borderRadius:radius,transform:[{scale}],boxShadow:strong?'0px 10px 28px rgba(5,12,25,0.55), 0px 0px 22px rgba(59,155,255,0.25)':'0px 8px 22px rgba(5,12,25,0.45)'} as any,style]}>
+  const body=<Animated.View style={[{borderRadius:radius,transform:[{scale}],
+      boxShadow:(strong?'8px 16px 30px rgba(3,8,20,0.55), 0px 0px 26px rgba(59,155,255,0.22)':'6px 14px 26px rgba(3,8,20,0.48)')+', inset 0px 0px 0px 3px rgba(255,255,255,0.07), inset 0px 2px 6px rgba(255,255,255,0.22)'} as any,style]}>
     <View style={[StyleSheet.absoluteFill,{borderRadius:radius,overflow:'hidden'}]}>
-      {blur&&<BlurView intensity={strong?22:14} tint="default" experimentalBlurMethod="dimezisBlurView" style={StyleSheet.absoluteFill}/>}
-      <LinearGradient colors={strong?['rgba(170,195,228,0.30)','rgba(110,140,182,0.16)','rgba(80,108,150,0.12)']:['rgba(160,186,222,0.24)','rgba(100,130,172,0.12)','rgba(70,96,136,0.10)']} start={{x:0,y:0}} end={{x:0.8,y:1}} style={StyleSheet.absoluteFill}/>
-                </View>
-    <View pointerEvents="none" style={[StyleSheet.absoluteFill,{borderRadius:radius,borderWidth:1.3,borderColor:strong?T.a(T.ice,0.5):T.a(T.ice,0.32)}]}/>
-    <View pointerEvents="none" style={{position:'absolute',top:0,left:radius*0.6,right:radius*0.6,height:1,backgroundColor:'#FFFFFF',opacity:0.45}}/>
+      {blur&&<BlurView intensity={strong?26:18} tint="default" experimentalBlurMethod="dimezisBlurView" style={StyleSheet.absoluteFill}/>}
+      <LinearGradient colors={strong?['rgba(225,236,250,0.20)','rgba(160,185,220,0.09)','rgba(140,170,215,0.12)']:['rgba(225,236,250,0.15)','rgba(160,185,220,0.06)','rgba(140,170,215,0.09)']} start={{x:0,y:0}} end={{x:0.8,y:1}} style={StyleSheet.absoluteFill}/>
+      <LinearGradient colors={['transparent','rgba(59,155,255,0.16)','rgba(140,203,255,0.10)']} locations={[0.45,0.85,1]} start={{x:0,y:0}} end={{x:1,y:1}} style={StyleSheet.absoluteFill}/>
+    </View>
+    <View pointerEvents="none" style={[StyleSheet.absoluteFill,{borderRadius:radius,borderWidth:1.6,borderColor:strong?'rgba(255,255,255,0.62)':'rgba(255,255,255,0.45)'}]}/>
+    <View pointerEvents="none" style={{position:'absolute',top:3,left:3,right:3,bottom:3,borderRadius:Math.max(radius-3,4),borderWidth:1,borderColor:'rgba(255,255,255,0.10)'}}/>
     <View style={{padding}}>{children}</View>
   </Animated.View>;
   if(!onPress&&!onLongPress)return body;
@@ -98,13 +104,13 @@ export function Glass({children,style,onPress,onLongPress,strong,radius=T.r.lg,p
 export function Bubble({radius,tone='clear',children,style}:{radius:number,tone?:'clear'|'blue',children?:React.ReactNode,style?:StyleProp<ViewStyle>}){
   const blue=tone==='blue';
   return <View style={[{borderRadius:radius,boxShadow:blue
-      ?'0px 8px 18px rgba(4,12,30,0.5), 0px 0px 20px rgba(59,155,255,0.45), inset 0px 2px 2px rgba(255,255,255,0.75), inset 0px -4px 8px rgba(10,40,110,0.45)'
-      :'0px 8px 16px rgba(4,10,22,0.45), inset 0px 1.5px 1.5px rgba(255,255,255,0.6), inset 0px -4px 8px rgba(5,15,35,0.35)'} as any,style]}>
+      ?'5px 12px 22px rgba(37,99,235,0.55), 0px 0px 22px rgba(59,155,255,0.45), inset 0px 2px 3px rgba(255,255,255,0.85), inset 0px -5px 10px rgba(10,40,110,0.5)'
+      :'5px 11px 20px rgba(3,8,20,0.5), inset 0px 2px 3px rgba(255,255,255,0.7), inset 0px -4px 9px rgba(5,15,35,0.35)'} as any,style]}>
     <View pointerEvents="none" style={[StyleSheet.absoluteFill,{borderRadius:radius,overflow:'hidden'}]}>
       <LinearGradient colors={blue?['rgba(125,190,255,0.95)','rgba(59,130,246,0.9)','rgba(29,78,216,0.95)']:['rgba(220,232,248,0.30)','rgba(150,175,210,0.16)','rgba(110,135,175,0.20)']} start={{x:0.2,y:0}} end={{x:0.8,y:1}} style={StyleSheet.absoluteFill}/>
       <LinearGradient colors={[blue?'rgba(255,255,255,0.45)':'rgba(255,255,255,0.32)','rgba(255,255,255,0)']} start={{x:0.5,y:0}} end={{x:0.5,y:0.5}} style={{position:'absolute',top:1,left:'12%',right:'12%',height:'55%',borderRadius:radius}}/>
     </View>
-    <View pointerEvents="none" style={[StyleSheet.absoluteFill,{borderRadius:radius,borderWidth:1,borderColor:blue?'rgba(200,228,255,0.85)':'rgba(255,255,255,0.42)'}]}/>
+    <View pointerEvents="none" style={[StyleSheet.absoluteFill,{borderRadius:radius,borderWidth:1.6,borderColor:blue?'rgba(225,240,255,0.95)':'rgba(255,255,255,0.6)'}]}/>
     {children}
   </View>;
 }
@@ -133,7 +139,7 @@ export function Input({label,icon,secret,right,style,...p}:TextInputProps&{label
   const [show,setShow]=useState(false);const [focus,setFocus]=useState(false);
   return <View style={[{marginBottom:12},style]}>
     {label&&<Text style={[font.small,{marginBottom:6,marginLeft:4}]}>{label}</Text>}
-    <View style={{flexDirection:'row',alignItems:p.multiline?'flex-start':'center',borderRadius:16,borderWidth:1,borderColor:focus?T.light:T.edgeSoft,backgroundColor:T.a(T.black,0.4),boxShadow:focus?T.glowShadow:'none',paddingHorizontal:14} as any}>
+    <View style={{flexDirection:'row',alignItems:p.multiline?'flex-start':'center',borderWidth:1.6,borderColor:focus?'rgba(200,228,255,0.95)':'rgba(255,255,255,0.5)',backgroundColor:'rgba(225,236,250,0.13)',boxShadow:(focus?'0px 0px 20px rgba(59,155,255,0.4), ':'')+'4px 10px 20px rgba(3,8,20,0.4), inset 0px 2px 4px rgba(255,255,255,0.25)',paddingHorizontal:14,borderRadius:22} as any}>
       {icon&&<Icon name={icon} size={18} color={T.textMute} style={{marginRight:10,marginTop:p.multiline?14:0}}/>}
       <TextInput placeholderTextColor={T.a(T.ice,0.38)} selectionColor={T.ice} autoCapitalize="none" autoCorrect={false} {...p}
         secureTextEntry={secret&&!show} onFocus={e=>{setFocus(true);p.onFocus?.(e);}} onBlur={e=>{setFocus(false);p.onBlur?.(e);}}
