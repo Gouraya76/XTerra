@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import {Alert,Switch,Text,View} from 'react-native';
-import {router} from 'expo-router';
+import {router,useLocalSearchParams} from 'expo-router';
 import Constants from 'expo-constants';
 import {useVault} from '../../src/state/vault';
 import {Screen,Glass,Icon,Section,Sheet,Input,Btn,Chip} from '../../src/ui/kit';
@@ -16,7 +16,8 @@ const LOCKS:[number,string][]=[[0,'Immédiat'],[30,'30 s'],[60,'1 min'],[300,'5 
 const CLIPS:[number,string][]=[[15,'15 s'],[30,'30 s'],[60,'1 min'],[0,'Jamais']];
 
 export default function Settings(){
-  const v=useVault();const s=v.payload.settings;const [bioPw,setBioPw]=useState<string|null>(null),[chg,setChg]=useState<{o:string,n:string,c:string}|null>(null);
+  const v=useVault();const s=v.payload.settings;const prm=useLocalSearchParams<{bio?:string}>();const [bioPw,setBioPw]=useState<string|null>(null),[chg,setChg]=useState<{o:string,n:string,c:string}|null>(null);
+  React.useEffect(()=>{if(prm.bio&&!v.bio.enabled&&v.bio.available){setBioPw('');router.setParams({bio:undefined} as any);}},[prm.bio]);
   async function enableBio(){try{await v.setBio(true,bioPw||'');setBioPw(null);v.notify('Empreinte activée','aperture');}catch(e:any){Alert.alert('Activation impossible',e.message);}}
   async function change(){if(!chg)return;if(chg.n!==chg.c)return Alert.alert('Confirmation','Les nouveaux mots de passe ne correspondent pas.');
     try{await v.changePassword(chg.o,chg.n);setChg(null);if(v.bio.enabled)v.notify('Mot de passe changé','check');else v.notify('Mot de passe changé');}catch(e:any){Alert.alert('Échec',e.message);}}

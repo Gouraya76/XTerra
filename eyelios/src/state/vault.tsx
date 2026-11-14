@@ -16,7 +16,7 @@ import * as S from '../storage/secure';
 
 C.setRandomSource(n=>ExpoCrypto.getRandomBytes(n));
 import NativeCrypto from '../../modules/eyelios-crypto';
-const NC=NativeCrypto;if(NC)C.setNativeKdf((p,s,i,l)=>NC.pbkdf2Sha256(p,s,i,l));
+const NC=NativeCrypto;if(NC){C.setNativeKdf((p,s,i,l)=>NC.pbkdf2Sha256(p,s,i,l));C.setNativeAes({seal:(k,d)=>NC.aesGcmSeal(k,d),open:(k,d)=>NC.aesGcmOpen(k,d)});}
 
 type Status='loading'|'new'|'locked'|'unlocked';
 export type Toast={id:number,text:string,icon?:string};
@@ -59,14 +59,14 @@ export function VaultProvider({children}:{children:React.ReactNode}){
 
   /** Écritures sérialisées : jamais deux écritures concurrentes du coffre. */
   const persist=useCallback((next:M.Payload)=>{setPayload(next);pRef.current=next;
-    const run=queue.current.then(async()=>{if(!dek.current||!header.current)throw new Error('Coffre verrouillé');await DB.writeVault(header.current,C.sealJson(next,dek.current));});
+    const run=queue.current.then(async()=>{if(!dek.current||!header.current)throw new Error('Coffre verrouillé');await DB.writeVault(header.current,await C.sealJsonAsync(next,dek.current));});
     queue.current=run.catch(()=>{});return run;},[]);
   const mutate=useCallback((fn:(p:M.Payload)=>M.Payload)=>persist(fn(pRef.current)),[persist]);
   const log=useCallback((action:string,label:string)=>mutate(p=>M.addLog(p,action,label)),[mutate]);
 
   const openSession=useCallback(async(key:Uint8Array,mail:string)=>{
     const sealed=await DB.readSealed();if(!sealed)throw new Error('Coffre introuvable');
-    const p=M.normalize(C.openJson(sealed,key));dek.current=key;setPayload(p);pRef.current=p;setEmail(p.account.email||mail);setStatus('unlocked');
+    const p=M.normalize(await C.openJsonAsync(sealed,key));dek.current=key;setPayload(p);pRef.current=p;setEmail(p.account.email||mail);setStatus('unlocked');
     await persist(M.addLog(p,'Déverrouillage',''));
   },[persist]);
 
@@ -76,7 +76,7 @@ export function VaultProvider({children}:{children:React.ReactNode}){
     try{const salt=C.newSalt(),kek=await C.deriveKey(pw,salt),key=C.newDataKey();
       header.current={salt,iterations:C.KDF_ITERATIONS,wrapped:C.wrapKey(key,kek)};
       const p=M.addLog(M.emptyPayload(mail),'Création du coffre','');
-      await DB.writeVault(header.current,C.sealJson(p,key));await DB.setMeta('email',mail);await DB.setMeta('blockScreenshots','1');
+      await DB.writeVault(header.current,await C.sealJsonAsync(p,key));await DB.setMeta('email',mail);await DB.setMeta('blockScreenshots','1');
       setEmail(mail);await openSession(key,mail);
     }finally{setBusy('');}
   },[openSession]);
@@ -115,7 +115,8 @@ export function VaultProvider({children}:{children:React.ReactNode}){
   const deleteItem=useCallback(async(id:string)=>{const it=pRef.current.items.find(i=>i.id===id);if(!it)return;
     await mutate(p=>M.addLog({...p,items:p.items.filter(i=>i.id!==id)},'Suppression',it.title));for(const a of it.attachments)await DB.deleteFile(a.fileId);haptic('warning');},[mutate]);
   const toggleFavorite=useCallback(async(id:string)=>{haptic();await mutate(p=>({...p,items:p.items.map(i=>i.id===id?{...i,favorite:!i.favorite}:i)}));},[mutate]);
-  const markViewed=useCallback((id:string)=>{mutate(p=>({...p,items:p.items.map(i=>i.id===id?{...i,viewedAt:Date.now()}:i)})).catch(()=>{});},[mutate]);
+  /** « Vu récemment » : mis à jour en mémoire seulement (enregistré avec la prochaine écriture, pas de rechiffrement à chaque ouverture). */
+  const markViewed=useCallback((id:string)=>{const next={...pRef.current,items:pRef.current.items.map(i=>i.id===id?{...i,viewedAt:Date.now()}:i)};pRef.current=next;setPayload(next);},[]);
   const moveItem=useCallback(async(id:string,vaultId:string)=>{const v=pRef.current.vaults.find(x=>x.id===vaultId);
     await mutate(p=>M.addLog({...p,items:p.items.map(i=>i.id===id?{...i,vaultId,updatedAt:Date.now()}:i)},'Classement',(p.items.find(i=>i.id===id)?.title||'')+' → '+(v?.name||'')));},[mutate]);
 
@@ -132,12 +133,12 @@ export function VaultProvider({children}:{children:React.ReactNode}){
   const importFile=useCallback(async(uri:string,name:string,mimeType:string,size:number)=>{
     if(!dek.current)throw new Error('Coffre verrouillé');if(size>25*1024*1024)throw new Error('Fichier trop volumineux (25 Mo maximum par fichier).');
     setBusy('Chiffrement du fichier…');
-    try{const raw=await DB.readUriBase64(uri);const fileId=M.uid();await DB.writeFileSealed(fileId,C.sealFile(raw,dek.current));
+    try{const raw=await DB.readUriBase64(uri);const fileId=M.uid();await DB.writeFileSealed(fileId,await C.sealFileAsync(raw,dek.current));
       if(uri.startsWith('file://')&&uri.includes('/cache/'))await DB.deleteUri(uri);
       return {id:M.uid(),name,mimeType,size:size||Math.round(raw.length*0.75),fileId};}finally{setBusy('');}
   },[]);
   const readAttachment=useCallback(async(a:M.Attachment)=>{const c=imgCache.current.get(a.fileId);if(c)return c;if(!dek.current)throw new Error('Coffre verrouillé');
-    const b=C.openFile(await DB.readFileSealed(a.fileId),dek.current);if(a.mimeType.startsWith('image/')&&imgCache.current.size<40)imgCache.current.set(a.fileId,b);return b;},[]);
+    const b=await C.openFileAsync(await DB.readFileSealed(a.fileId),dek.current);if(a.mimeType.startsWith('image/')&&imgCache.current.size<40)imgCache.current.set(a.fileId,b);return b;},[]);
   const openAttachment=useCallback(async(a:M.Attachment)=>{
     const b=await readAttachment(a);const uri=await DB.writeTemp(a.name,b);
     await external(async()=>{
@@ -177,7 +178,7 @@ export function VaultProvider({children}:{children:React.ReactNode}){
   const restoreBackup=useCallback(async(json:string,pw:string,mode:'replace'|'merge')=>{if(!dek.current)throw new Error('Coffre verrouillé');
     setBusy('Vérification et déchiffrement de la sauvegarde…');
     try{const r=await openBackup(JSON.parse(json),pw,email);
-      for(const [fileId,b] of Object.entries(r.files))await DB.writeFileSealed(fileId,C.sealFile(b,dek.current));
+      for(const [fileId,b] of Object.entries(r.files))await DB.writeFileSealed(fileId,await C.sealFileAsync(b,dek.current));
       const inc={...r.payload,account:pRef.current.account};
       let next=mode==='merge'?mergePayload(pRef.current,inc):{...inc,settings:pRef.current.settings,log:pRef.current.log};
       if(mode==='replace'){const keep=new Set(next.items.flatMap(i=>i.attachments.map(a=>a.fileId)));for(const f of await DB.listFiles())if(!keep.has(f))await DB.deleteFile(f);}

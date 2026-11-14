@@ -43,3 +43,17 @@ export const sha256Hex=(s:string)=>Array.from(sha256(utf8ToBytes(s))).map(x=>x.t
 export const newDataKey=()=>randomBytes(32);
 export const wrapKey=(dek:Uint8Array,kek:Uint8Array)=>JSON.stringify(sealBytes(dek,kek));
 export const unwrapKey=(wrapped:string,kek:Uint8Array)=>openBytes(JSON.parse(wrapped),kek);
+
+// ---------- AES-256-GCM accéléré (natif si disponible et vérifié, sinon JS) ----------
+type NativeAes={seal(keyB64:string,dataB64:string):Promise<string>,open(keyB64:string,sealedB64:string):Promise<string>};
+let nativeAes:NativeAes|null=null,aesChecked:Promise<boolean>|null=null;
+export function setNativeAes(a:NativeAes|null){nativeAes=a;aesChecked=null;}
+/** Vérification croisée : le natif doit relire le JS et inversement, sinon il est ignoré. */
+async function aesOk(){if(!nativeAes)return false;
+  return aesChecked??=(async()=>{try{const k=randomBytes(32),d=b64(randomBytes(64));
+    const a=await nativeAes!.seal(b64(k),d);if(openFile(a,k)!==d)return false;return (await nativeAes!.open(b64(k),sealFile(d,k)))===d;}catch{return false;}})();}
+export async function sealFileAsync(b64data:string,key:Uint8Array){if(await aesOk()){try{return await nativeAes!.seal(b64(key),b64data);}catch{}}return sealFile(b64data,key);}
+export async function openFileAsync(sealed:string,key:Uint8Array){if(await aesOk())return nativeAes!.open(b64(key),sealed);return openFile(sealed,key);}
+export async function sealJsonAsync(v:unknown,key:Uint8Array):Promise<Sealed>{const all=unb64(await sealFileAsync(b64(utf8ToBytes(JSON.stringify(v))),key));return {iv:b64(all.subarray(0,12)),ciphertext:b64(all.subarray(12))};}
+export async function openJsonAsync<T,>(s:Sealed,key:Uint8Array):Promise<T>{const iv=unb64(s.iv),ct=unb64(s.ciphertext);const all=new Uint8Array(iv.length+ct.length);all.set(iv);all.set(ct,iv.length);
+  return JSON.parse(bytesToUtf8(unb64(await openFileAsync(b64(all),key))));}

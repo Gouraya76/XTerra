@@ -1,5 +1,5 @@
 /** Tests de la logique pure d'EYELIOS (exécutés sous Node : npm test). */
-import assert from 'node:assert/strict';import {test} from 'node:test';import {webcrypto,pbkdf2Sync} from 'node:crypto';
+import assert from 'node:assert/strict';import {createCipheriv,createDecipheriv,randomBytes as rb} from 'node:crypto';import {test} from 'node:test';import {webcrypto,pbkdf2Sync} from 'node:crypto';
 import * as C from '../src/core/crypto';import * as M from '../src/core/model';import {search,groupByType} from '../src/core/search';
 import {generatePassword,strength} from '../src/core/password';import {parseIntent,findItems,resolveVault} from '../src/core/assistant';
 import {buildBackup,verifyBackup,openBackup,mergePayload} from '../src/core/backup';
@@ -59,3 +59,8 @@ test('KDF natif : utilisé seulement s\'il est identique au JS, sinon repli',asy
   C.setNativeKdf(async(p,sa,i)=>pbkdf2Sync(Buffer.from(p),Buffer.from(C.unb64(sa)),i,32,'sha256').toString('base64'));assert.deepEqual(await C.deriveKey('AbcDef123456!',s,IT),ref);
   C.setNativeKdf(async()=>Buffer.alloc(32,7).toString('base64'));assert.deepEqual(await C.deriveKey('AbcDef123456!',s,IT),ref,'natif faux ignoré');
   C.setNativeKdf(async()=>{throw new Error('x')});assert.deepEqual(await C.deriveKey('AbcDef123456!',s,IT),ref);C.setNativeKdf(null);});
+test('AES natif : compatible avec le JS (aller-retour croisé), sinon repli',async()=>{
+  const seal=async(k:string,d:string)=>{const iv=rb(12);const c=createCipheriv('aes-256-gcm',Buffer.from(k,'base64'),iv);const ct=Buffer.concat([c.update(Buffer.from(d,'base64')),c.final(),c.getAuthTag()]);return Buffer.concat([iv,ct]).toString('base64');};
+  const open=async(k:string,s:string)=>{const a=Buffer.from(s,'base64');const d=createDecipheriv('aes-256-gcm',Buffer.from(k,'base64'),a.subarray(0,12));d.setAuthTag(a.subarray(a.length-16));return Buffer.concat([d.update(a.subarray(12,a.length-16)),d.final()]).toString('base64');};
+  C.setNativeAes({seal,open});const k=C.newDataKey();const j=await C.sealJsonAsync({a:'é€'},k);assert.deepEqual(C.openJson(j,k),{a:'é€'});assert.deepEqual(await C.openJsonAsync(C.sealJson({b:2},k),k),{b:2});
+  C.setNativeAes({seal:async()=>'AAAA',open:async()=>'AAAA'});const j2=await C.sealJsonAsync({c:3},k);assert.deepEqual(await C.openJsonAsync(j2,k),{c:3},'natif défaillant ignoré');C.setNativeAes(null);});
