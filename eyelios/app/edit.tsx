@@ -24,7 +24,7 @@ export default function Edit(){
   function close(){if(!dirty)return router.back();Alert.alert('Abandonner les modifications ?','',[{text:'Continuer',style:'cancel'},{text:'Abandonner',style:'destructive',onPress:()=>router.back()}]);}
   async function addAtt(kind:'photo'|'camera'|'file'){try{const a=kind==='file'?await pickFiles(v):await pickImages(v,kind==='camera');if(a.length){up({attachments:[...it.attachments,...a]});}}catch(e:any){Alert.alert('Ajout impossible',e.message);}}
   return <Screen title={existing?'Modifier':'Nouvel élément'} subtitle={d.singular} right={<IconBtn name="x" label="Fermer" onPress={close}/>} back={false}>
-    <KeyboardAvoidingView behavior={Platform.OS==='ios'?'padding':undefined}>
+    <View>
       {!existing&&<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{gap:8}} style={{marginBottom:14}}>
         {TYPES.map(t=><Chip key={t.id} icon={t.icon} label={t.singular} active={it.type===t.id} onPress={()=>up({type:t.id})}/>)}</ScrollView>}
       <Input label={it.type==='password'||it.type==='api'?'Nom du service':it.type==='card'?'Nom de la carte':'Titre'} icon="type" value={it.title} onChangeText={t=>up({title:t})} autoCapitalize="sentences" placeholder="Ex. Netflix, Fish Audio, Carte principale…"/>
@@ -62,6 +62,6 @@ export default function Edit(){
       </View>
       <View style={{flexDirection:'row',gap:8}}><Btn small icon="image" title="Galerie" onPress={()=>addAtt('photo')}/><Btn small icon="camera" title="Photo" onPress={()=>addAtt('camera')}/><Btn small icon="file" title="Fichier" onPress={()=>addAtt('file')}/></View>
       <Btn kind="primary" icon="check" title="Enregistrer dans EYELIOS" onPress={save} style={{marginTop:26}}/>
-    </KeyboardAvoidingView>
+    </View>
   </Screen>;
 }

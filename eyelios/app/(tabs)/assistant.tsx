@@ -4,7 +4,7 @@ import {router} from 'expo-router';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {LinearGradient} from 'expo-linear-gradient';
 import {useVault} from '../../src/state/vault';
-import {Background,Glass,Icon,IconBtn,Tile,Btn,Chip,mask} from '../../src/ui/kit';
+import {useKeyboardHeight,Background,Glass,Icon,IconBtn,Tile,Btn,Chip,mask} from '../../src/ui/kit';
 import {primarySecret,subtitle} from '../../src/ui/items';
 import {parseIntent,findItems,resolveVault,HELP_TEXT} from '../../src/core/assistant';
 import {Item,typeDef} from '../../src/core/model';
@@ -38,7 +38,7 @@ function ItemCard({item}:{item:Item}){
 }
 
 export default function Assistant(){
-  const v=useVault();const ins=useSafeAreaInsets();const [input,setInput]=useState('');const [msgs,setMsgs]=useState<Msg[]>([]);const [thinking,setThinking]=useState(false);
+  const v=useVault();const ins=useSafeAreaInsets();const kb=useKeyboardHeight();React.useEffect(()=>{if(kb)setTimeout(()=>list.current?.scrollToEnd({animated:true}),80);},[kb]);const [input,setInput]=useState('');const [msgs,setMsgs]=useState<Msg[]>([]);const [thinking,setThinking]=useState(false);
   const lastItem=useRef<string|null>(null);const list=useRef<FlatList>(null);
   const push=(m:Omit<Msg,'id'>)=>setMsgs(x=>[...x,{...m,id:Math.random().toString(36).slice(2)}]);
   const say=(text:string,extra:Partial<Msg>={})=>push({role:'assistant',text,...extra});
@@ -92,7 +92,7 @@ export default function Assistant(){
         {m.ai&&<Text style={[font.micro,{marginTop:8}]}>Réponse générée par IA · peut contenir des erreurs</Text>}
       </Glass></View>;
 
-  return <Background><KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS==='ios'?'padding':'height'}>
+  return <Background><View style={{flex:1}}>
     <View style={{alignItems:'center',paddingTop:ins.top+10,paddingBottom:8}}>
       <View style={{width:62,height:62,borderRadius:31,borderWidth:2,borderColor:T.light,alignItems:'center',justifyContent:'center',backgroundColor:T.a(T.electric,0.35),boxShadow:T.glowStrong} as any}><Icon name="star" size={28}/></View>
       <Text style={[font.h2,{marginTop:8,fontSize:22}]}>Assistant EYELIOS</Text>
@@ -104,7 +104,7 @@ export default function Assistant(){
         <Glass><Text style={font.body}>Bonjour ! Je peux retrouver, créer, classer ou supprimer des éléments de ton coffre, directement sur ton téléphone. Les secrets restent masqués et ne sont jamais envoyés à un service externe.</Text></Glass>
         <View style={{flexDirection:'row',flexWrap:'wrap',gap:8}}>{SUGGESTIONS.map(s=><Chip key={s} label={s} onPress={()=>send(s)}/>)}</View></View>}
       ListFooterComponent={thinking?<Text style={[font.small,{marginLeft:40,marginTop:4}]}>L’assistant réfléchit…</Text>:null}/>
-    <View style={{paddingHorizontal:T.gutter,paddingBottom:ins.bottom+96}}>
+    <View style={{paddingHorizontal:T.gutter,paddingBottom:kb?kb+10:ins.bottom+96}}>
       <Glass padding={0} radius={26}><View style={{flexDirection:'row',alignItems:'center',paddingLeft:16,paddingRight:6,gap:8}}>
         <Icon name="search" size={18} color={T.textMute}/>
         <TextInput value={input} onChangeText={setInput} placeholder="Posez votre question…" placeholderTextColor={T.a(T.ice,0.4)} style={{flex:1,color:T.ice,fontSize:15,paddingVertical:14}} onSubmitEditing={()=>send()} returnKeyType="send" multiline={false}/>
@@ -113,5 +113,5 @@ export default function Assistant(){
           <LinearGradient colors={[T.electric,T.deep]} style={{position:'absolute',top:0,left:0,right:0,bottom:0}}/><Icon name="arrow-up" size={20} color={T.ice}/></Pressable>
       </View></Glass>
     </View>
-  </KeyboardAvoidingView></Background>;
+  </View></Background>;
 }

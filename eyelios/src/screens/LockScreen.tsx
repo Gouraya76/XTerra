@@ -6,6 +6,7 @@ import {Background,Glass,Btn,Input,Wordmark,FadeIn,Icon} from '../ui/kit';
 import {T,font} from '../ui/theme';
 import {strength} from '../core/password';
 import Splash from './Splash';
+import {KbScroll} from '../ui/keyboard';
 
 const validEmail=(e:string)=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e.trim());
 export default function LockScreen(){
@@ -19,8 +20,8 @@ export default function LockScreen(){
     try{if(isNew){if(pw!==pw2)return setErr('Les deux mots de passe ne correspondent pas.');await v.create(mail,pw);}else await v.unlock(mail,pw);setPw('');setPw2('');}
     catch(e:any){setErr(e.message);}}
   if(boot)return <Splash ready={v.status!=='loading'} onDone={()=>setBoot(false)}/>;
-  return <Background><KeyboardAvoidingView behavior={Platform.OS==='ios'?'padding':'height'} style={{flex:1}}>
-    <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{flexGrow:1,justifyContent:'center',padding:T.gutter+4,paddingTop:ins.top+30,paddingBottom:ins.bottom+30}}>
+  return <Background>
+    <KbScroll restPadding={ins.bottom+30} contentContainerStyle={{flexGrow:1,justifyContent:'center',padding:T.gutter+4,paddingTop:ins.top+30}}>
       <FadeIn style={{alignItems:'center',marginBottom:26}}>
         <Wordmark size={44}/>
         <Text style={[font.body,{marginTop:4,fontStyle:'italic'}]}>Coffre-fort numérique personnel</Text>
@@ -41,6 +42,6 @@ export default function LockScreen(){
         {!isNew&&<Text onPress={()=>Alert.alert('Mot de passe oublié','EYELIOS ne conserve aucune copie de ton mot de passe : il est impossible de le récupérer.\n\nTu peux réinstaller l’application, créer un nouveau coffre, puis restaurer une sauvegarde .eyelios (avec le mot de passe de cette sauvegarde).')} style={[font.small,{textAlign:'center',marginTop:14,textDecorationLine:'underline'}]}>Mot de passe oublié ?</Text>}
       </Glass></FadeIn>
       <Text style={[font.micro,{textAlign:'center',marginTop:22,letterSpacing:1.4}]}>AES-256-GCM · STOCKAGE LOCAL · SANS CLOUD</Text>
-    </ScrollView>
-  </KeyboardAvoidingView></Background>;
+    </KbScroll>
+  </Background>;
 }

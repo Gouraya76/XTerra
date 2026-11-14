@@ -9,7 +9,7 @@
       "package": "com.eyelios.vault",
       "versionCode": 1,
       "allowBackup": false,
-      "softwareKeyboardLayoutMode": "pan",
+      "softwareKeyboardLayoutMode": "resize",
       "edgeToEdgeEnabled": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",

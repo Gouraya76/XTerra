@@ -1,5 +1,6 @@
 /** Composants Liquid Glass EYELIOS. */
-import React,{useEffect,useRef,useState} from 'react';
+import React,{useContext,useEffect,useRef,useState} from 'react';
+import {NavigationContext} from '@react-navigation/native';
 import {Animated,Easing,Pressable,StyleProp,StyleSheet,Text,TextInput,TextInputProps,View,ViewStyle,ActivityIndicator,Modal,ScrollView,Platform,Image,useWindowDimensions,AccessibilityInfo} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import {BlurView} from 'expo-blur';
@@ -10,6 +11,8 @@ import {router} from 'expo-router';
 import {T,font} from './theme';
 import {haptic} from '../state/vault';
 import {tilt,startTilt} from './tilt';
+import {KbScroll,useKbReveal,useKeyboardHeight} from './keyboard';
+export {useKeyboardHeight};
 startTilt();
 
 export type IconName=React.ComponentProps<typeof Feather>['name'];
@@ -40,8 +43,14 @@ function useDrift(duration:number,delay=0,enabled=true){
 }
 let reduceMotion=false;AccessibilityInfo.isReduceMotionEnabled().then(r=>{reduceMotion=r;}).catch(()=>{});
 /** Fond animé : reflets argentés qui ondulent lentement (effet « vague de chaleur »). */
+/** Vrai si l'écran est affiché (les écrans d'onglets cachés restent montés : on y coupe l'animation). */
+function useScreenFocused(){
+  const nav=useContext(NavigationContext);const [f,setF]=useState(()=>nav?nav.isFocused():true);
+  useEffect(()=>{if(!nav)return;const a=nav.addListener('focus',()=>setF(true)),b=nav.addListener('blur',()=>setF(false));return ()=>{a();b();};},[nav]);
+  return f;
+}
 export function Background({children}:{children?:React.ReactNode}){
-  const {width:w,height:h}=useWindowDimensions();const on=!reduceMotion;
+  const {width:w,height:h}=useWindowDimensions();const focused=useScreenFocused();const on=!reduceMotion&&focused;
   const a=useDrift(9000,0,on),b=useDrift(12000,1500,on),c=useDrift(10500,800,on),glow=useDrift(7000,0,on);
   const layer=(v:Animated.Value,dx:number,dy:number,rot:number,sc:number)=>({position:'absolute' as const,left:-w*0.1,top:-h*0.05,width:w*1.2,height:h*1.1,transform:[
     {translateX:v.interpolate({inputRange:[0,1],outputRange:[-dx,dx]})},{translateY:v.interpolate({inputRange:[0,1],outputRange:[-dy,dy]})},
@@ -52,11 +61,11 @@ export function Background({children}:{children?:React.ReactNode}){
     <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFill,{opacity:glow.interpolate({inputRange:[0,1],outputRange:[0.55,1]})}]}>
       <LinearGradient colors={['transparent',T.a(T.electric,0.12),'transparent']} start={{x:0,y:0.2}} end={{x:1,y:0.8}} style={StyleSheet.absoluteFill}/>
     </Animated.View>
-    <Animated.View pointerEvents="none" style={layer(a,w*0.05,h*0.02,2.2,1.12)}><Svg width={W} height={H}>
+    <Animated.View renderToHardwareTextureAndroid shouldRasterizeIOS pointerEvents="none" style={layer(a,w*0.05,h*0.02,2.2,1.12)}><Svg width={W} height={H}>
       <Sheen id="s1" d={`M ${-W*0.05} ${H*0.33} C ${W*0.3} ${H*0.18}, ${W*0.6} ${H*0.06}, ${W*1.05} ${H*0.02} L ${W*1.05} ${H*0.13} C ${W*0.6} ${H*0.15}, ${W*0.3} ${H*0.25}, ${-W*0.05} ${H*0.42} Z`} edge={`M ${-W*0.05} ${H*0.33} C ${W*0.3} ${H*0.18}, ${W*0.6} ${H*0.06}, ${W*1.05} ${H*0.02}`}/></Svg></Animated.View>
-    <Animated.View pointerEvents="none" style={layer(b,w*0.07,h*0.025,-2.8,1.18)}><Svg width={W} height={H}>
+    <Animated.View renderToHardwareTextureAndroid shouldRasterizeIOS pointerEvents="none" style={layer(b,w*0.07,h*0.025,-2.8,1.18)}><Svg width={W} height={H}>
       <Sheen id="s2" o={0.8} d={`M ${-W*0.05} ${H*0.62} C ${W*0.35} ${H*0.5}, ${W*0.7} ${H*0.48}, ${W*1.05} ${H*0.36} L ${W*1.05} ${H*0.46} C ${W*0.7} ${H*0.58}, ${W*0.35} ${H*0.6}, ${-W*0.05} ${H*0.72} Z`} edge={`M ${-W*0.05} ${H*0.62} C ${W*0.35} ${H*0.5}, ${W*0.7} ${H*0.48}, ${W*1.05} ${H*0.36}`}/></Svg></Animated.View>
-    <Animated.View pointerEvents="none" style={layer(c,w*0.06,h*0.02,2,1.14)}><Svg width={W} height={H}>
+    <Animated.View renderToHardwareTextureAndroid shouldRasterizeIOS pointerEvents="none" style={layer(c,w*0.06,h*0.02,2,1.14)}><Svg width={W} height={H}>
       <Sheen id="s3" o={0.9} d={`M ${-W*0.05} ${H*0.98} C ${W*0.3} ${H*0.86}, ${W*0.7} ${H*0.82}, ${W*1.05} ${H*0.7} L ${W*1.05} ${H*0.82} C ${W*0.7} ${H*0.91}, ${W*0.3} ${H*0.96}, ${-W*0.05} ${H*1.06} Z`} edge={`M ${-W*0.05} ${H*0.98} C ${W*0.3} ${H*0.86}, ${W*0.7} ${H*0.82}, ${W*1.05} ${H*0.7}`}/></Svg></Animated.View>
     {children}
   </View>;
@@ -85,9 +94,9 @@ export function Glass({children,style,onPress,onLongPress,strong,radius=T.r.lg,p
   const scale=useRef(new Animated.Value(1)).current;
   const to=(v:number)=>Animated.spring(scale,{toValue:v,useNativeDriver:true,speed:40,bounciness:6}).start();
   const body=<Animated.View style={[{borderRadius:radius,transform:[{scale}],
-      boxShadow:(strong?'8px 16px 30px rgba(3,8,20,0.55), 0px 0px 26px rgba(59,155,255,0.22)':'6px 14px 26px rgba(3,8,20,0.48)')+', inset 0px 0px 0px 3px rgba(255,255,255,0.07), inset 0px 2px 6px rgba(255,255,255,0.22)'} as any,style]}>
+      boxShadow:(strong?'8px 16px 30px rgba(3,8,20,0.55), 0px 0px 26px rgba(59,155,255,0.22)':'6px 14px 26px rgba(3,8,20,0.48)')} as any,style]}>
     <View style={[StyleSheet.absoluteFill,{borderRadius:radius,overflow:'hidden'}]}>
-      {blur&&<BlurView intensity={strong?26:18} tint="default" experimentalBlurMethod="dimezisBlurView" style={StyleSheet.absoluteFill}/>}
+      {blur&&Platform.OS!=='android'&&<BlurView intensity={strong?26:18} tint="default" experimentalBlurMethod="dimezisBlurView" style={StyleSheet.absoluteFill}/>}
       <LinearGradient colors={strong?['rgba(225,236,250,0.20)','rgba(160,185,220,0.09)','rgba(140,170,215,0.12)']:['rgba(225,236,250,0.15)','rgba(160,185,220,0.06)','rgba(140,170,215,0.09)']} start={{x:0,y:0}} end={{x:0.8,y:1}} style={StyleSheet.absoluteFill}/>
       <LinearGradient colors={['transparent','rgba(59,155,255,0.16)','rgba(140,203,255,0.10)']} locations={[0.45,0.85,1]} start={{x:0,y:0}} end={{x:1,y:1}} style={StyleSheet.absoluteFill}/>
       <LinearGradient colors={['rgba(255,255,255,0.16)','rgba(255,255,255,0.04)','transparent']} locations={[0,0.18,0.42]} start={{x:0.5,y:0}} end={{x:0.5,y:1}} style={StyleSheet.absoluteFill}/>
@@ -135,7 +144,6 @@ export function Bubble({radius,tone='clear',children,style}:{radius:number,tone?
       <LinearGradient colors={blue?['rgba(125,190,255,0.95)','rgba(59,130,246,0.9)','rgba(29,78,216,0.95)']:['rgba(220,232,248,0.30)','rgba(150,175,210,0.16)','rgba(110,135,175,0.20)']} start={{x:0.2,y:0}} end={{x:0.8,y:1}} style={StyleSheet.absoluteFill}/>
     </View>
     <View pointerEvents="none" style={[StyleSheet.absoluteFill,{borderRadius:radius,borderWidth:1.6,borderColor:blue?'rgba(225,240,255,0.95)':'rgba(255,255,255,0.6)'}]}/>
-    <WindowReflection radius={radius} opacity={blue?0.22:0.2} travel={6}/>
     {children}
     <Mirror radius={radius} strong={blue}/>
   </View>;
@@ -162,13 +170,13 @@ export function IconBtn({name,onPress,size=40,label,active}:{name:string,onPress
 }
 
 export function Input({label,icon,secret,right,style,...p}:TextInputProps&{label?:string,icon?:string,secret?:boolean,right?:React.ReactNode}){
-  const [show,setShow]=useState(false);const [focus,setFocus]=useState(false);
+  const [show,setShow]=useState(false);const [focus,setFocus]=useState(false);const kbr=useKbReveal();const inRef=useRef<any>(null);
   return <View style={[{marginBottom:12},style]}>
     {label&&<Text style={[font.small,{marginBottom:6,marginLeft:4}]}>{label}</Text>}
     <View style={{flexDirection:'row',alignItems:p.multiline?'flex-start':'center',borderWidth:1.6,borderColor:focus?'rgba(200,228,255,0.95)':'rgba(255,255,255,0.5)',backgroundColor:'rgba(225,236,250,0.13)',boxShadow:(focus?'0px 0px 20px rgba(59,155,255,0.4), ':'')+'4px 10px 20px rgba(3,8,20,0.4), inset 0px 2px 4px rgba(255,255,255,0.25)',paddingHorizontal:14,borderRadius:22} as any}>
       {icon&&<Icon name={icon} size={18} color={T.textMute} style={{marginRight:10,marginTop:p.multiline?14:0}}/>}
       <TextInput placeholderTextColor={T.a(T.ice,0.38)} selectionColor={T.ice} autoCapitalize="none" autoCorrect={false} {...p}
-        secureTextEntry={secret&&!show} onFocus={e=>{setFocus(true);p.onFocus?.(e);}} onBlur={e=>{setFocus(false);p.onBlur?.(e);}}
+        ref={inRef} secureTextEntry={secret&&!show} onFocus={e=>{setFocus(true);kbr?.reveal(inRef.current);p.onFocus?.(e);}} onBlur={e=>{setFocus(false);p.onBlur?.(e);}}
         style={[{flex:1,color:T.ice,fontSize:15,paddingVertical:14,minHeight:p.multiline?120:50,textAlignVertical:p.multiline?'top':'center'}]}/>
       {secret&&<Pressable hitSlop={10} onPress={()=>setShow(!show)} accessibilityLabel={show?'Masquer':'Afficher'}><Icon name={show?'eye-off':'eye'} size={18} color={T.textDim}/></Pressable>}
       {right}
@@ -184,7 +192,7 @@ export function Screen({title,subtitle,back=true,right,children,scroll=true,pad=
     <View style={{minWidth:44,alignItems:'flex-end'}}>{right}</View>
   </View>;
   return <Background>{head}
-    {scroll?<ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{paddingHorizontal:pad?T.gutter:0,paddingBottom:ins.bottom+120,paddingTop:title===undefined?ins.top+8:4}} showsVerticalScrollIndicator={false}>{children}</ScrollView>
+    {scroll?<KbScroll restPadding={ins.bottom+120} contentContainerStyle={{paddingHorizontal:pad?T.gutter:0,paddingTop:title===undefined?ins.top+8:4}} showsVerticalScrollIndicator={false}>{children}</KbScroll>
       :<View style={{flex:1,paddingHorizontal:pad?T.gutter:0}}>{children}</View>}
   </Background>;
 }
@@ -258,14 +266,14 @@ export function ToastView({toast}:{toast:{id:number,text:string,icon?:string}|nu
 
 /** Feuille modale en verre (choix, formulaires courts). */
 export function Sheet({visible,onClose,title,children}:{visible:boolean,onClose:()=>void,title:string,children:React.ReactNode}){
-  const ins=useSafeAreaInsets();
+  const ins=useSafeAreaInsets();const kb=useKeyboardHeight();
   return <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose} statusBarTranslucent>
     <Pressable style={{flex:1,backgroundColor:T.a(T.black,0.6)}} onPress={onClose}/>
-    <View style={{backgroundColor:T.charcoal,borderTopLeftRadius:30,borderTopRightRadius:30,borderTopWidth:1,borderColor:T.glassBorderStrong,paddingHorizontal:T.gutter,paddingTop:10,paddingBottom:ins.bottom+18,maxHeight:'88%'}}>
+    <View style={{backgroundColor:T.charcoal,borderTopLeftRadius:30,borderTopRightRadius:30,borderTopWidth:1,borderColor:T.glassBorderStrong,paddingHorizontal:T.gutter,paddingTop:10,paddingBottom:kb?12:ins.bottom+18,marginBottom:kb,maxHeight:kb?'92%':'88%'}}>
       <LinearGradient colors={[T.a(T.ice,0.1),'transparent']} style={[StyleSheet.absoluteFill,{borderTopLeftRadius:30,borderTopRightRadius:30}]}/>
       <View style={{alignSelf:'center',width:44,height:4,borderRadius:2,backgroundColor:T.a(T.ice,0.35),marginBottom:14}}/>
       <Text style={[font.h2,{marginBottom:14}]}>{title}</Text>
-      <ScrollView keyboardShouldPersistTaps="handled">{children}</ScrollView>
+      <KbScroll>{children}</KbScroll>
     </View>
   </Modal>;
 }

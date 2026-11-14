@@ -1,19 +1,19 @@
 import React from 'react';
 import {Tabs,router} from 'expo-router';
-import {Pressable,Text,View,StyleSheet} from 'react-native';
+import {Pressable,Text,View,StyleSheet,Platform} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import {BlurView} from 'expo-blur';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {Icon,Bubble} from '../../src/ui/kit';
+import {Icon,Bubble,useKeyboardHeight} from '../../src/ui/kit';
 import {T} from '../../src/ui/theme';
 import {haptic} from '../../src/state/vault';
 
 const TABS:{name:string,label:string,icon:string}[]=[{name:'index',label:'Accueil',icon:'home'},{name:'passwords',label:'Mots de passe',icon:'key'},{name:'vaults',label:'Collections',icon:'layers'},{name:'assistant',label:'Assistant IA',icon:'star'},{name:'settings',label:'Paramètres',icon:'settings'}];
 function TabBar({state}:any){
-  const ins=useSafeAreaInsets();
+  const ins=useSafeAreaInsets();const kb=useKeyboardHeight();if(kb>0)return null;
   return <View style={{position:'absolute',left:12,right:12,bottom:ins.bottom+10,borderRadius:28,borderWidth:1,borderColor:T.edge,boxShadow:T.glowShadow} as any}>
-    <View style={[StyleSheet.absoluteFill,{borderRadius:28,overflow:'hidden'}]}><BlurView intensity={40} tint="dark" experimentalBlurMethod="dimezisBlurView" style={StyleSheet.absoluteFill}/>
-    <LinearGradient colors={[T.a(T.slate,0.75),T.a(T.charcoal,0.85)]} style={StyleSheet.absoluteFill}/></View>
+    <View style={[StyleSheet.absoluteFill,{borderRadius:28,overflow:'hidden'}]}>{Platform.OS!=='android'&&<BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill}/>}
+    <LinearGradient colors={Platform.OS==='android'?[T.a(T.slate,0.94),T.a(T.charcoal,0.97)]:[T.a(T.slate,0.75),T.a(T.charcoal,0.85)]} style={StyleSheet.absoluteFill}/></View>
     
     <View style={{flexDirection:'row',alignItems:'center',paddingVertical:8,paddingHorizontal:4}}>
       {TABS.map((t,i)=>{const on=state.index===i;const center=false;
