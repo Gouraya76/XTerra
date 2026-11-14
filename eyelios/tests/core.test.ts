@@ -1,0 +1,55 @@
+/** Tests de la logique pure d'EYELIOS (exécutés sous Node : npm test). */
+import assert from 'node:assert/strict';import {test} from 'node:test';import {webcrypto,pbkdf2Sync} from 'node:crypto';
+import * as C from '../src/core/crypto';import * as M from '../src/core/model';import {search,groupByType} from '../src/core/search';
+import {generatePassword,strength} from '../src/core/password';import {parseIntent,findItems,resolveVault} from '../src/core/assistant';
+import {buildBackup,verifyBackup,openBackup,mergePayload} from '../src/core/backup';
+C.setRandomSource(n=>webcrypto.getRandomValues(new Uint8Array(n)));
+const IT=2000; // itérations réduites pour la vitesse des tests (la valeur réelle 600 000 est testée une fois)
+
+test('PBKDF2 600 000 itérations conforme à OpenSSL',async()=>{const s=C.newSalt();const k=await C.deriveKey('mot de passe é🔐',s);
+  assert.equal(Buffer.from(k).toString('hex'),pbkdf2Sync(Buffer.from('mot de passe é🔐'),Buffer.from(C.unb64(s)),600000,32,'sha256').toString('hex'));});
+test('AES-GCM : aller-retour, mauvaise clé et altération rejetées',async()=>{const k=await C.deriveKey('a',C.newSalt(),IT),k2=await C.deriveKey('b',C.newSalt(),IT);
+  const s=C.sealJson({x:'é€😀'},k);assert.deepEqual(C.openJson(s,k),{x:'é€😀'});assert.throws(()=>C.openJson(s,k2));
+  const bad={...s,ciphertext:C.b64(C.unb64(s.ciphertext).map((b,i)=>i===0?b^1:b))};assert.throws(()=>C.openJson(bad,k));
+  const f=C.sealFile(Buffer.from('%PDF-1.7 test').toString('base64'),k);assert.equal(Buffer.from(C.openFile(f,k),'base64').toString(),'%PDF-1.7 test');
+  assert.notEqual(C.sealJson({a:1},k).iv,C.sealJson({a:1},k).iv,'nonce unique');});
+const sample=()=>{const p=M.emptyPayload('moi@exemple.fr');const mk=(t:M.ItemType,title:string,data:any={},tags:string[]=[],v='v0')=>{const i=M.newItem(t,v);i.title=title;i.data=data;i.tags=tags;p.items.push(i);return i;};
+  mk('password','Netflix',{username:'moi',password:'SuperSecret123'},['streaming']);mk('api','Fish Audio',{provider:'Fish',apiKey:'sk-secret-xyz'},['voix'],'v1');
+  mk('document','Assurance voiture',{},['auto']);mk('document','Facture électricité',{},['EDF']);mk('api','OpenAI',{apiKey:'sk-openai'});mk('note','Idées',{body:'projet'});return p;};
+test('Recherche universelle : titres, tags, accents, catégories ; secrets jamais indexés',()=>{const p=sample();
+  assert.equal(search(p.items,p.vaults,'netflix')[0].item.title,'Netflix');assert.equal(search(p.items,p.vaults,'Fish Audio')[0].item.title,'Fish Audio');
+  assert.equal(search(p.items,p.vaults,'facture electricite')[0].item.title,'Facture électricité');assert.equal(search(p.items,p.vaults,'assurance voiture').length,1);
+  assert.equal(search(p.items,p.vaults,'SuperSecret123').length,0);assert.equal(search(p.items,p.vaults,'sk-openai').length,0);
+  assert.equal(search(p.items,p.vaults,'clés api').length,2);assert.equal(search(p.items,p.vaults,'travail')[0].item.title,'Fish Audio');
+  assert.deepEqual(groupByType(search(p.items,p.vaults,'a')).map(g=>g.type),['password','api','document','note'].filter(t=>search(p.items,p.vaults,'a').some(h=>h.item.type===t)));});
+test('Générateur : longueur, classes, unicité ; force',()=>{const a=generatePassword({length:24,upper:true,lower:true,digits:true,symbols:true});
+  assert.equal(a.length,24);assert.match(a,/[A-Z]/);assert.match(a,/[a-z]/);assert.match(a,/\d/);assert.match(a,/[^A-Za-z0-9]/);
+  assert.notEqual(a,generatePassword());assert.equal(strength('abc').label,'Faible');assert.equal(strength(a).label,'Très fort');});
+test('Validation : CVV/PIN refusés, expiration, URL complétée',()=>{const i=M.newItem('card','v0');i.title='Visa';i.custom=[{id:'1',label:'CVV',value:'123',secret:true}];
+  assert.match(M.validateItem(i)!,/PIN/);i.custom=[];i.data.expiry='13/30';assert.match(M.validateItem(i)!,/MM\/AA/);i.data.expiry='08/29';assert.equal(M.validateItem(i),null);
+  const p=M.newItem('password','v0');p.title='G';p.data.url='google.com';M.validateItem(p);assert.equal(p.data.url,'https://google.com');});
+test('Assistant : compréhension des demandes',()=>{
+  assert.deepEqual(parseIntent('EYELIOS, retrouve mon mot de passe Netflix.'),{kind:'find',query:'netflix',type:'password'});
+  assert.deepEqual(parseIntent('Montre-moi mes clés API.'),{kind:'list',type:'api'});
+  assert.equal(parseIntent("Où est mon document d'assurance ?").kind,'find');
+  assert.deepEqual(parseIntent('Classe cette note dans Travail.'),{kind:'move',query:'',vaultName:'travail'});
+  assert.deepEqual(parseIntent('Classe Assurance voiture dans Administratif'),{kind:'move',query:'assurance voiture',vaultName:'administratif'});
+  assert.deepEqual(parseIntent('Crée une nouvelle fiche pour mon compte Google.'),{kind:'create',type:'password',title:'Google'});
+  assert.equal(parseIntent('Génère un mot de passe de 32 caractères').kind,'generate');assert.equal((parseIntent('Génère un mot de passe de 32 caractères') as any).length,32);
+  assert.equal(parseIntent('supprime Netflix').kind,'delete');assert.equal(parseIntent('verrouille').kind,'lock');
+  assert.equal(parseIntent('Explique-moi la différence entre AES et RSA').kind,'general');
+  const p=sample();assert.equal(findItems(p.items,p.vaults,'netflix','password')[0].title,'Netflix');assert.equal(resolveVault(p.vaults,'travail')?.name,'Travail');
+  const f=parseIntent("Où est mon document d'assurance ?") as any;assert.equal(findItems(p.items,p.vaults,f.query,f.type)[0].title,'Assurance voiture');});
+test('Sauvegarde : intégrité, mauvais mot de passe, restauration complète, fusion',async()=>{const p=sample();const vk=await C.deriveKey('maitre',C.newSalt(),IT);
+  const files={f1:C.sealFile(Buffer.from('photo-binaire').toString('base64'),vk)};p.items[0].attachments.push({id:'a',name:'x.jpg',mimeType:'image/jpeg',size:13,fileId:'f1'});
+  const b=await buildBackup(p,files,vk,'motdepasse-sauvegarde',IT);const json=JSON.parse(JSON.stringify(b));
+  assert.equal(verifyBackup(json).ok,true);const t={...json,files:{f1:json.files.f1.slice(0,-4)+'AAAA'}};assert.equal(verifyBackup(t).ok,false);
+  await assert.rejects(openBackup(json,'mauvais-mot-de-passe'),/incorrect/);const r=await openBackup(json,'motdepasse-sauvegarde');
+  assert.equal(r.payload.items.length,6);assert.equal(Buffer.from(r.files.f1,'base64').toString(),'photo-binaire');
+  const cur=M.emptyPayload('moi@exemple.fr');const n=M.newItem('note','v0');n.title='Locale';cur.items.push(n);assert.equal(mergePayload(cur,r.payload).items.length,7);
+  await assert.rejects(buildBackup(p,files,vk,'court'),/10 caractères/);});
+test('Migration JILANI VAULT v2 → EYELIOS',()=>{const m=M.migrateV2({items:[{id:'1',title:'Gmail',category:'password',keywords:['perso'],notes:'n',fields:[{id:'a',label:'Mot de passe',value:'x',secret:true},{id:'b',label:'PIN',value:'1234',secret:true}],attachments:[{id:'z',name:'a.png',mimeType:'image/png',size:3,base64:'AAEC'}],createdAt:1,updatedAt:2}]},'m@x.fr');
+  assert.equal(m.payload.items[0].type,'password');assert.equal(m.payload.items[0].custom.length,1);assert.equal(m.files[0].base64,'AAEC');});
+test('Enveloppe de clé : changement de mot de passe sans re-chiffrer les données',async()=>{const dek=C.newDataKey();const k1=await C.deriveKey('ancien',C.newSalt(),IT),k2=await C.deriveKey('nouveau',C.newSalt(),IT);
+  const data=C.sealJson({ok:1},dek);const w1=C.wrapKey(dek,k1);assert.throws(()=>C.unwrapKey(w1,k2));const w2=C.wrapKey(C.unwrapKey(w1,k1),k2);
+  assert.deepEqual(C.openJson(data,C.unwrapKey(w2,k2)),{ok:1});});

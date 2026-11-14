@@ -1,0 +1,65 @@
+{
+  "expo": {
+    "name": "EYELIOS",
+    "slug": "eyelios",
+    "version": "3.0.0",
+    "orientation": "portrait",
+    "newArchEnabled": true,
+    "android": {
+      "package": "com.eyelios.vault",
+      "versionCode": 1,
+      "allowBackup": false,
+      "softwareKeyboardLayoutMode": "pan",
+      "edgeToEdgeEnabled": true,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#000000"
+      },
+      "permissions": [
+        "USE_BIOMETRIC",
+        "USE_FINGERPRINT",
+        "CAMERA"
+      ],
+      "blockedPermissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.READ_MEDIA_VIDEO",
+        "android.permission.SYSTEM_ALERT_WINDOW"
+      ]
+    },
+    "plugins": [
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Déverrouiller votre coffre EYELIOS."
+        }
+      ],
+      [
+        "expo-secure-store",
+        {
+          "configureAndroidBackup": true,
+          "faceIDPermission": "Déverrouiller votre coffre EYELIOS."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "EYELIOS utilise l’appareil photo pour numériser des documents et ajouter des photos à ton coffre chiffré.",
+          "microphonePermission": false
+        }
+      ],
+      "expo-router"
+    ],
+    "scheme": "eyelios",
+    "icon": "./assets/icon.png",
+    "backgroundColor": "#121212",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
+    "userInterfaceStyle": "dark"
+  }
+}
