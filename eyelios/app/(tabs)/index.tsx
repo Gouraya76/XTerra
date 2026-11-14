@@ -2,7 +2,7 @@ import React,{useMemo} from 'react';
 import {Pressable,Text,View,useWindowDimensions} from 'react-native';
 import {router} from 'expo-router';
 import {useVault,securityChecks} from '../../src/state/vault';
-import {Screen,Glass,Icon,IconBtn,BrandMark,FadeIn,Ring,CheckDot,Tile} from '../../src/ui/kit';
+import {Screen,Glass,Icon,IconBtn,FadeIn,Ring,CheckDot,Tile} from '../../src/ui/kit';
 import {TYPES,countByType,typeDef} from '../../src/core/model';
 import {ago} from '../../src/ui/items';
 import {T,font} from '../../src/ui/theme';
@@ -17,16 +17,16 @@ export default function Home(){
   const tileW=(width-T.gutter*2-20)/3;
   const cols=[...p.vaults].sort((a,b)=>Number(!!b.favorite)-Number(!!a.favorite)).slice(0,3);
   return <Screen>
-    <FadeIn style={{flexDirection:'row',alignItems:'center',marginTop:4}}>
-      <BrandMark size={58}/>
-      <View style={{flex:1,marginLeft:4}}><Text style={{color:T.ice,fontSize:30,fontWeight:'800',fontStyle:'italic',letterSpacing:1.5,textShadowColor:T.electric,textShadowRadius:14}}>EYELIOS</Text>
-        <Text style={[font.small,{color:T.ice,fontStyle:'italic'}]}>Coffre-fort numérique personnel</Text></View>
+    <FadeIn style={{flexDirection:'row',alignItems:'center',marginTop:2}}>
+      <View style={{flex:1}}>
+        <Text style={[font.h1,{fontSize:28}]} numberOfLines={1} adjustsFontSizeToFit>Bonjour{hello?' '+hello:''} 👋</Text>
+        <Text style={[font.body,{color:T.ice,marginTop:2}]}>Votre espace sécurisé est organisé</Text>
+      </View>
       <View style={{flexDirection:'row',gap:10}}>
         <View><IconBtn name="bell" size={46} label="Alertes de sécurité" onPress={()=>router.push('/security')}/>{alert&&<View style={{position:'absolute',top:9,right:11,width:9,height:9,borderRadius:5,backgroundColor:T.electric,boxShadow:T.glowStrong} as any}/>}</View>
         <IconBtn name="user" size={46} label="Compte" onPress={()=>router.navigate('/settings')}/>
       </View>
     </FadeIn>
-    <FadeIn delay={60}><Text style={[font.h1,{marginTop:18,fontSize:27}]}>Bonjour{hello?' '+hello:''} 👋</Text><Text style={[font.body,{color:T.ice,marginTop:2}]}>Votre espace sécurisé et organisé</Text></FadeIn>
     <FadeIn delay={100}><Glass radius={30} padding={0} style={{marginTop:16}} onPress={()=>router.push('/search')}>
       <View style={{flexDirection:'row',alignItems:'center',gap:12,paddingHorizontal:18,paddingVertical:15}}><Icon name="search" size={24}/><Text style={[font.body,{flex:1,color:T.ice,fontSize:15.5}]} numberOfLines={1}>Rechercher (mot-clé, nom, tag…)</Text><Icon name="maximize" size={22}/></View>
     </Glass></FadeIn>
