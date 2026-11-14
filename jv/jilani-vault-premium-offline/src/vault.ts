@@ -19,10 +19,15 @@ const LEGACY_BIO_KEY='jilani_vault_biometric_master_v2';
 export type Field={id:string,label:string,value:string,secret:boolean};
 export type Attachment={id:string,name:string,mimeType:string,size:number,base64:string};
 export type VaultItem={id:string,title:string,category:string,keywords:string[],notes:string,fields:Field[],attachments:Attachment[],createdAt:number,updatedAt:number};
-export type VaultPayload={items:VaultItem[]};
+export type VaultPayload={items:VaultItem[],account?:{email:string}};
 export type Blob={iv:string,ciphertext:string};
 
-export async function initDb(){const db=await getDb();await db.execAsync('CREATE TABLE IF NOT EXISTS vault (id INTEGER PRIMARY KEY CHECK(id=1), salt TEXT NOT NULL, iv TEXT NOT NULL, ciphertext TEXT NOT NULL);');}
+export async function initDb(){const db=await getDb();await db.execAsync('CREATE TABLE IF NOT EXISTS vault (id INTEGER PRIMARY KEY CHECK(id=1), salt TEXT NOT NULL, iv TEXT NOT NULL, ciphertext TEXT NOT NULL);CREATE TABLE IF NOT EXISTS meta (k TEXT PRIMARY KEY, v TEXT NOT NULL);');}
+// Compte local : l'e-mail est l'identifiant du coffre sur ce téléphone (aucun serveur).
+export const normEmail=(e:string)=>e.trim().toLowerCase();
+export const validEmail=(e:string)=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(normEmail(e));
+export async function getAccountEmail(){const db=await getDb();const r=await db.getFirstAsync<{v:string}>("SELECT v FROM meta WHERE k='email'");return r?.v;}
+export async function setAccountEmail(e:string){const db=await getDb();await db.runAsync("INSERT OR REPLACE INTO meta(k,v) VALUES('email',?)",normEmail(e));}
 export async function exists(){const db=await getDb();return !!(await db.getFirstAsync('SELECT id FROM vault WHERE id=1'));}
 export async function saltFromDb(){const db=await getDb();const r=await db.getFirstAsync<{salt:string}>('SELECT salt FROM vault WHERE id=1');return r?.salt;}
 /** PBKDF2-SHA256, asynchrone (n'immobilise pas l'interface pendant le calcul). */
