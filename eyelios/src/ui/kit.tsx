@@ -88,7 +88,9 @@ export function Glass({children,style,onPress,onLongPress,strong,radius=T.r.lg,p
       {blur&&<BlurView intensity={strong?26:18} tint="default" experimentalBlurMethod="dimezisBlurView" style={StyleSheet.absoluteFill}/>}
       <LinearGradient colors={strong?['rgba(225,236,250,0.20)','rgba(160,185,220,0.09)','rgba(140,170,215,0.12)']:['rgba(225,236,250,0.15)','rgba(160,185,220,0.06)','rgba(140,170,215,0.09)']} start={{x:0,y:0}} end={{x:0.8,y:1}} style={StyleSheet.absoluteFill}/>
       <LinearGradient colors={['transparent','rgba(59,155,255,0.16)','rgba(140,203,255,0.10)']} locations={[0.45,0.85,1]} start={{x:0,y:0}} end={{x:1,y:1}} style={StyleSheet.absoluteFill}/>
+      <LinearGradient colors={['rgba(255,255,255,0.16)','rgba(255,255,255,0.04)','transparent']} locations={[0,0.18,0.42]} start={{x:0.5,y:0}} end={{x:0.5,y:1}} style={StyleSheet.absoluteFill}/>
     </View>
+    <LinearGradient pointerEvents="none" colors={['rgba(255,255,255,0)','rgba(255,255,255,0.95)','rgba(255,255,255,0)']} start={{x:0,y:0}} end={{x:1,y:0}} style={{position:'absolute',top:0,left:radius*0.5,right:radius*0.5,height:1.5,borderRadius:1}}/>
     <View pointerEvents="none" style={[StyleSheet.absoluteFill,{borderRadius:radius,borderWidth:1.6,borderColor:strong?'rgba(255,255,255,0.62)':'rgba(255,255,255,0.45)'}]}/>
     <View pointerEvents="none" style={{position:'absolute',top:3,left:3,right:3,bottom:3,borderRadius:Math.max(radius-3,4),borderWidth:1,borderColor:'rgba(255,255,255,0.10)'}}/>
     <View style={{padding}}>{children}</View>
