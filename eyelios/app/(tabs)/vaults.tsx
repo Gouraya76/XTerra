@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import {Text,View,Alert} from 'react-native';
-import {router} from 'expo-router';
+import {router,useLocalSearchParams} from 'expo-router';
 import {useVault} from '../../src/state/vault';
 import {Screen,Glass,Icon,IconBtn,FadeIn,Sheet,Input,Btn} from '../../src/ui/kit';
 import {T,font} from '../../src/ui/theme';
@@ -17,7 +17,8 @@ export function VaultForm({visible,onClose,initial}:{visible:boolean,onClose:()=
   </Sheet>;
 }
 export default function Vaults(){
-  const v=useVault();const p=v.payload;const [form,setForm]=useState(false);
+  const v=useVault();const p=v.payload;const prm=useLocalSearchParams<{new?:string}>();const [form,setForm]=useState(false);
+  React.useEffect(()=>{if(prm.new){setForm(true);router.setParams({new:undefined} as any);}},[prm.new]);
   return <Screen title="Collections" subtitle={`${p.vaults.length} coffres personnalisés`} back={false} right={<IconBtn name="plus" label="Nouveau coffre" onPress={()=>setForm(true)}/>}>
     {p.vaults.map((c,i)=>{const n=p.items.filter(x=>x.vaultId===c.id).length;return <FadeIn key={c.id} delay={i*40}><Glass style={{marginBottom:10}} onPress={()=>router.push(`/vault/${c.id}`)}
       onLongPress={()=>Alert.alert(c.name,undefined,[{text:'Monter',onPress:()=>v.moveVault(c.id,-1)},{text:'Descendre',onPress:()=>v.moveVault(c.id,1)},{text:'Annuler',style:'cancel'}])}>

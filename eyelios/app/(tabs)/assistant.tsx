@@ -29,7 +29,6 @@ function ItemCard({item}:{item:Item}){
       <Tile size={40} letter={['password','api','card'].includes(item.type)?item.title[0]:undefined} icon={typeDef(item.type).icon}/>
       <View style={{flex:1}}><Text style={font.h3} numberOfLines={1}>{item.title}</Text><Text style={[font.small,{color:T.ice,fontFamily:show?'monospace':undefined}]} numberOfLines={1}>{sec&&<Text style={{color:T.electric}}>● </Text>}{sec?(show?sec.value:'********'):subtitle(item)}</Text></View>
       {sec&&<Pressable hitSlop={10} accessibilityLabel="Afficher" onPress={async()=>{if(show)return setShow(false);if(await guard(v)){setShow(true);v.log('Assistant : secret affiché',item.title);}}}><Icon name={show?'eye-off':'eye'} size={20}/></Pressable>}
-      {sec&&<Pressable hitSlop={10} accessibilityLabel="Copier" onPress={copySec}><Icon name="copy" size={19}/></Pressable>}
     </View></Glass>
     {sec&&<Act icon="copy" label={`Copier le ${sec.label.toLowerCase()}`} onPress={copySec}/>}
     {!!item.data.url&&<Act icon="external-link" label={`Ouvrir le site ${item.title}`} onPress={()=>Linking.openURL(item.data.url)}/>}

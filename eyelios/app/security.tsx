@@ -15,7 +15,6 @@ const HINTS:Record<string,string>={
   'Verrouillage biométrique':'Ouvre ton coffre avec ton empreinte. Il faut confirmer ton mot de passe maître une fois.',
   'Sauvegarde de moins de 30 jours':'Exporte une sauvegarde chiffrée et garde-la hors du téléphone (ordinateur, clé USB, Drive).',
   'Verrouillage auto ≤ 5 min':'Le coffre doit se verrouiller seul au bout de 5 minutes maximum en arrière-plan.',
-  'Captures d’écran bloquées':'Empêche les captures d’écran et masque l’aperçu dans les applis récentes.',
 };
 export default function Security(){
   const v=useVault();const c=securityChecks(v.payload,v.bio.enabled);const score=c.filter(x=>x.ok).length/c.length;const [testing,setTesting]=useState(false);
@@ -23,7 +22,6 @@ export default function Security(){
     if(label==='Verrouillage biométrique'){if(!v.bio.available)return Alert.alert('Aucune empreinte','Ajoute d’abord une empreinte dans les Paramètres Android → Sécurité et confidentialité → Biométrie, puis reviens ici.');return router.push('/settings?bio=1');}
     if(label.startsWith('Sauvegarde'))return router.push('/backup');
     if(label.startsWith('Verrouillage auto')){await v.updateSettings({autoLockSeconds:60});return v.notify('Verrouillage auto : 1 min');}
-    if(label.startsWith('Captures')){await v.updateSettings({blockScreenshots:true});return v.notify('Captures d’écran bloquées');}
   }
   /** Test de sécurité RÉEL : déchiffre chaque pièce jointe (authentification GCM) et vérifie la cohérence du coffre. */
   async function runTest(){setTesting(true);let ok=0,bad:string[]=[];const atts=v.payload.items.flatMap(i=>i.attachments);
@@ -42,9 +40,7 @@ export default function Security(){
       {!x.ok&&<Text style={[font.small,{marginTop:6,marginLeft:34}]}>{HINTS[x.label]}</Text>}
     </View>)}</View>
     <View style={{marginTop:10}}>
-      <Row icon="clock" title="Historique de sécurité" onPress={()=>router.push('/journal')}/>
       <Row icon="monitor" title="Appareils connectés" badge="1 appareil" onPress={()=>Alert.alert('Appareils','EYELIOS fonctionne uniquement sur ce téléphone. Aucune synchronisation, aucun autre appareil connecté.')}/>
-      <Row icon="hard-drive" title="Sauvegarde & restauration" onPress={()=>router.push('/backup')}/>
       <Row icon="shield" title={testing?'Test en cours…':'Test de sécurité'} onPress={testing?undefined:runTest}/>
     </View>
     <Text style={[font.micro,{marginTop:8,lineHeight:16}]}>Le score reflète l’état réel des réglages ci-dessus ; ce n’est pas une certification (application non auditée).</Text>

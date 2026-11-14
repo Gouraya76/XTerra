@@ -9,7 +9,7 @@ export type LogEntry={at:number,action:string,label:string};
 export type Payload={schema:3,account:{email:string},vaults:Vault[],items:Item[],log:LogEntry[],settings:Settings,lastBackupAt?:number};
 export type Settings={autoLockSeconds:number,clipboardClearSeconds:number,blockScreenshots:boolean,aiEnabled:boolean,aiModel:string};
 
-export const DEFAULT_SETTINGS:Settings={autoLockSeconds:60,clipboardClearSeconds:30,blockScreenshots:true,aiEnabled:false,aiModel:'claude-opus-5-5'};
+export const DEFAULT_SETTINGS:Settings={autoLockSeconds:60,clipboardClearSeconds:30,blockScreenshots:false,aiEnabled:false,aiModel:'claude-opus-5-5'};
 export type FieldDef={key:string,label:string,secret?:boolean,kind?:'url'|'email'|'multiline'|'number'|'password'|'expiry'|'select',options?:string[],placeholder?:string};
 export type TypeDef={id:ItemType,label:string,singular:string,icon:string,fields:FieldDef[]};
 

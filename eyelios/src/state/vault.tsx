@@ -51,7 +51,9 @@ export function VaultProvider({children}:{children:React.ReactNode}){
   // ---- démarrage
   useEffect(()=>{(async()=>{
     await DB.purgeTemp();
-    const shots=await DB.getMeta('blockScreenshots');if(shots!=='0'&&Platform.OS!=='web')await ScreenCapture.preventScreenCaptureAsync().catch(()=>{});
+    // Captures autorisées par défaut (v3.0.10+) : on ne bloque que si l'utilisateur l'a explicitement choisi après cette version.
+    if(await DB.getMeta('shotsV2')!=='1'){await DB.setMeta('blockScreenshots','0');}
+    const shots=await DB.getMeta('blockScreenshots');if(shots==='1'&&Platform.OS!=='web')await ScreenCapture.preventScreenCaptureAsync().catch(()=>{});else if(Platform.OS!=='web')await ScreenCapture.allowScreenCaptureAsync().catch(()=>{});
     header.current=await DB.readHeader();setEmail((await DB.getMeta('email'))||'');
     setBioState({available:await S.bioAvailable(),enabled:await S.bioEnabled()});
     setStatus(header.current?'locked':'new');
@@ -66,7 +68,8 @@ export function VaultProvider({children}:{children:React.ReactNode}){
 
   const openSession=useCallback(async(key:Uint8Array,mail:string)=>{
     const sealed=await DB.readSealed();if(!sealed)throw new Error('Coffre introuvable');
-    const p=M.normalize(await C.openJsonAsync(sealed,key));dek.current=key;setPayload(p);pRef.current=p;setEmail(p.account.email||mail);setStatus('unlocked');
+    let p=M.normalize(await C.openJsonAsync(sealed,key));
+    if(await DB.getMeta('shotsV2')!=='1'){p={...p,settings:{...p.settings,blockScreenshots:false}};await DB.setMeta('shotsV2','1');}dek.current=key;setPayload(p);pRef.current=p;setEmail(p.account.email||mail);setStatus('unlocked');
     await persist(M.addLog(p,'Déverrouillage',''));
   },[persist]);
 
@@ -76,7 +79,7 @@ export function VaultProvider({children}:{children:React.ReactNode}){
     try{const salt=C.newSalt(),kek=await C.deriveKey(pw,salt),key=C.newDataKey();
       header.current={salt,iterations:C.KDF_ITERATIONS,wrapped:C.wrapKey(key,kek)};
       const p=M.addLog(M.emptyPayload(mail),'Création du coffre','');
-      await DB.writeVault(header.current,await C.sealJsonAsync(p,key));await DB.setMeta('email',mail);await DB.setMeta('blockScreenshots','1');
+      await DB.writeVault(header.current,await C.sealJsonAsync(p,key));await DB.setMeta('email',mail);await DB.setMeta('blockScreenshots','0');await DB.setMeta('shotsV2','1');
       setEmail(mail);await openSession(key,mail);
     }finally{setBusy('');}
   },[openSession]);
@@ -202,6 +205,5 @@ export function securityChecks(p:M.Payload,bioOn:boolean){
     {label:'Verrouillage biométrique',ok:bioOn},
     {label:'Sauvegarde de moins de 30 jours',ok:!!last&&Date.now()-last<30*864e5},
     {label:'Verrouillage auto ≤ 5 min',ok:p.settings.autoLockSeconds<=300},
-    {label:'Captures d’écran bloquées',ok:p.settings.blockScreenshots},
   ];
 }

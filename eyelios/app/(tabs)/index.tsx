@@ -6,7 +6,7 @@ import {Screen,Glass,Icon,IconBtn,FadeIn,Ring,CheckDot,Tile} from '../../src/ui/
 import {TYPES,countByType,typeDef} from '../../src/core/model';
 import {ago} from '../../src/ui/items';
 import {T,font} from '../../src/ui/theme';
-import {scanDocument,importFromPhone} from '../../src/screens/actions';
+import {scanDocument} from '../../src/screens/actions';
 
 export default function Home(){
   const v=useVault();const {width}=useWindowDimensions();const p=v.payload;
@@ -23,8 +23,8 @@ export default function Home(){
         <Text style={[font.body,{color:T.ice,marginTop:2}]}>Votre espace sécurisé est organisé</Text>
       </View>
       <View style={{flexDirection:'row',gap:10}}>
-        <View><IconBtn name="bell" size={46} label="Alertes de sécurité" onPress={()=>router.push('/security')}/>{alert&&<View style={{position:'absolute',top:9,right:11,width:9,height:9,borderRadius:5,backgroundColor:T.electric,boxShadow:T.glowStrong} as any}/>}</View>
-        <IconBtn name="user" size={46} label="Compte" onPress={()=>router.navigate('/settings')}/>
+        <View><IconBtn name="bell" size={46} label="Activité récente" onPress={()=>router.push('/journal')}/>{alert&&<View style={{position:'absolute',top:9,right:11,width:9,height:9,borderRadius:5,backgroundColor:T.electric,boxShadow:T.glowStrong} as any}/>}</View>
+        <IconBtn name="user" size={46} label="Mon compte" onPress={()=>router.push('/account')}/>
       </View>
     </FadeIn>
     <FadeIn delay={100}><Glass radius={30} padding={0} style={{marginTop:16}} onPress={()=>router.push('/search')}>
@@ -41,7 +41,7 @@ export default function Home(){
       <Glass style={{flex:1.55}} padding={14}>
         <View style={{flexDirection:'row',alignItems:'center',gap:8,marginBottom:14}}><Icon name="zap" size={20}/><Text style={[font.h3,{fontSize:16}]}>Accès rapide</Text></View>
         <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-          {[['plus','Nouveau',()=>router.push('/add')],['maximize','Scanner',()=>scanDocument(v)],['upload-cloud','Importer',()=>importFromPhone(v)],['lock','Verrouiller',v.lock]].map(([ic,l,fn]:any)=>
+          {[['plus','Nouveau',()=>router.push('/add')],['maximize','Scanner',()=>scanDocument(v)],['refresh-cw','Générer',()=>router.push('/generator')],['lock','Verrouiller',v.lock]].map(([ic,l,fn]:any)=>
             <View key={l} style={{alignItems:'center',gap:6}}><IconBtn name={ic} size={40} onPress={fn} label={l}/><Text style={{color:T.ice,fontSize:9.5}} numberOfLines={1}>{l}</Text></View>)}
         </View>
       </Glass>
@@ -53,7 +53,7 @@ export default function Home(){
     </View>
     <View style={{flexDirection:'row',gap:10,marginTop:12,alignItems:'flex-start'}}>
       <Glass style={{flex:1}} padding={10}>
-        <Pressable onPress={()=>router.push('/search')} style={{flexDirection:'row',alignItems:'center',gap:6,marginBottom:8}}><Icon name="clock" size={17}/><Text style={[font.h3,{flex:1,fontSize:13.5}]} numberOfLines={1} adjustsFontSizeToFit>Récents</Text><Text style={{color:T.ice,fontSize:10}}>Tout voir ›</Text></Pressable>
+        <Pressable onPress={()=>router.push('/category/recent')} style={{flexDirection:'row',alignItems:'center',gap:6,marginBottom:8}}><Icon name="clock" size={17}/><Text style={[font.h3,{flex:1,fontSize:13.5}]} numberOfLines={1} adjustsFontSizeToFit>Récents</Text><Text style={{color:T.ice,fontSize:10}}>Tout voir ›</Text></Pressable>
         {recent.length?recent.map(i=><Glass key={i.id} blur={false} padding={7} radius={14} style={{marginBottom:6}} onPress={()=>router.push(`/item/${i.id}`)}><View style={{flexDirection:'row',alignItems:'center',gap:8}}>
           <Tile size={32} letter={['password','api','card'].includes(i.type)?i.title[0]:undefined} icon={typeDef(i.type).icon}/>
           <View style={{flex:1,minWidth:0}}><Text style={{color:T.ice,fontWeight:'600',fontSize:13}} numberOfLines={1}>{i.title}</Text><Text style={{color:T.textDim,fontSize:9.5}} numberOfLines={1}>{typeDef(i.type).singular} · {ago(Math.max(i.updatedAt,i.viewedAt||0))}</Text></View>
@@ -61,10 +61,10 @@ export default function Home(){
           :<Text style={[font.small,{paddingVertical:10}]}>Aucun élément pour l’instant.</Text>}
       </Glass>
       <Glass style={{flex:0.82}} padding={10}>
-        <Pressable onPress={()=>router.navigate('/vaults')} style={{flexDirection:'row',alignItems:'center',gap:6,marginBottom:8}}><Icon name="layers" size={17}/><Text style={[font.h3,{flex:1,fontSize:14.5}]}>Collections</Text><Icon name="chevron-right" size={16}/></Pressable>
+        <View style={{flexDirection:'row',alignItems:'center',gap:6,marginBottom:8}}><Icon name="layers" size={17}/><Text style={[font.h3,{flex:1,fontSize:14.5}]}>Collections</Text></View>
         {cols.map(c=><Glass key={c.id} blur={false} padding={7} radius={14} style={{marginBottom:6}} onPress={()=>router.push(`/vault/${c.id}`)}><View style={{flexDirection:'row',alignItems:'center',gap:7}}>
           <Icon name="folder" size={22} color={T.light}/><View style={{flex:1,minWidth:0}}><Text style={{color:T.ice,fontWeight:'600',fontSize:13}} numberOfLines={1}>{c.name}</Text><Text style={{color:T.textDim,fontSize:9.5}}>{p.items.filter(i=>i.vaultId===c.id).length} éléments</Text></View></View></Glass>)}
-        <Glass blur={false} padding={6} radius={14} onPress={()=>router.navigate('/vaults')}><View style={{alignItems:'center'}}><Icon name="plus" size={20}/></View></Glass>
+        <Glass blur={false} padding={6} radius={14} onPress={()=>router.push('/vaults?new=1')}><View style={{alignItems:'center'}}><Icon name="plus" size={20}/></View></Glass>
       </Glass>
     </View>
   </Screen>;

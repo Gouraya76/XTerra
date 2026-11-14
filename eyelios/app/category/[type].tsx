@@ -26,6 +26,7 @@ function Gallery({initial}:{initial:string}){
 export default function Category(){
   const {type,f}=useLocalSearchParams<{type:string,f?:string}>();const v=useVault();
   if(type==='gallery')return <Gallery initial={f||'all'}/>;
+  if(type==='recent')return <Screen title="Récents" subtitle="Tous tes éléments, du plus récent au plus ancien"><ItemList items={v.payload.items} byType/></Screen>;
   const d=typeDef(type as ItemType);if(!d)return <Screen title="Introuvable"><Empty icon="alert-circle" title="Catégorie inconnue" text=""/></Screen>;
   const items=v.payload.items.filter(i=>i.type===type);
   return <View style={{flex:1}}><Screen title={d.label} subtitle={`${items.length} élément${items.length>1?'s':''}`}>
