@@ -4,7 +4,7 @@ import {Pressable,Text,View,StyleSheet} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import {BlurView} from 'expo-blur';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {Icon} from '../../src/ui/kit';
+import {Icon,Bubble} from '../../src/ui/kit';
 import {T} from '../../src/ui/theme';
 import {haptic} from '../../src/state/vault';
 
@@ -20,9 +20,10 @@ function TabBar({state}:any){
         return <Pressable key={t.name} accessibilityRole="tab" accessibilityLabel={t.label} accessibilityState={{selected:on}} onPress={()=>{haptic();router.navigate(t.name==='index'?'/':('/'+t.name) as any);}} style={{flex:1,alignItems:'center'}}>
           {center?<View style={{width:56,height:56,borderRadius:28,alignItems:'center',justifyContent:'center',borderWidth:1.5,borderColor:T.light,boxShadow:T.glowStrong} as any}>
               <LinearGradient colors={[T.electric,T.deep]} style={[StyleSheet.absoluteFill,{borderRadius:28}]}/><LinearGradient colors={[T.a(T.ice,0.55),'transparent']} start={{x:0.2,y:0}} end={{x:0.5,y:0.55}} style={[StyleSheet.absoluteFill,{borderRadius:28}]}/><Icon name="plus" size={28} color={T.ice}/></View>
-            :<View style={{alignItems:'center',paddingVertical:7,paddingHorizontal:8,borderRadius:18,overflow:'hidden',borderWidth:1,borderColor:on?T.a(T.ice,0.7):'transparent',boxShadow:on?T.glowStrong:'none'} as any}>{on&&<LinearGradient colors={['#4AA8FF','#1D5FD8']} style={StyleSheet.absoluteFill}/>}
+            :(()=>{const inner=<View style={{alignItems:'center',paddingVertical:7,paddingHorizontal:8}}>
               <Icon name={t.icon} size={22} color={on?T.ice:T.textDim}/>
-              <Text numberOfLines={1} style={{fontSize:9.5,marginTop:3,color:on?T.ice:T.textDim,fontWeight:on?'700':'500'}}>{t.label}</Text></View>}
+              <Text numberOfLines={1} style={{fontSize:9.5,marginTop:3,color:on?T.ice:T.textDim,fontWeight:on?'700':'500'}}>{t.label}</Text></View>;
+              return on?<Bubble radius={18} tone="blue">{inner}</Bubble>:inner;})()}
         </Pressable>;})}
     </View>
   </View>;

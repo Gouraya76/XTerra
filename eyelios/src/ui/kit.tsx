@@ -70,8 +70,7 @@ export function BrandMark({size=64}:{size?:number}){
 }
 export function Fab({onPress,label='Ajouter'}:{onPress:()=>void,label?:string}){
   const ins=useSafeAreaInsets();
-  return <Pressable onPress={()=>{haptic();onPress();}} accessibilityLabel={label} style={{position:'absolute',right:20,bottom:ins.bottom+104,width:58,height:58,borderRadius:29,alignItems:'center',justifyContent:'center',borderWidth:1.5,borderColor:T.a(T.ice,0.7),backgroundColor:T.a('#1C2D45',0.7),boxShadow:T.glowStrong} as any}>
-    <Icon name="plus" size={28}/></Pressable>;
+  return <View style={{position:'absolute',right:20,bottom:ins.bottom+104}}><IconBtn name="plus" size={60} active label={label} onPress={onPress}/></View>;
 }
 export const CheckDot=({ok=true,size=18}:{ok?:boolean,size?:number})=><View style={{width:size,height:size,borderRadius:size/2,alignItems:'center',justifyContent:'center',backgroundColor:ok?T.electric:'transparent',borderWidth:ok?0:1.5,borderColor:T.textMute,boxShadow:ok?T.glowShadow:'none'} as any}>{ok&&<Icon name="check" size={size*0.65} color={T.ice}/>}</View>;
 
@@ -92,24 +91,41 @@ export function Glass({children,style,onPress,onLongPress,strong,radius=T.r.lg,p
   return <Pressable disabled={disabled} onPress={()=>{haptic();onPress?.();}} onLongPress={onLongPress} onPressIn={()=>to(0.97)} onPressOut={()=>to(1)} accessibilityRole="button">{body}</Pressable>;
 }
 
+/**
+ * Surface « liquid glass » 3D (boutons, icônes, filtres) : remplissage translucide bombé, bord intérieur lumineux en haut,
+ * ombre intérieure en bas, ombre portée douce. Teinte bleue pour l'état actif / principal.
+ */
+export function Bubble({radius,tone='clear',children,style}:{radius:number,tone?:'clear'|'blue',children?:React.ReactNode,style?:StyleProp<ViewStyle>}){
+  const blue=tone==='blue';
+  return <View style={[{borderRadius:radius,boxShadow:blue
+      ?'0px 8px 18px rgba(4,12,30,0.5), 0px 0px 20px rgba(59,155,255,0.45), inset 0px 2px 2px rgba(255,255,255,0.75), inset 0px -4px 8px rgba(10,40,110,0.45)'
+      :'0px 8px 16px rgba(4,10,22,0.45), inset 0px 1.5px 1.5px rgba(255,255,255,0.6), inset 0px -4px 8px rgba(5,15,35,0.35)'} as any,style]}>
+    <View pointerEvents="none" style={[StyleSheet.absoluteFill,{borderRadius:radius,overflow:'hidden'}]}>
+      <LinearGradient colors={blue?['rgba(125,190,255,0.95)','rgba(59,130,246,0.9)','rgba(29,78,216,0.95)']:['rgba(220,232,248,0.30)','rgba(150,175,210,0.16)','rgba(110,135,175,0.20)']} start={{x:0.2,y:0}} end={{x:0.8,y:1}} style={StyleSheet.absoluteFill}/>
+      <LinearGradient colors={[blue?'rgba(255,255,255,0.45)':'rgba(255,255,255,0.32)','rgba(255,255,255,0)']} start={{x:0.5,y:0}} end={{x:0.5,y:0.5}} style={{position:'absolute',top:1,left:'12%',right:'12%',height:'55%',borderRadius:radius}}/>
+    </View>
+    <View pointerEvents="none" style={[StyleSheet.absoluteFill,{borderRadius:radius,borderWidth:1,borderColor:blue?'rgba(200,228,255,0.85)':'rgba(255,255,255,0.42)'}]}/>
+    {children}
+  </View>;
+}
 export function Btn({title,icon,onPress,kind='glass',small,disabled,style}:{title:string,icon?:string,onPress?:()=>void,kind?:'primary'|'glass'|'danger',small?:boolean,disabled?:boolean,style?:StyleProp<ViewStyle>}){
-  const scale=useRef(new Animated.Value(1)).current;const primary=kind==='primary';
-  return <Pressable disabled={disabled} onPress={()=>{haptic();onPress?.();}} onPressIn={()=>Animated.spring(scale,{toValue:0.96,useNativeDriver:true,speed:50}).start()} onPressOut={()=>Animated.spring(scale,{toValue:1,useNativeDriver:true,speed:30}).start()} style={[{flexGrow:1},style]} accessibilityRole="button">
-    <Animated.View style={[{borderRadius:16,opacity:disabled?0.45:1,transform:[{scale}],boxShadow:primary?T.glowStrong:'none'} as any]}>
-      <LinearGradient colors={primary?[T.electric,T.deep]:kind==='danger'?[T.a(T.ice,0.1),T.a(T.ice,0.03)]:[T.a(T.ice,0.15),T.a(T.ice,0.05)]} start={{x:0,y:0}} end={{x:0,y:1}}
-        style={{flexDirection:'row',alignItems:'center',justifyContent:'center',gap:8,paddingVertical:small?10:15,paddingHorizontal:small?12:18,borderRadius:16,borderWidth:1,borderColor:primary?T.light:T.edgeSoft}}>
-        <View pointerEvents="none" style={[StyleSheet.absoluteFill,{borderRadius:16,overflow:'hidden'}]}><LinearGradient colors={[T.a(T.ice,primary?0.35:0.18),'transparent']} start={{x:0,y:0}} end={{x:0,y:0.55}} style={StyleSheet.absoluteFill}/><LinearGradient colors={['transparent',T.a(T.ice,primary?0.22:0.1),'transparent']} locations={[0.3,0.4,0.5]} start={{x:0,y:0}} end={{x:1,y:1}} style={StyleSheet.absoluteFill}/></View>
-        {icon&&<Icon name={icon} size={small?15:17} color={primary?T.ice:kind==='danger'?T.a(T.ice,0.85):T.ice}/>}
-        <Text numberOfLines={1} style={{color:T.ice,fontWeight:'700',fontSize:small?13:15,textDecorationLine:kind==='danger'?'none':'none'}}>{title}</Text>
-      </LinearGradient>
+  const scale=useRef(new Animated.Value(1)).current;const primary=kind==='primary';const r=small?18:24;
+  return <Pressable disabled={disabled} onPress={()=>{haptic();onPress?.();}} onPressIn={()=>Animated.spring(scale,{toValue:0.95,useNativeDriver:true,speed:50}).start()} onPressOut={()=>Animated.spring(scale,{toValue:1,useNativeDriver:true,speed:20,bounciness:10}).start()} style={[{flexGrow:1},style]} accessibilityRole="button">
+    <Animated.View style={{opacity:disabled?0.45:1,transform:[{scale}]}}>
+      <Bubble radius={r} tone={primary?'blue':'clear'}>
+        <View style={{flexDirection:'row',alignItems:'center',justifyContent:'center',gap:8,paddingVertical:small?10:15,paddingHorizontal:small?14:20}}>
+          {icon&&<Icon name={icon} size={small?15:17}/>}
+          <Text numberOfLines={1} style={{color:T.ice,fontWeight:'700',fontSize:small?13:15,textShadowColor:'rgba(0,0,0,0.25)',textShadowRadius:2,textShadowOffset:{width:0,height:1}}}>{title}</Text>
+        </View>
+      </Bubble>
     </Animated.View>
   </Pressable>;
 }
 
 export function IconBtn({name,onPress,size=40,label,active}:{name:string,onPress?:()=>void,size?:number,label?:string,active?:boolean}){
-  return <Pressable onPress={()=>{haptic();onPress?.();}} hitSlop={8} accessibilityLabel={label} style={({pressed})=>[{width:size,height:size,borderRadius:size/2,alignItems:'center',justifyContent:'center',borderWidth:1,
-    borderColor:active?T.light:T.edgeSoft,backgroundColor:active?T.a(T.electric,0.3):T.a(T.ice,pressed?0.16:0.07),boxShadow:active?T.glowStrong:'none'} as any]}>
-    <Icon name={name} size={size*0.46}/>
+  const scale=useRef(new Animated.Value(1)).current;
+  return <Pressable onPress={()=>{haptic();onPress?.();}} onPressIn={()=>Animated.spring(scale,{toValue:0.9,useNativeDriver:true,speed:50}).start()} onPressOut={()=>Animated.spring(scale,{toValue:1,useNativeDriver:true,speed:20,bounciness:12}).start()} hitSlop={8} accessibilityLabel={label}>
+    <Animated.View style={{transform:[{scale}]}}><Bubble radius={size/2} tone={active?'blue':'clear'} style={{width:size,height:size,alignItems:'center',justifyContent:'center'}}><Icon name={name} size={size*0.46}/></Bubble></Animated.View>
   </Pressable>;
 }
 
@@ -154,10 +170,9 @@ export const Section=({title,action,onAction,icon}:{title:string,action?:string,
   </View>;
 
 export function Chip({label,active,onPress,icon}:{label:string,active?:boolean,onPress?:()=>void,icon?:string}){
-  return <Pressable onPress={()=>{haptic();onPress?.();}} style={{borderRadius:20,overflow:'hidden'}}>
-    <LinearGradient colors={active?[T.a(T.electric,0.55),T.a(T.deep,0.55)]:[T.a(T.ice,0.12),T.a(T.ice,0.04)]} style={{flexDirection:'row',alignItems:'center',gap:6,paddingVertical:8,paddingHorizontal:15,borderRadius:20,borderWidth:1,borderColor:active?T.light:T.edgeSoft}}>
-      {icon&&<Icon name={icon} size={13} color={T.ice}/>}<Text style={{color:T.ice,fontSize:13,fontWeight:active?'700':'600'}}>{label}</Text>
-    </LinearGradient>
+  return <Pressable onPress={()=>{haptic();onPress?.();}} style={{paddingVertical:3}}>
+    <Bubble radius={20} tone={active?'blue':'clear'}><View style={{flexDirection:'row',alignItems:'center',gap:6,paddingVertical:8,paddingHorizontal:16}}>
+      {icon&&<Icon name={icon} size={13}/>}<Text style={{color:T.ice,fontSize:13,fontWeight:active?'700':'600'}}>{label}</Text></View></Bubble>
   </Pressable>;
 }
 
