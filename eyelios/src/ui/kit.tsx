@@ -19,19 +19,42 @@ function Wave({d,w,h,id}:{d:string,w:number,h:number,id:string}){
     {[[30,0.04],[16,0.07],[8,0.13],[3.5,0.3],[1.3,0.7]].map(([sw,o])=><Path key={sw} d={d} stroke={`url(#${id})`} strokeWidth={sw} strokeOpacity={o} fill="none" strokeLinecap="round"/>)}</>;
 }
 /** Fond : dégradé charbon → noir + vagues lumineuses bleu électrique (comme le visuel de démarrage). */
+/** Bande de lumière argentée (reflet large et doux) + liseré brillant sur son bord, comme sur la maquette. */
+function Sheen({d,edge,id,o=1}:{d:string,edge:string,id:string,o?:number}){
+  return <><Defs>
+    <SG id={id} x1="0" y1="0" x2="1" y2="1"><Stop offset="0" stopColor="#DCE8F7" stopOpacity="0"/><Stop offset="0.5" stopColor="#DCE8F7" stopOpacity={0.16*o}/><Stop offset="1" stopColor="#DCE8F7" stopOpacity="0"/></SG>
+    <SG id={id+'e'} x1="0" y1="0" x2="1" y2="0"><Stop offset="0" stopColor="#FFFFFF" stopOpacity="0"/><Stop offset="0.45" stopColor="#FFFFFF" stopOpacity={0.75*o}/><Stop offset="1" stopColor="#FFFFFF" stopOpacity="0"/></SG></Defs>
+    <Path d={d} fill={`url(#${id})`}/>
+    {[[9,0.06],[4,0.14],[1.4,0.8]].map(([sw,op])=><Path key={sw} d={edge} stroke={`url(#${id}e)`} strokeWidth={sw} strokeOpacity={op} fill="none"/>)}</>;
+}
+/** Fond : bleu acier (charbon → ardoise) avec grands reflets argentés diagonaux. */
 export function Background({children}:{children?:React.ReactNode}){
   const {width:w,height:h}=useWindowDimensions();
-  return <View style={{flex:1,backgroundColor:T.black}}>
-    <LinearGradient colors={['#0B1424',T.charcoal,T.black]} locations={[0,0.45,1]} start={{x:0.1,y:0}} end={{x:0.9,y:1}} style={StyleSheet.absoluteFill}/>
+  return <View style={{flex:1,backgroundColor:'#132033'}}>
+    <LinearGradient colors={['#2B4364','#1C2D45','#141F31','#1A2A42']} locations={[0,0.35,0.7,1]} start={{x:0,y:0}} end={{x:1,y:1}} style={StyleSheet.absoluteFill}/>
     <Svg pointerEvents="none" width={w} height={h} style={StyleSheet.absoluteFill}>
-      <Wave id="w1" w={w} h={h} d={`M ${-w*0.15} ${h*0.42} C ${w*0.1} ${h*0.3}, ${w*0.3} ${h*0.08}, ${w*0.7} ${h*0.06} S ${w*1.1} ${-h*0.04}, ${w*1.15} ${-h*0.06}`}/>
-      <Wave id="w2" w={w} h={h} d={`M ${-w*0.15} ${h*0.3} C ${w*0.15} ${h*0.2}, ${w*0.35} ${h*0.02}, ${w*0.8} ${-h*0.03}`}/>
-      <Wave id="w3" w={w} h={h} d={`M ${-w*0.05} ${h*1.04} C ${w*0.3} ${h*0.9}, ${w*0.75} ${h*0.97}, ${w*0.95} ${h*0.75} S ${w*1.1} ${h*0.5}, ${w*1.15} ${h*0.45}`}/>
-      <Wave id="w4" w={w} h={h} d={`M ${w*0.3} ${h*1.05} C ${w*0.6} ${h*0.95}, ${w*0.95} ${h*0.97}, ${w*1.1} ${h*0.68}`}/>
+      <Sheen id="s1" d={`M ${-w*0.1} ${h*0.33} C ${w*0.3} ${h*0.18}, ${w*0.6} ${h*0.06}, ${w*1.1} ${h*0.02} L ${w*1.1} ${h*0.13} C ${w*0.6} ${h*0.15}, ${w*0.3} ${h*0.25}, ${-w*0.1} ${h*0.42} Z`} edge={`M ${-w*0.1} ${h*0.33} C ${w*0.3} ${h*0.18}, ${w*0.6} ${h*0.06}, ${w*1.1} ${h*0.02}`}/>
+      <Sheen id="s2" o={0.8} d={`M ${-w*0.1} ${h*0.62} C ${w*0.35} ${h*0.5}, ${w*0.7} ${h*0.48}, ${w*1.1} ${h*0.36} L ${w*1.1} ${h*0.46} C ${w*0.7} ${h*0.58}, ${w*0.35} ${h*0.6}, ${-w*0.1} ${h*0.72} Z`} edge={`M ${-w*0.1} ${h*0.62} C ${w*0.35} ${h*0.5}, ${w*0.7} ${h*0.48}, ${w*1.1} ${h*0.36}`}/>
+      <Sheen id="s3" o={0.9} d={`M ${-w*0.1} ${h*1.02} C ${w*0.3} ${h*0.9}, ${w*0.7} ${h*0.86}, ${w*1.1} ${h*0.74} L ${w*1.1} ${h*0.86} C ${w*0.7} ${h*0.95}, ${w*0.3} ${h*1}, ${-w*0.1} ${h*1.1} Z`} edge={`M ${-w*0.1} ${h*1.02} C ${w*0.3} ${h*0.9}, ${w*0.7} ${h*0.86}, ${w*1.1} ${h*0.74}`}/>
     </Svg>
     {children}
   </View>;
 }
+/** Marque EYELIOS de la maquette : « E » italique dans une orbite lumineuse. */
+export function BrandMark({size=64}:{size?:number}){
+  return <Svg width={size*1.25} height={size} viewBox="0 0 125 100">
+    <Defs><SG id="bm" x1="0" y1="0" x2="1" y2="1"><Stop offset="0" stopColor="#FFFFFF"/><Stop offset="0.55" stopColor="#D6E4F5"/><Stop offset="1" stopColor="#8FA6C4"/></SG>
+      <SG id="bo" x1="0" y1="1" x2="1" y2="0"><Stop offset="0" stopColor="#FFFFFF" stopOpacity="0.95"/><Stop offset="0.6" stopColor={T.light} stopOpacity="0.9"/><Stop offset="1" stopColor={T.electric} stopOpacity="0.2"/></SG></Defs>
+    <Path d="M8 78 C 2 60, 30 22, 82 10 C 108 4, 122 12, 112 26 C 118 12, 96 10, 74 18 C 40 30, 14 58, 18 76 Z" fill="url(#bo)"/>
+    <Path d="M46 26 L96 26 L90 40 L62 40 L58 50 L84 50 L79 62 L53 62 L49 73 L80 73 L74 88 L26 88 Z" fill="url(#bm)"/>
+  </Svg>;
+}
+export function Fab({onPress,label='Ajouter'}:{onPress:()=>void,label?:string}){
+  const ins=useSafeAreaInsets();
+  return <Pressable onPress={()=>{haptic();onPress();}} accessibilityLabel={label} style={{position:'absolute',right:20,bottom:ins.bottom+104,width:58,height:58,borderRadius:29,alignItems:'center',justifyContent:'center',borderWidth:1.5,borderColor:T.a(T.ice,0.7),backgroundColor:T.a('#1C2D45',0.7),boxShadow:T.glowStrong} as any}>
+    <LinearGradient colors={[T.a(T.ice,0.35),'transparent']} start={{x:0.2,y:0}} end={{x:0.5,y:0.6}} style={[StyleSheet.absoluteFill,{borderRadius:29}]}/><Icon name="plus" size={28}/></Pressable>;
+}
+export const CheckDot=({ok=true,size=18}:{ok?:boolean,size?:number})=><View style={{width:size,height:size,borderRadius:size/2,alignItems:'center',justifyContent:'center',backgroundColor:ok?T.electric:'transparent',borderWidth:ok?0:1.5,borderColor:T.textMute,boxShadow:ok?T.glowShadow:'none'} as any}>{ok&&<Icon name="check" size={size*0.65} color={T.ice}/>}</View>;
 
 /** Carte de verre : remplissage translucide, contour lumineux, reflet supérieur. */
 /** Reflets du verre : bande diagonale principale, fin reflet secondaire, éclat de coin, et balayage lumineux à l'apparition. */
@@ -52,16 +75,16 @@ export function Reflections({strong,sweep=true}:{strong?:boolean,sweep?:boolean}
 export function Glass({children,style,onPress,onLongPress,strong,radius=T.r.lg,padding=16,disabled,blur=true}:{children?:React.ReactNode,style?:StyleProp<ViewStyle>,onPress?:()=>void,onLongPress?:()=>void,strong?:boolean,radius?:number,padding?:number,disabled?:boolean,blur?:boolean}){
   const scale=useRef(new Animated.Value(1)).current;
   const to=(v:number)=>Animated.spring(scale,{toValue:v,useNativeDriver:true,speed:40,bounciness:6}).start();
-  const body=<Animated.View style={[{borderRadius:radius,transform:[{scale}],boxShadow:strong?T.glowStrong:T.glowShadow} as any,style]}>
+  const body=<Animated.View style={[{borderRadius:radius,transform:[{scale}],boxShadow:strong?'0px 10px 28px rgba(5,12,25,0.55), 0px 0px 22px rgba(59,155,255,0.25)':'0px 8px 22px rgba(5,12,25,0.45)'} as any,style]}>
     <View style={[StyleSheet.absoluteFill,{borderRadius:radius,overflow:'hidden'}]}>
-      {blur&&<BlurView intensity={strong?40:28} tint="dark" experimentalBlurMethod="dimezisBlurView" style={StyleSheet.absoluteFill}/>}
-      <LinearGradient colors={strong?[T.a(T.ice,0.22),T.a(T.electric,0.08),T.a(T.ice,0.05)]:[T.a(T.ice,0.15),T.a(T.electric,0.05),T.a(T.ice,0.03)]} start={{x:0,y:0}} end={{x:0.8,y:1}} style={StyleSheet.absoluteFill}/>
-      <LinearGradient colors={[T.a(T.ice,0.22),'transparent']} start={{x:0,y:0}} end={{x:0,y:0.3}} style={StyleSheet.absoluteFill}/>
+      {blur&&<BlurView intensity={strong?22:14} tint="default" experimentalBlurMethod="dimezisBlurView" style={StyleSheet.absoluteFill}/>}
+      <LinearGradient colors={strong?['rgba(170,195,228,0.30)','rgba(110,140,182,0.16)','rgba(80,108,150,0.12)']:['rgba(160,186,222,0.24)','rgba(100,130,172,0.12)','rgba(70,96,136,0.10)']} start={{x:0,y:0}} end={{x:0.8,y:1}} style={StyleSheet.absoluteFill}/>
+      <LinearGradient colors={[T.a(T.ice,0.14),'transparent']} start={{x:0,y:0}} end={{x:0,y:0.25}} style={StyleSheet.absoluteFill}/>
       <LinearGradient colors={['transparent',T.a(T.electric,0.14)]} start={{x:0.3,y:0.5}} end={{x:1,y:1}} style={StyleSheet.absoluteFill}/>
       <Reflections strong={strong}/>
     </View>
-    <View pointerEvents="none" style={[StyleSheet.absoluteFill,{borderRadius:radius,borderWidth:1,borderColor:strong?T.edge:T.edgeSoft}]}/>
-    <View pointerEvents="none" style={{position:'absolute',top:0,left:radius*0.5,right:radius*0.5,height:1.2,backgroundColor:T.ice,opacity:0.7}}/>
+    <View pointerEvents="none" style={[StyleSheet.absoluteFill,{borderRadius:radius,borderWidth:1.3,borderColor:strong?T.a(T.ice,0.5):T.a(T.ice,0.32)}]}/>
+    <View pointerEvents="none" style={{position:'absolute',top:0,left:radius*0.4,right:radius*0.4,height:1.6,backgroundColor:'#FFFFFF',opacity:0.85,boxShadow:'0px 0px 8px rgba(255,255,255,0.8)'} as any}/>
     <View pointerEvents="none" style={{position:'absolute',bottom:0,left:radius,right:radius*1.4,height:1,backgroundColor:T.light,opacity:0.35}}/>
     <View style={{padding}}>{children}</View>
   </Animated.View>;
@@ -107,10 +130,10 @@ export function Input({label,icon,secret,right,style,...p}:TextInputProps&{label
 
 export function Screen({title,subtitle,back=true,right,children,scroll=true,pad=true}:{title?:string,subtitle?:string,back?:boolean,right?:React.ReactNode,children:React.ReactNode,scroll?:boolean,pad?:boolean}){
   const ins=useSafeAreaInsets();
-  const head=title!==undefined&&<View style={{flexDirection:'row',alignItems:'center',paddingHorizontal:T.gutter,paddingTop:ins.top+8,paddingBottom:10,gap:12}}>
-    {back&&<IconBtn name="chevron-left" label="Retour" onPress={()=>router.canGoBack()?router.back():router.replace('/')}/>}
-    <View style={{flex:1}}><Text style={font.h2} numberOfLines={1}>{title}</Text>{!!subtitle&&<Text style={font.small} numberOfLines={1}>{subtitle}</Text>}</View>
-    {right}
+  const head=title!==undefined&&<View style={{flexDirection:'row',alignItems:'center',paddingHorizontal:T.gutter,paddingTop:ins.top+10,paddingBottom:12}}>
+    <View style={{width:44}}>{back&&<Pressable hitSlop={12} accessibilityLabel="Retour" onPress={()=>{haptic();router.canGoBack()?router.back():router.replace('/');}}><Icon name="chevron-left" size={28}/></Pressable>}</View>
+    <View style={{flex:1,alignItems:'center'}}><Text style={[font.h2,{fontSize:21}]} numberOfLines={1}>{title}</Text>{!!subtitle&&<Text style={[font.small,{color:T.textDim}]} numberOfLines={1}>{subtitle}</Text>}</View>
+    <View style={{minWidth:44,alignItems:'flex-end'}}>{right}</View>
   </View>;
   return <Background>{head}
     {scroll?<ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{paddingHorizontal:pad?T.gutter:0,paddingBottom:ins.bottom+120,paddingTop:title===undefined?ins.top+8:4}} showsVerticalScrollIndicator={false}>{children}</ScrollView>
@@ -140,25 +163,25 @@ export function Chip({label,active,onPress,icon}:{label:string,active?:boolean,o
 
 /** Tuile d'icône : initiale du service (pas de logos de marques), ou icône de catégorie. */
 export function Tile({icon,letter,size=46}:{icon?:string,letter?:string,size?:number}){
-  return <View style={{width:size,height:size,borderRadius:size*0.3,overflow:'hidden',alignItems:'center',justifyContent:'center',borderWidth:1,borderColor:T.edge}}>
-    <LinearGradient colors={[T.a(T.ice,0.22),T.a(T.deep,0.35),T.a(T.slate,0.6)]} style={StyleSheet.absoluteFill}/>
+  return <View style={{width:size,height:size,borderRadius:size*0.26,overflow:'hidden',alignItems:'center',justifyContent:'center',borderWidth:1,borderColor:T.a(T.ice,0.18)}}>
+    <LinearGradient colors={['#1A2436','#0B111C']} start={{x:0,y:0}} end={{x:1,y:1}} style={StyleSheet.absoluteFill}/>
     {letter?<Text style={{color:T.ice,fontSize:size*0.42,fontWeight:'800'}}>{letter.toUpperCase()}</Text>:<Icon name={icon||'box'} size={size*0.45}/>}
   </View>;
 }
 
 /** Anneau de sécurité (valeur réelle calculée). */
-export function Ring({value,size=120,label}:{value:number,size?:number,label?:string}){
-  const sw=8,r=(size-sw*2)/2,c=2*Math.PI*r;const anim=useRef(new Animated.Value(0)).current;const [v,setV]=useState(0);
+export function Ring({value,size=120,label,children}:{value:number,size?:number,label?:string,children?:React.ReactNode}){
+  const sw=Math.max(6,size*0.07),r=(size-sw*2)/2,c=2*Math.PI*r;const anim=useRef(new Animated.Value(0)).current;const [v,setV]=useState(0);
   useEffect(()=>{const id=anim.addListener(x=>setV(x.value));Animated.timing(anim,{toValue:value,duration:900,easing:Easing.out(Easing.cubic),useNativeDriver:false}).start();return ()=>anim.removeListener(id);},[value]);
   return <View style={{width:size,height:size,alignItems:'center',justifyContent:'center',borderRadius:size/2,boxShadow:T.glowStrong} as any}>
     <Svg width={size} height={size} style={StyleSheet.absoluteFill}>
       <Defs><SG id="rg" x1="0" y1="0" x2="1" y2="1"><Stop offset="0" stopColor={T.light}/><Stop offset="1" stopColor={T.electric}/></SG></Defs>
-      <Circle cx={size/2} cy={size/2} r={r} stroke={T.a(T.ice,0.12)} strokeWidth={sw} fill={T.a(T.black,0.25)}/>
+      <Circle cx={size/2} cy={size/2} r={r} stroke={T.a(T.electric,0.18)} strokeWidth={sw} fill="rgba(10,20,38,0.45)"/>
       <Circle cx={size/2} cy={size/2} r={r} stroke="url(#rg)" strokeWidth={sw} fill="none" strokeLinecap="round" strokeDasharray={`${c*v} ${c}`} transform={`rotate(-90 ${size/2} ${size/2})`}/>
       <Circle cx={size/2} cy={size/2} r={r+sw*0.9} stroke={T.a(T.light,0.3)} strokeWidth={1} fill="none"/>
     </Svg>
-    <Text style={{color:T.ice,fontSize:size*0.2,fontWeight:'700'}}>{Math.round(v*100)}%</Text>
-    {label&&<Text style={[font.micro,{marginTop:2}]}>{label}</Text>}
+    {children}<Text style={{color:T.ice,fontSize:size*(children?0.17:0.2),fontWeight:'700'}}>{Math.round(v*100)}%</Text>
+    {label&&<Text style={[font.small,{marginTop:2,color:T.ice}]}>{label}</Text>}
   </View>;
 }
 

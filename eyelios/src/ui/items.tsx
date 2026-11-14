@@ -18,14 +18,14 @@ export function subtitle(it:Item){const d=typeDef(it.type);
 
 export function ItemRow({item,compact}:{item:Item,compact?:boolean}){
   const v=useVault();const [show,setShow]=useState(false);const sec=primarySecret(item);
-  return <Glass blur={false} padding={12} radius={20} style={{marginBottom:10}} onPress={()=>router.push(`/item/${item.id}`)}>
+  return <Glass padding={12} radius={20} style={{marginBottom:10}} onPress={()=>router.push(`/item/${item.id}`)}>
     <View style={{flexDirection:'row',alignItems:'center',gap:12}}>
-      <Tile letter={item.type==='password'||item.type==='api'||item.type==='card'?item.title[0]:undefined} icon={typeDef(item.type).icon}/>
+      <Tile size={48} letter={item.type==='password'||item.type==='api'||item.type==='card'?item.title[0]:undefined} icon={typeDef(item.type).icon}/>
       <View style={{flex:1,minWidth:0}}>
         <View style={{flexDirection:'row',alignItems:'center',gap:6}}><Text style={font.h3} numberOfLines={1}>{item.title}</Text>{item.favorite&&<Icon name="star" size={12} color={T.textDim}/>}</View>
-        <Text style={[font.small,{marginTop:2}]} numberOfLines={1}>{sec&&!compact?(show?sec.value:mask):subtitle(item)}{compact?' · '+ago(Math.max(item.updatedAt,item.viewedAt||0)):''}</Text>
+        <Text style={[font.small,{marginTop:2,color:T.ice}]} numberOfLines={1}>{sec&&!compact&&<Text style={{color:T.electric}}>● </Text>}{sec&&!compact?(show?sec.value:'********'):subtitle(item)}{compact?' · '+ago(Math.max(item.updatedAt,item.viewedAt||0)):''}</Text>
       </View>
-      {sec&&!compact&&<><IconBtn size={34} name={show?'eye-off':'eye'} label="Afficher" onPress={()=>setShow(!show)}/><IconBtn size={34} name="copy" label="Copier" onPress={()=>v.copy(sec.value,sec.label)}/></>}
+      {sec&&!compact&&<View style={{flexDirection:'row',gap:16,paddingRight:4}}><Pressable hitSlop={10} accessibilityLabel="Afficher" onPress={()=>setShow(!show)}><Icon name={show?'eye-off':'eye'} size={21}/></Pressable><Pressable hitSlop={10} accessibilityLabel="Copier" onPress={()=>v.copy(sec.value,sec.label)}><Icon name="copy" size={20}/></Pressable></View>}
       {(compact||!sec)&&<Icon name="chevron-right" size={18} color={T.textMute}/>}
     </View>
   </Glass>;

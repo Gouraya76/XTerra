@@ -18,7 +18,7 @@ export function VaultForm({visible,onClose,initial}:{visible:boolean,onClose:()=
 }
 export default function Vaults(){
   const v=useVault();const p=v.payload;const [form,setForm]=useState(false);
-  return <Screen title="Coffres" subtitle={`${p.vaults.length} espaces personnalisés`} back={false} right={<IconBtn name="plus" label="Nouveau coffre" onPress={()=>setForm(true)}/>}>
+  return <Screen title="Collections" subtitle={`${p.vaults.length} coffres personnalisés`} back={false} right={<IconBtn name="plus" label="Nouveau coffre" onPress={()=>setForm(true)}/>}>
     {p.vaults.map((c,i)=>{const n=p.items.filter(x=>x.vaultId===c.id).length;return <FadeIn key={c.id} delay={i*40}><Glass style={{marginBottom:10}} onPress={()=>router.push(`/vault/${c.id}`)}
       onLongPress={()=>Alert.alert(c.name,undefined,[{text:'Monter',onPress:()=>v.moveVault(c.id,-1)},{text:'Descendre',onPress:()=>v.moveVault(c.id,1)},{text:'Annuler',style:'cancel'}])}>
       <View style={{flexDirection:'row',alignItems:'center',gap:14}}>

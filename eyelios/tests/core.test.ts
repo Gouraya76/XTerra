@@ -36,6 +36,8 @@ test('Assistant : compréhension des demandes',()=>{
   assert.deepEqual(parseIntent('Classe Assurance voiture dans Administratif'),{kind:'move',query:'assurance voiture',vaultName:'administratif'});
   assert.deepEqual(parseIntent('Crée une nouvelle fiche pour mon compte Google.'),{kind:'create',type:'password',title:'Google'});
   assert.equal(parseIntent('Génère un mot de passe de 32 caractères').kind,'generate');assert.equal((parseIntent('Génère un mot de passe de 32 caractères') as any).length,32);
+  assert.deepEqual(parseIntent('Salut EYELIOS, peux-tu me retrouver mon mot de passe Netflix ?'),{kind:'find',query:'netflix',type:'password'});
+  assert.equal(parseIntent('Pourrais-tu me montrer mes clés API ?').kind,'list');
   assert.equal(parseIntent('supprime Netflix').kind,'delete');assert.equal(parseIntent('verrouille').kind,'lock');
   assert.equal(parseIntent('Explique-moi la différence entre AES et RSA').kind,'general');
   const p=sample();assert.equal(findItems(p.items,p.vaults,'netflix','password')[0].title,'Netflix');assert.equal(resolveVault(p.vaults,'travail')?.name,'Travail');

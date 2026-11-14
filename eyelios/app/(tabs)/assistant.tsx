@@ -20,18 +20,21 @@ const SUGGESTIONS=['Retrouve mon mot de passe Netflix','Montre-moi mes clés API
 /** Révéler ou copier un secret depuis l'assistant exige une nouvelle authentification (biométrie ou code de l'appareil). */
 async function guard(v:ReturnType<typeof useVault>){if(!(await bioAvailable()))return true;return v.external(()=>confirmUser('Confirme ton identité pour accéder à ce secret'));}
 
+const Act=({icon,label,onPress}:{icon:string,label:string,onPress:()=>void})=><Glass blur={false} padding={10} radius={14} onPress={onPress}><View style={{flexDirection:'row',alignItems:'center',gap:12}}><Icon name={icon} size={17}/><Text style={{color:T.ice,fontSize:13.5}} numberOfLines={1}>{label}</Text></View></Glass>;
 function ItemCard({item}:{item:Item}){
   const v=useVault();const [show,setShow]=useState(false);const sec=primarySecret(item);
-  return <Glass padding={12} radius={18} style={{marginTop:8}}>
-    <View style={{flexDirection:'row',alignItems:'center',gap:10}}>
+  const copySec=async()=>{if(sec&&await guard(v)){await v.copy(sec.value,sec.label);v.log('Assistant : secret copié',item.title);}};
+  return <View style={{marginTop:8,gap:7}}>
+    <Glass blur={false} padding={10} radius={16}><View style={{flexDirection:'row',alignItems:'center',gap:10}}>
       <Tile size={40} letter={['password','api','card'].includes(item.type)?item.title[0]:undefined} icon={typeDef(item.type).icon}/>
-      <View style={{flex:1}}><Text style={font.h3} numberOfLines={1}>{item.title}</Text><Text style={[font.small,{fontFamily:show?'monospace':undefined}]} numberOfLines={1}>{sec?(show?sec.value:mask):subtitle(item)}</Text></View>
-      {sec&&<IconBtn size={32} name={show?'eye-off':'eye'} label="Afficher" onPress={async()=>{if(show)return setShow(false);if(await guard(v)){setShow(true);v.log('Assistant : secret affiché',item.title);}}}/>}
-    </View>
-    {sec&&<Btn small icon="copy" title={`Copier : ${sec.label}`} style={{marginTop:10}} onPress={async()=>{if(await guard(v)){await v.copy(sec.value,sec.label);v.log('Assistant : secret copié',item.title);}}}/>}
-    {!!item.data.url&&<Btn small icon="external-link" title="Ouvrir le site" style={{marginTop:8}} onPress={()=>Linking.openURL(item.data.url)}/>}
-    <Btn small icon="file-text" title="Voir les détails" style={{marginTop:8}} onPress={()=>router.push(`/item/${item.id}`)}/>
-  </Glass>;
+      <View style={{flex:1}}><Text style={font.h3} numberOfLines={1}>{item.title}</Text><Text style={[font.small,{color:T.ice,fontFamily:show?'monospace':undefined}]} numberOfLines={1}>{sec&&<Text style={{color:T.electric}}>● </Text>}{sec?(show?sec.value:'********'):subtitle(item)}</Text></View>
+      {sec&&<Pressable hitSlop={10} accessibilityLabel="Afficher" onPress={async()=>{if(show)return setShow(false);if(await guard(v)){setShow(true);v.log('Assistant : secret affiché',item.title);}}}><Icon name={show?'eye-off':'eye'} size={20}/></Pressable>}
+      {sec&&<Pressable hitSlop={10} accessibilityLabel="Copier" onPress={copySec}><Icon name="copy" size={19}/></Pressable>}
+    </View></Glass>
+    {sec&&<Act icon="copy" label={`Copier le ${sec.label.toLowerCase()}`} onPress={copySec}/>}
+    {!!item.data.url&&<Act icon="external-link" label={`Ouvrir le site ${item.title}`} onPress={()=>Linking.openURL(item.data.url)}/>}
+    <Act icon="maximize-2" label="Voir les détails" onPress={()=>router.push(`/item/${item.id}`)}/>
+  </View>;
 }
 
 export default function Assistant(){
@@ -53,7 +56,7 @@ export default function Assistant(){
         return say(`${items.length} élément${items.length>1?'s':''} dans « ${d.label} »${items.length>6?' (6 plus récents affichés)':''} :`,{items:items.slice(0,6).map(i=>i.id),chips:items.length>6?[{label:'Tout voir',to:`/category/${intent.type}`}]:undefined});}
       case 'find':{const r=findItems(p.items,p.vaults,intent.query,intent.type);await v.log('Assistant : recherche',intent.query);
         if(!r.length)return say(`Je n’ai rien trouvé pour « ${intent.query} » dans ton coffre.`,{chips:[{label:'Créer une fiche',to:`/edit?type=${intent.type||'password'}&title=${encodeURIComponent(intent.query)}`}]});
-        lastItem.current=r[0].id;return say(r.length===1?'Voici ce que j’ai trouvé :':`${r.length} résultats, les plus pertinents d’abord :`,{items:r.slice(0,5).map(i=>i.id)});}
+        lastItem.current=r[0].id;const nm=(v.email.split('@')[0]||'').split(/[._-]/)[0];const hi=nm?nm[0].toUpperCase()+nm.slice(1):'';return say(r.length===1?`Bien sûr${hi?' '+hi:''}, voici ${r[0].type==='password'?'tes identifiants':'ton élément'} ${r[0].title} :`:`${r.length} résultats, les plus pertinents d’abord :`,{items:r.slice(0,5).map(i=>i.id)});}
       case 'create':{const d=typeDef(intent.type);
         return say(`Je prépare une nouvelle fiche « ${d.singular} »${intent.title?` nommée « ${intent.title} »`:''}. Tu compléteras les informations sensibles toi-même.`,
           {action:{label:'Créer la fiche',icon:'plus',run:async()=>{router.push(`/edit?type=${intent.type}&title=${encodeURIComponent(intent.title)}`);}}});}
@@ -91,9 +94,10 @@ export default function Assistant(){
 
   return <Background><KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS==='ios'?'padding':'height'}>
     <View style={{alignItems:'center',paddingTop:ins.top+10,paddingBottom:8}}>
-      <View style={{width:58,height:58,borderRadius:29,borderWidth:1.5,borderColor:T.light,alignItems:'center',justifyContent:'center',backgroundColor:T.a(T.electric,0.18),boxShadow:T.glowStrong} as any}><Icon name="zap" size={26} color={T.light}/></View>
-      <Text style={[font.h2,{marginTop:8}]}>Assistant EYELIOS</Text>
-      <Text style={font.small}>{v.payload.settings.aiEnabled?'Coffre en local · IA connectée pour les questions générales':'Mode local · coffre accessible hors ligne'}</Text>
+      <View style={{width:62,height:62,borderRadius:31,borderWidth:2,borderColor:T.light,alignItems:'center',justifyContent:'center',backgroundColor:T.a(T.electric,0.35),boxShadow:T.glowStrong} as any}><Icon name="star" size={28}/></View>
+      <Text style={[font.h2,{marginTop:8,fontSize:22}]}>Assistant EYELIOS</Text>
+      <View style={{flexDirection:'row',alignItems:'center',gap:8}}><View style={{width:22,height:1,backgroundColor:T.textDim}}/><Text style={[font.small,{color:T.ice}]}>Votre IA personnelle et sécurisée</Text><View style={{width:22,height:1,backgroundColor:T.textDim}}/></View>
+      <Text style={[font.micro,{marginTop:2}]}>{v.payload.settings.aiEnabled?'Coffre en local · IA connectée':'Mode local · hors ligne'}</Text>
     </View>
     <FlatList ref={list} data={msgs} keyExtractor={m=>m.id} renderItem={render} contentContainerStyle={{paddingHorizontal:T.gutter,paddingBottom:16}} onContentSizeChange={()=>list.current?.scrollToEnd({animated:true})}
       keyboardShouldPersistTaps="handled" ListEmptyComponent={<View style={{marginTop:20,gap:10}}>
@@ -104,6 +108,7 @@ export default function Assistant(){
       <Glass padding={0} radius={26}><View style={{flexDirection:'row',alignItems:'center',paddingLeft:16,paddingRight:6,gap:8}}>
         <Icon name="search" size={18} color={T.textMute}/>
         <TextInput value={input} onChangeText={setInput} placeholder="Posez votre question…" placeholderTextColor={T.a(T.ice,0.4)} style={{flex:1,color:T.ice,fontSize:15,paddingVertical:14}} onSubmitEditing={()=>send()} returnKeyType="send" multiline={false}/>
+        <Pressable hitSlop={8} accessibilityLabel="Dictée" onPress={()=>v.notify('Dictée : touche le micro du clavier','mic')}><Icon name="mic" size={20}/></Pressable>
         <Pressable onPress={()=>send()} accessibilityLabel="Envoyer" style={{width:42,height:42,borderRadius:21,overflow:'hidden',alignItems:'center',justifyContent:'center'}}>
           <LinearGradient colors={[T.electric,T.deep]} style={{position:'absolute',top:0,left:0,right:0,bottom:0}}/><Icon name="arrow-up" size={20} color={T.ice}/></Pressable>
       </View></Glass>

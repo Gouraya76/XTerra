@@ -20,11 +20,12 @@ const TYPE_WORDS:[RegExp,ItemType][]=[
  [/\bcartes?\b|\bcb\b|\bpaiements?\b|\bbancaires?\b/,'card'],[/\bphotos?\b|\bimages?\b/,'photo'],
  [/\bdocuments?\b|\bpdf\b|\bfichiers?\b|\bfactures?\b|\bcontrats?\b/,'document'],[/\bnotes?\b/,'note']];
 export function detectType(s:string):ItemType|undefined{const f=fold(s);for(const [r,t] of TYPE_WORDS)if(r.test(f))return t;return undefined;}
-const STOP=/\b(eyelios|stp|s'il te pla[iî]t|svp|mon|ma|mes|le|la|les|l|du|des|de|d|un|une|pour|moi|me|m|mon compte|compte|retrouve|retrouver|trouve|trouver|cherche|chercher|recherche|donne|montre|affiche|ou|où|est|sont|quel|quelle|quels|quelles|est-ce|que|qui|mot|mots|passe|cle|cles|clé|clés|api|carte|cartes|document|documents|photo|photos|note|notes|fiche|fichier|identifiant|identifiants|enregistre|enregistree|enregistrée|a|à|moi|ce|cette|ces|dans|coffre)\b/gi;
+const STOP=/\b(montrer|afficher|lister|voir|eyelios|stp|s'il te pla[iî]t|svp|mon|ma|mes|le|la|les|l|du|des|de|d|un|une|pour|moi|me|m|mon compte|compte|retrouve|retrouver|trouve|trouver|cherche|chercher|recherche|donne|montre|affiche|ou|où|est|sont|quel|quelle|quels|quelles|est-ce|que|qui|mot|mots|passe|cle|cles|clé|clés|api|carte|cartes|document|documents|photo|photos|note|notes|fiche|fichier|identifiant|identifiants|enregistre|enregistree|enregistrée|a|à|moi|ce|cette|ces|dans|coffre)\b/gi;
 export const cleanQuery=(s:string)=>fold(s).replace(/['’,.?!:;«»"-]/g,' ').replace(STOP,' ').replace(/\s+/g,' ').trim();
 
 export function parseIntent(input:string):Intent{
-  const raw=input.trim();const f=fold(raw).replace(/^(eyelios|assistant)[ ,:]+/,'');
+  const raw=input.trim();let f=fold(raw).replace(/[?!.]+$/,'').trim();
+  for(let i=0;i<4;i++)f=f.replace(/^(salut|bonjour|hello|coucou|hey|eyelios|assistant|stp|svp|s'il te plait|est-ce que tu peux|est ce que tu peux|peux-tu|peux tu|pourrais-tu|pourrais tu|tu peux|aide-moi a|aide moi a|j'aimerais|je voudrais|je veux)[ ,:!]*/,'').replace(/^(me|m')\s*/,'').trim();
   if(/^(aide|help|que (peux|sais)[- ]tu faire|tu (peux|sais) faire quoi)/.test(f))return {kind:'help'};
   if(/\bverrouill/.test(f)&&f.length<40)return {kind:'lock'};
   if(/\b(genere|generer|cree|creer|invente|propose)\b.*\bmot de passe\b/.test(f)&&!/\b(fiche|pour (mon|ma|le|la))\b/.test(f)){
@@ -38,7 +39,7 @@ export function parseIntent(input:string):Intent{
     const tm=rest.match(/(?:pour|:|nommee?|appelee?|intitulee?)\s+(?:mon |ma |mes |le |la )?(?:compte |carte |cle api |note )?(.+)$/);
     const title=(tm?tm[1]:cleanQuery(rest)).replace(/[.?!]+$/,'').trim();
     return {kind:'create',type:t,title:title?title.replace(/^./,c=>c.toUpperCase()):''};}
-  const listM=/^(montre|affiche|liste|donne)(-moi)?\b|^(quelles?|quels?) sont mes\b|^mes\b/.test(f);
+  const listM=/^(montre|montrer|affiche|afficher|liste|lister|donne|voir)(-moi)?\b|^(quelles?|quels?) sont mes\b|^mes\b/.test(f);
   const type=detectType(f);const q=cleanQuery(f);
   if(listM&&type&&!q)return {kind:'list',type};
   if(/^(retrouve|trouve|cherche|recherche|ou est|ou sont|ou se trouve|donne|montre|affiche|quel est|c'est quoi)\b/.test(f)||(type&&q&&q.split(' ').length<=3))
