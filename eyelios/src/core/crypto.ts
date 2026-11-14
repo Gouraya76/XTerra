@@ -19,8 +19,17 @@ export const randomBytes=(n:number)=>randomSource(n);
 export const b64=fromByteArray,unb64=toByteArray;
 export const newSalt=()=>b64(randomBytes(16));
 
-export function deriveKey(password:string,salt:string,iterations=KDF_ITERATIONS){
-  return pbkdf2Async(sha256,utf8ToBytes(password),unb64(salt),{c:iterations,dkLen:32,asyncTick:16});
+const jsDerive=(password:string,salt:string,iterations:number)=>pbkdf2Async(sha256,utf8ToBytes(password),unb64(salt),{c:iterations,dkLen:32,asyncTick:16});
+/** Implémentation native optionnelle (Android : javax.crypto, ~100× plus rapide que le JS sous Hermes). */
+type NativeKdf=(password:string,saltB64:string,iterations:number,keyLen:number)=>Promise<string>;
+let nativeKdf:NativeKdf|null=null,nativeChecked:Promise<boolean>|null=null;
+export function setNativeKdf(fn:NativeKdf|null){nativeKdf=fn;nativeChecked=null;}
+/** Auto-vérification : le natif doit donner exactement le même résultat que le JS (sinon il est ignoré). */
+async function nativeOk(){if(!nativeKdf)return false;
+  return nativeChecked??=(async()=>{try{const s=b64(randomBytes(16));const [a,b]=await Promise.all([nativeKdf!('Eyelios-test-123',s,1000,32),jsDerive('Eyelios-test-123',s,1000)]);return a===b64(b);}catch{return false;}})();}
+export async function deriveKey(password:string,salt:string,iterations=KDF_ITERATIONS):Promise<Uint8Array>{
+  if(/^[\x20-\x7E]*$/.test(password)&&await nativeOk()){try{return unb64(await nativeKdf!(password,salt,iterations,32));}catch{}}
+  return jsDerive(password,salt,iterations);
 }
 export function sealBytes(data:Uint8Array,key:Uint8Array):Sealed{const iv=randomBytes(12);return {iv:b64(iv),ciphertext:b64(gcm(key,iv).encrypt(data))};}
 export function openBytes(s:Sealed,key:Uint8Array):Uint8Array{return gcm(key,unb64(s.iv)).decrypt(unb64(s.ciphertext));}

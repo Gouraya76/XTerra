@@ -15,6 +15,8 @@ import * as DB from '../storage/db';
 import * as S from '../storage/secure';
 
 C.setRandomSource(n=>ExpoCrypto.getRandomBytes(n));
+import NativeCrypto from '../../modules/eyelios-crypto';
+const NC=NativeCrypto;if(NC)C.setNativeKdf((p,s,i,l)=>NC.pbkdf2Sha256(p,s,i,l));
 
 type Status='loading'|'new'|'locked'|'unlocked';
 export type Toast={id:number,text:string,icon?:string};

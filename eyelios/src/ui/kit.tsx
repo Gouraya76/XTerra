@@ -237,11 +237,12 @@ export const Logo=({size=56}:{size?:number})=><Image source={require('../../asse
 export const Wordmark=({size=30}:{size?:number})=><Text style={{color:T.ice,fontSize:size,fontWeight:'800',fontStyle:'italic',letterSpacing:size*0.06,textShadowColor:T.electric,textShadowRadius:size*0.5,textShadowOffset:{width:0,height:0}}}>EYELIOS</Text>;
 
 export function Busy({text}:{text:string}){
+  const [sec,setSec]=useState(0);useEffect(()=>{setSec(0);if(!text)return;const t=setInterval(()=>setSec(x=>x+1),1000);return ()=>clearInterval(t);},[text]);
   return <Modal visible={!!text} transparent animationType="fade" statusBarTranslucent>
     <View style={{flex:1,backgroundColor:T.a(T.black,0.72),alignItems:'center',justifyContent:'center',padding:32}}>
       <Glass strong style={{width:'100%',maxWidth:340}} padding={26}>
         <View style={{alignItems:'center',gap:14}}><ActivityIndicator size="large" color={T.ice}/><Text style={[font.h3,{textAlign:'center'}]}>{text}</Text>
-          <Text style={[font.small,{textAlign:'center'}]}>Calcul sécurisé de la clé de chiffrement. Quelques secondes…</Text></View>
+          <Text style={[font.small,{textAlign:'center'}]}>Calcul sécurisé de la clé de chiffrement… {sec>0?`${sec} s`:''}</Text></View>
       </Glass>
     </View>
   </Modal>;

@@ -55,3 +55,7 @@ test('Migration JILANI VAULT v2 → EYELIOS',()=>{const m=M.migrateV2({items:[{i
 test('Enveloppe de clé : changement de mot de passe sans re-chiffrer les données',async()=>{const dek=C.newDataKey();const k1=await C.deriveKey('ancien',C.newSalt(),IT),k2=await C.deriveKey('nouveau',C.newSalt(),IT);
   const data=C.sealJson({ok:1},dek);const w1=C.wrapKey(dek,k1);assert.throws(()=>C.unwrapKey(w1,k2));const w2=C.wrapKey(C.unwrapKey(w1,k1),k2);
   assert.deepEqual(C.openJson(data,C.unwrapKey(w2,k2)),{ok:1});});
+test('KDF natif : utilisé seulement s\'il est identique au JS, sinon repli',async()=>{const s=C.newSalt();const ref=await C.deriveKey('AbcDef123456!',s,IT);
+  C.setNativeKdf(async(p,sa,i)=>pbkdf2Sync(Buffer.from(p),Buffer.from(C.unb64(sa)),i,32,'sha256').toString('base64'));assert.deepEqual(await C.deriveKey('AbcDef123456!',s,IT),ref);
+  C.setNativeKdf(async()=>Buffer.alloc(32,7).toString('base64'));assert.deepEqual(await C.deriveKey('AbcDef123456!',s,IT),ref,'natif faux ignoré');
+  C.setNativeKdf(async()=>{throw new Error('x')});assert.deepEqual(await C.deriveKey('AbcDef123456!',s,IT),ref);C.setNativeKdf(null);});
