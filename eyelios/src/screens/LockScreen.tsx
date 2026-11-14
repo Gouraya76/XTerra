@@ -2,7 +2,7 @@ import React,{useEffect,useState} from 'react';
 import {KeyboardAvoidingView,Platform,ScrollView,Text,View,Alert} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useVault} from '../state/vault';
-import {Background,Glass,Btn,Input,Logo,Wordmark,FadeIn,Icon} from '../ui/kit';
+import {Background,Glass,Btn,Input,Wordmark,FadeIn,Icon} from '../ui/kit';
 import {T,font} from '../ui/theme';
 import {strength} from '../core/password';
 import Splash from './Splash';
@@ -22,7 +22,7 @@ export default function LockScreen(){
   return <Background><KeyboardAvoidingView behavior={Platform.OS==='ios'?'padding':'height'} style={{flex:1}}>
     <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{flexGrow:1,justifyContent:'center',padding:T.gutter+4,paddingTop:ins.top+30,paddingBottom:ins.bottom+30}}>
       <FadeIn style={{alignItems:'center',marginBottom:26}}>
-        <Logo size={92}/><View style={{height:10}}/><Wordmark size={36}/>
+        <Wordmark size={44}/>
         <Text style={[font.body,{marginTop:4,fontStyle:'italic'}]}>Coffre-fort numérique personnel</Text>
       </FadeIn>
       <FadeIn delay={120}><Glass strong padding={20}>

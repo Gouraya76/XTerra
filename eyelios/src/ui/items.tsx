@@ -18,7 +18,7 @@ export function subtitle(it:Item){const d=typeDef(it.type);
 
 export function ItemRow({item,compact}:{item:Item,compact?:boolean}){
   const v=useVault();const [show,setShow]=useState(false);const sec=primarySecret(item);
-  return <Glass padding={12} radius={20} style={{marginBottom:10}} onPress={()=>router.push(`/item/${item.id}`)}>
+  return <Glass blur={false} padding={12} radius={20} style={{marginBottom:10}} onPress={()=>router.push(`/item/${item.id}`)}>
     <View style={{flexDirection:'row',alignItems:'center',gap:12}}>
       <Tile letter={item.type==='password'||item.type==='api'||item.type==='card'?item.title[0]:undefined} icon={typeDef(item.type).icon}/>
       <View style={{flex:1,minWidth:0}}>

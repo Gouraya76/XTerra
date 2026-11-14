@@ -2,7 +2,7 @@ import React,{useMemo} from 'react';
 import {Pressable,Text,View,useWindowDimensions,Alert} from 'react-native';
 import {router} from 'expo-router';
 import {useVault,securityChecks} from '../../src/state/vault';
-import {Screen,Glass,Icon,IconBtn,Logo,Wordmark,FadeIn,Section,Ring,Empty} from '../../src/ui/kit';
+import {Screen,Glass,Icon,IconBtn,Wordmark,FadeIn,Section,Ring,Empty} from '../../src/ui/kit';
 import {ItemRow} from '../../src/ui/items';
 import {TYPES,countByType} from '../../src/core/model';
 import {T,font} from '../../src/ui/theme';
@@ -18,8 +18,7 @@ export default function Home(){
   const favVaults=[...p.vaults].sort((a,b)=>Number(!!b.favorite)-Number(!!a.favorite)).slice(0,3);
   return <Screen>
     <FadeIn style={{flexDirection:'row',alignItems:'center',gap:12,marginTop:6}}>
-      <Logo size={54}/>
-      <View style={{flex:1}}><Wordmark size={27}/><Text style={[font.small,{fontStyle:'italic'}]}>Coffre-fort numérique personnel</Text></View>
+      <View style={{flex:1}}><Wordmark size={30}/><Text style={[font.small,{fontStyle:'italic'}]}>Coffre-fort numérique personnel</Text></View>
       <IconBtn name="lock" label="Verrouiller" onPress={v.lock}/>
     </FadeIn>
     <FadeIn delay={60}><Text style={[font.h1,{marginTop:20}]}>Bonjour{hello?' '+hello:''} 👋</Text><Text style={[font.body,{marginTop:2}]}>Ton espace sécurisé et organisé</Text></FadeIn>

@@ -4,7 +4,7 @@ import {router} from 'expo-router';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {LinearGradient} from 'expo-linear-gradient';
 import {useVault} from '../../src/state/vault';
-import {Background,Glass,Icon,IconBtn,Tile,Btn,Chip,mask,Logo} from '../../src/ui/kit';
+import {Background,Glass,Icon,IconBtn,Tile,Btn,Chip,mask} from '../../src/ui/kit';
 import {primarySecret,subtitle} from '../../src/ui/items';
 import {parseIntent,findItems,resolveVault,HELP_TEXT} from '../../src/core/assistant';
 import {Item,typeDef} from '../../src/core/model';
@@ -77,9 +77,9 @@ export default function Assistant(){
 
   const render=({item:m}:{item:Msg})=>m.role==='user'
     ?<View style={{alignSelf:'flex-end',maxWidth:'84%',marginVertical:6,borderRadius:20,borderBottomRightRadius:6,overflow:'hidden'}}>
-      <LinearGradient colors={[T.a(T.ice,0.24),T.a(T.steel,0.35)]} style={{paddingVertical:11,paddingHorizontal:15,borderWidth:1,borderColor:T.glassBorderStrong,borderRadius:20,borderBottomRightRadius:6}}><Text style={[font.body,{color:T.ice}]}>{m.text}</Text></LinearGradient></View>
+      <LinearGradient colors={[T.a(T.electric,0.55),T.a(T.deep,0.6)]} style={{paddingVertical:11,paddingHorizontal:15,borderWidth:1,borderColor:T.light,borderRadius:20,borderBottomRightRadius:6}}><Text style={[font.body,{color:T.ice}]}>{m.text}</Text></LinearGradient></View>
     :<View style={{flexDirection:'row',gap:8,marginVertical:6,maxWidth:'94%'}}>
-      <View style={{width:30,height:30,borderRadius:15,borderWidth:1,borderColor:T.glassBorderStrong,alignItems:'center',justifyContent:'center',marginTop:2}}><Icon name="zap" size={14}/></View>
+      <View style={{width:30,height:30,borderRadius:15,borderWidth:1,borderColor:T.light,alignItems:'center',justifyContent:'center',marginTop:2,boxShadow:T.glowShadow} as any}><Icon name="zap" size={14} color={T.light}/></View>
       <Glass padding={13} radius={20} style={{flex:1}}>
         <Text selectable style={[font.body,{color:T.ice}]}>{m.text}</Text>
         {m.generated&&<><Text selectable style={{color:T.ice,fontFamily:'monospace',fontSize:16,marginTop:10}}>{m.generated}</Text><Btn small icon="copy" title="Copier" style={{marginTop:10}} onPress={()=>v.copy(m.generated!,'Mot de passe')}/></>}
@@ -91,7 +91,7 @@ export default function Assistant(){
 
   return <Background><KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS==='ios'?'padding':'height'}>
     <View style={{alignItems:'center',paddingTop:ins.top+10,paddingBottom:8}}>
-      <View style={{shadowColor:T.ice,shadowOpacity:0.5,shadowRadius:16}}><Logo size={52}/></View>
+      <View style={{width:58,height:58,borderRadius:29,borderWidth:1.5,borderColor:T.light,alignItems:'center',justifyContent:'center',backgroundColor:T.a(T.electric,0.18),boxShadow:T.glowStrong} as any}><Icon name="zap" size={26} color={T.light}/></View>
       <Text style={[font.h2,{marginTop:8}]}>Assistant EYELIOS</Text>
       <Text style={font.small}>{v.payload.settings.aiEnabled?'Coffre en local · IA connectée pour les questions générales':'Mode local · coffre accessible hors ligne'}</Text>
     </View>
@@ -105,7 +105,7 @@ export default function Assistant(){
         <Icon name="search" size={18} color={T.textMute}/>
         <TextInput value={input} onChangeText={setInput} placeholder="Posez votre question…" placeholderTextColor={T.a(T.ice,0.4)} style={{flex:1,color:T.ice,fontSize:15,paddingVertical:14}} onSubmitEditing={()=>send()} returnKeyType="send" multiline={false}/>
         <Pressable onPress={()=>send()} accessibilityLabel="Envoyer" style={{width:42,height:42,borderRadius:21,overflow:'hidden',alignItems:'center',justifyContent:'center'}}>
-          <LinearGradient colors={[T.ice,'#CBD5E1']} style={{position:'absolute',top:0,left:0,right:0,bottom:0}}/><Icon name="arrow-up" size={20} color={T.black}/></Pressable>
+          <LinearGradient colors={[T.electric,T.deep]} style={{position:'absolute',top:0,left:0,right:0,bottom:0}}/><Icon name="arrow-up" size={20} color={T.ice}/></Pressable>
       </View></Glass>
     </View>
   </KeyboardAvoidingView></Background>;

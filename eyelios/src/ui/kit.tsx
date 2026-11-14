@@ -1,9 +1,10 @@
 /** Composants Liquid Glass EYELIOS. */
 import React,{useEffect,useRef,useState} from 'react';
-import {Animated,Easing,Pressable,StyleProp,StyleSheet,Text,TextInput,TextInputProps,View,ViewStyle,ActivityIndicator,Modal,ScrollView,Platform,Image} from 'react-native';
+import {Animated,Easing,Pressable,StyleProp,StyleSheet,Text,TextInput,TextInputProps,View,ViewStyle,ActivityIndicator,Modal,ScrollView,Platform,Image,useWindowDimensions} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
+import {BlurView} from 'expo-blur';
 import {Feather} from '@expo/vector-icons';
-import Svg,{Circle,Defs,LinearGradient as SG,Stop} from 'react-native-svg';
+import Svg,{Circle,Defs,LinearGradient as SG,Stop,Path} from 'react-native-svg';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {router} from 'expo-router';
 import {T,font} from './theme';
@@ -12,25 +13,40 @@ import {haptic} from '../state/vault';
 export type IconName=React.ComponentProps<typeof Feather>['name'];
 export const Icon=({name,size=20,color=T.ice,style}:{name:IconName|string,size?:number,color?:string,style?:any})=><Feather name={name as IconName} size={size} color={color} style={style}/>;
 
-/** Fond : dégradé charbon → noir avec deux reflets lumineux diagonaux discrets. */
+/** Vague lumineuse : plusieurs tracés superposés (du plus large/transparent au plus fin/brillant) pour simuler la lueur. */
+function Wave({d,w,h,id}:{d:string,w:number,h:number,id:string}){
+  return <><Defs><SG id={id} x1="0" y1="0" x2="1" y2="1"><Stop offset="0" stopColor={T.electric} stopOpacity="0"/><Stop offset="0.45" stopColor={T.electric} stopOpacity="1"/><Stop offset="0.7" stopColor={T.light} stopOpacity="1"/><Stop offset="1" stopColor={T.electric} stopOpacity="0"/></SG></Defs>
+    {[[30,0.04],[16,0.07],[8,0.13],[3.5,0.3],[1.3,0.7]].map(([sw,o])=><Path key={sw} d={d} stroke={`url(#${id})`} strokeWidth={sw} strokeOpacity={o} fill="none" strokeLinecap="round"/>)}</>;
+}
+/** Fond : dégradé charbon → noir + vagues lumineuses bleu électrique (comme le visuel de démarrage). */
 export function Background({children}:{children?:React.ReactNode}){
+  const {width:w,height:h}=useWindowDimensions();
   return <View style={{flex:1,backgroundColor:T.black}}>
-    <LinearGradient colors={[T.slate,T.charcoal,T.black]} locations={[0,0.42,1]} start={{x:0.1,y:0}} end={{x:0.9,y:1}} style={StyleSheet.absoluteFill}/>
-    <LinearGradient pointerEvents="none" colors={['transparent',T.a(T.ice,0.07),'transparent']} start={{x:0,y:0.15}} end={{x:1,y:0.42}} style={StyleSheet.absoluteFill}/>
-    <LinearGradient pointerEvents="none" colors={['transparent',T.a(T.steel,0.16),'transparent']} start={{x:1,y:0.55}} end={{x:0,y:0.9}} style={StyleSheet.absoluteFill}/>
+    <LinearGradient colors={['#0B1424',T.charcoal,T.black]} locations={[0,0.45,1]} start={{x:0.1,y:0}} end={{x:0.9,y:1}} style={StyleSheet.absoluteFill}/>
+    <Svg pointerEvents="none" width={w} height={h} style={StyleSheet.absoluteFill}>
+      <Wave id="w1" w={w} h={h} d={`M ${-w*0.15} ${h*0.42} C ${w*0.1} ${h*0.3}, ${w*0.3} ${h*0.08}, ${w*0.7} ${h*0.06} S ${w*1.1} ${-h*0.04}, ${w*1.15} ${-h*0.06}`}/>
+      <Wave id="w2" w={w} h={h} d={`M ${-w*0.15} ${h*0.3} C ${w*0.15} ${h*0.2}, ${w*0.35} ${h*0.02}, ${w*0.8} ${-h*0.03}`}/>
+      <Wave id="w3" w={w} h={h} d={`M ${-w*0.05} ${h*1.04} C ${w*0.3} ${h*0.9}, ${w*0.75} ${h*0.97}, ${w*0.95} ${h*0.75} S ${w*1.1} ${h*0.5}, ${w*1.15} ${h*0.45}`}/>
+      <Wave id="w4" w={w} h={h} d={`M ${w*0.3} ${h*1.05} C ${w*0.6} ${h*0.95}, ${w*0.95} ${h*0.97}, ${w*1.1} ${h*0.68}`}/>
+    </Svg>
     {children}
   </View>;
 }
 
 /** Carte de verre : remplissage translucide, contour lumineux, reflet supérieur. */
-export function Glass({children,style,onPress,onLongPress,strong,radius=T.r.lg,padding=16,disabled}:{children?:React.ReactNode,style?:StyleProp<ViewStyle>,onPress?:()=>void,onLongPress?:()=>void,strong?:boolean,radius?:number,padding?:number,disabled?:boolean}){
+export function Glass({children,style,onPress,onLongPress,strong,radius=T.r.lg,padding=16,disabled,blur=true}:{children?:React.ReactNode,style?:StyleProp<ViewStyle>,onPress?:()=>void,onLongPress?:()=>void,strong?:boolean,radius?:number,padding?:number,disabled?:boolean,blur?:boolean}){
   const scale=useRef(new Animated.Value(1)).current;
   const to=(v:number)=>Animated.spring(scale,{toValue:v,useNativeDriver:true,speed:40,bounciness:6}).start();
-  const body=<Animated.View style={[{borderRadius:radius,overflow:'hidden',transform:[{scale}]},styles.shadow,style]}>
-    <LinearGradient colors={strong?[T.a(T.ice,0.2),T.a(T.ice,0.06)]:[T.glassTop,T.glassBottom]} start={{x:0,y:0}} end={{x:0.7,y:1}} style={StyleSheet.absoluteFill}/>
-    <LinearGradient pointerEvents="none" colors={[T.a(T.ice,0.16),'transparent']} start={{x:0,y:0}} end={{x:0,y:0.35}} style={StyleSheet.absoluteFill}/>
-    <View pointerEvents="none" style={[StyleSheet.absoluteFill,{borderRadius:radius,borderWidth:1,borderColor:strong?T.glassBorderStrong:T.glassBorder}]}/>
-    <View pointerEvents="none" style={{position:'absolute',top:0,left:radius*0.6,right:radius*0.6,height:1,backgroundColor:T.sheen,opacity:0.55}}/>
+  const body=<Animated.View style={[{borderRadius:radius,transform:[{scale}],boxShadow:strong?T.glowStrong:T.glowShadow} as any,style]}>
+    <View style={[StyleSheet.absoluteFill,{borderRadius:radius,overflow:'hidden'}]}>
+      {blur&&<BlurView intensity={strong?40:28} tint="dark" experimentalBlurMethod="dimezisBlurView" style={StyleSheet.absoluteFill}/>}
+      <LinearGradient colors={strong?[T.a(T.ice,0.22),T.a(T.electric,0.08),T.a(T.ice,0.05)]:[T.a(T.ice,0.15),T.a(T.electric,0.05),T.a(T.ice,0.03)]} start={{x:0,y:0}} end={{x:0.8,y:1}} style={StyleSheet.absoluteFill}/>
+      <LinearGradient colors={[T.a(T.ice,0.22),'transparent']} start={{x:0,y:0}} end={{x:0,y:0.3}} style={StyleSheet.absoluteFill}/>
+      <LinearGradient colors={['transparent',T.a(T.electric,0.14)]} start={{x:0.3,y:0.5}} end={{x:1,y:1}} style={StyleSheet.absoluteFill}/>
+    </View>
+    <View pointerEvents="none" style={[StyleSheet.absoluteFill,{borderRadius:radius,borderWidth:1,borderColor:strong?T.edge:T.edgeSoft}]}/>
+    <View pointerEvents="none" style={{position:'absolute',top:0,left:radius*0.5,right:radius*0.5,height:1.2,backgroundColor:T.ice,opacity:0.7}}/>
+    <View pointerEvents="none" style={{position:'absolute',bottom:0,left:radius,right:radius*1.4,height:1,backgroundColor:T.light,opacity:0.35}}/>
     <View style={{padding}}>{children}</View>
   </Animated.View>;
   if(!onPress&&!onLongPress)return body;
@@ -40,11 +56,11 @@ export function Glass({children,style,onPress,onLongPress,strong,radius=T.r.lg,p
 export function Btn({title,icon,onPress,kind='glass',small,disabled,style}:{title:string,icon?:string,onPress?:()=>void,kind?:'primary'|'glass'|'danger',small?:boolean,disabled?:boolean,style?:StyleProp<ViewStyle>}){
   const scale=useRef(new Animated.Value(1)).current;const primary=kind==='primary';
   return <Pressable disabled={disabled} onPress={()=>{haptic();onPress?.();}} onPressIn={()=>Animated.spring(scale,{toValue:0.96,useNativeDriver:true,speed:50}).start()} onPressOut={()=>Animated.spring(scale,{toValue:1,useNativeDriver:true,speed:30}).start()} style={[{flexGrow:1},style]} accessibilityRole="button">
-    <Animated.View style={[{borderRadius:16,overflow:'hidden',opacity:disabled?0.45:1,transform:[{scale}]},primary&&styles.glowShadow]}>
-      <LinearGradient colors={primary?[T.ice,'#CBD5E1']:kind==='danger'?[T.a(T.ice,0.1),T.a(T.ice,0.03)]:[T.a(T.ice,0.15),T.a(T.ice,0.05)]} start={{x:0,y:0}} end={{x:0,y:1}}
-        style={{flexDirection:'row',alignItems:'center',justifyContent:'center',gap:8,paddingVertical:small?10:15,paddingHorizontal:small?12:18,borderRadius:16,borderWidth:1,borderColor:primary?T.ice:T.glassBorder}}>
-        {icon&&<Icon name={icon} size={small?15:17} color={primary?T.black:kind==='danger'?T.a(T.ice,0.85):T.ice}/>}
-        <Text numberOfLines={1} style={{color:primary?T.black:T.ice,fontWeight:'700',fontSize:small?13:15,textDecorationLine:kind==='danger'?'none':'none'}}>{title}</Text>
+    <Animated.View style={[{borderRadius:16,opacity:disabled?0.45:1,transform:[{scale}],boxShadow:primary?T.glowStrong:'none'} as any]}>
+      <LinearGradient colors={primary?[T.electric,T.deep]:kind==='danger'?[T.a(T.ice,0.1),T.a(T.ice,0.03)]:[T.a(T.ice,0.15),T.a(T.ice,0.05)]} start={{x:0,y:0}} end={{x:0,y:1}}
+        style={{flexDirection:'row',alignItems:'center',justifyContent:'center',gap:8,paddingVertical:small?10:15,paddingHorizontal:small?12:18,borderRadius:16,borderWidth:1,borderColor:primary?T.light:T.edgeSoft}}>
+        {icon&&<Icon name={icon} size={small?15:17} color={primary?T.ice:kind==='danger'?T.a(T.ice,0.85):T.ice}/>}
+        <Text numberOfLines={1} style={{color:T.ice,fontWeight:'700',fontSize:small?13:15,textDecorationLine:kind==='danger'?'none':'none'}}>{title}</Text>
       </LinearGradient>
     </Animated.View>
   </Pressable>;
@@ -52,7 +68,7 @@ export function Btn({title,icon,onPress,kind='glass',small,disabled,style}:{titl
 
 export function IconBtn({name,onPress,size=40,label,active}:{name:string,onPress?:()=>void,size?:number,label?:string,active?:boolean}){
   return <Pressable onPress={()=>{haptic();onPress?.();}} hitSlop={8} accessibilityLabel={label} style={({pressed})=>[{width:size,height:size,borderRadius:size/2,alignItems:'center',justifyContent:'center',borderWidth:1,
-    borderColor:active?T.glassBorderStrong:T.glassBorder,backgroundColor:active?T.a(T.ice,0.18):T.a(T.ice,pressed?0.16:0.07)}]}>
+    borderColor:active?T.light:T.edgeSoft,backgroundColor:active?T.a(T.electric,0.3):T.a(T.ice,pressed?0.16:0.07),boxShadow:active?T.glowStrong:'none'} as any]}>
     <Icon name={name} size={size*0.46}/>
   </Pressable>;
 }
@@ -61,7 +77,7 @@ export function Input({label,icon,secret,right,style,...p}:TextInputProps&{label
   const [show,setShow]=useState(false);const [focus,setFocus]=useState(false);
   return <View style={[{marginBottom:12},style]}>
     {label&&<Text style={[font.small,{marginBottom:6,marginLeft:4}]}>{label}</Text>}
-    <View style={{flexDirection:'row',alignItems:p.multiline?'flex-start':'center',borderRadius:16,borderWidth:1,borderColor:focus?T.glassBorderStrong:T.glassBorder,backgroundColor:T.a(T.black,0.35),paddingHorizontal:14}}>
+    <View style={{flexDirection:'row',alignItems:p.multiline?'flex-start':'center',borderRadius:16,borderWidth:1,borderColor:focus?T.light:T.edgeSoft,backgroundColor:T.a(T.black,0.4),boxShadow:focus?T.glowShadow:'none',paddingHorizontal:14} as any}>
       {icon&&<Icon name={icon} size={18} color={T.textMute} style={{marginRight:10,marginTop:p.multiline?14:0}}/>}
       <TextInput placeholderTextColor={T.a(T.ice,0.38)} selectionColor={T.ice} autoCapitalize="none" autoCorrect={false} {...p}
         secureTextEntry={secret&&!show} onFocus={e=>{setFocus(true);p.onFocus?.(e);}} onBlur={e=>{setFocus(false);p.onBlur?.(e);}}
@@ -99,16 +115,16 @@ export const Section=({title,action,onAction,icon}:{title:string,action?:string,
 
 export function Chip({label,active,onPress,icon}:{label:string,active?:boolean,onPress?:()=>void,icon?:string}){
   return <Pressable onPress={()=>{haptic();onPress?.();}} style={{borderRadius:20,overflow:'hidden'}}>
-    <LinearGradient colors={active?[T.ice,'#CBD5E1']:[T.a(T.ice,0.12),T.a(T.ice,0.04)]} style={{flexDirection:'row',alignItems:'center',gap:6,paddingVertical:8,paddingHorizontal:15,borderRadius:20,borderWidth:1,borderColor:active?T.ice:T.glassBorder}}>
-      {icon&&<Icon name={icon} size={13} color={active?T.black:T.ice}/>}<Text style={{color:active?T.black:T.ice,fontSize:13,fontWeight:'600'}}>{label}</Text>
+    <LinearGradient colors={active?[T.a(T.electric,0.55),T.a(T.deep,0.55)]:[T.a(T.ice,0.12),T.a(T.ice,0.04)]} style={{flexDirection:'row',alignItems:'center',gap:6,paddingVertical:8,paddingHorizontal:15,borderRadius:20,borderWidth:1,borderColor:active?T.light:T.edgeSoft}}>
+      {icon&&<Icon name={icon} size={13} color={T.ice}/>}<Text style={{color:T.ice,fontSize:13,fontWeight:active?'700':'600'}}>{label}</Text>
     </LinearGradient>
   </Pressable>;
 }
 
 /** Tuile d'icône : initiale du service (pas de logos de marques), ou icône de catégorie. */
 export function Tile({icon,letter,size=46}:{icon?:string,letter?:string,size?:number}){
-  return <View style={{width:size,height:size,borderRadius:size*0.3,overflow:'hidden',alignItems:'center',justifyContent:'center',borderWidth:1,borderColor:T.glassBorder}}>
-    <LinearGradient colors={[T.a(T.ice,0.2),T.a(T.slate,0.6)]} style={StyleSheet.absoluteFill}/>
+  return <View style={{width:size,height:size,borderRadius:size*0.3,overflow:'hidden',alignItems:'center',justifyContent:'center',borderWidth:1,borderColor:T.edge}}>
+    <LinearGradient colors={[T.a(T.ice,0.22),T.a(T.deep,0.35),T.a(T.slate,0.6)]} style={StyleSheet.absoluteFill}/>
     {letter?<Text style={{color:T.ice,fontSize:size*0.42,fontWeight:'800'}}>{letter.toUpperCase()}</Text>:<Icon name={icon||'box'} size={size*0.45}/>}
   </View>;
 }
@@ -117,12 +133,12 @@ export function Tile({icon,letter,size=46}:{icon?:string,letter?:string,size?:nu
 export function Ring({value,size=120,label}:{value:number,size?:number,label?:string}){
   const sw=8,r=(size-sw*2)/2,c=2*Math.PI*r;const anim=useRef(new Animated.Value(0)).current;const [v,setV]=useState(0);
   useEffect(()=>{const id=anim.addListener(x=>setV(x.value));Animated.timing(anim,{toValue:value,duration:900,easing:Easing.out(Easing.cubic),useNativeDriver:false}).start();return ()=>anim.removeListener(id);},[value]);
-  return <View style={{width:size,height:size,alignItems:'center',justifyContent:'center'}}>
+  return <View style={{width:size,height:size,alignItems:'center',justifyContent:'center',borderRadius:size/2,boxShadow:T.glowStrong} as any}>
     <Svg width={size} height={size} style={StyleSheet.absoluteFill}>
-      <Defs><SG id="rg" x1="0" y1="0" x2="1" y2="1"><Stop offset="0" stopColor={T.ice}/><Stop offset="1" stopColor={T.steel}/></SG></Defs>
+      <Defs><SG id="rg" x1="0" y1="0" x2="1" y2="1"><Stop offset="0" stopColor={T.light}/><Stop offset="1" stopColor={T.electric}/></SG></Defs>
       <Circle cx={size/2} cy={size/2} r={r} stroke={T.a(T.ice,0.12)} strokeWidth={sw} fill={T.a(T.black,0.25)}/>
       <Circle cx={size/2} cy={size/2} r={r} stroke="url(#rg)" strokeWidth={sw} fill="none" strokeLinecap="round" strokeDasharray={`${c*v} ${c}`} transform={`rotate(-90 ${size/2} ${size/2})`}/>
-      <Circle cx={size/2} cy={size/2} r={r+sw*0.9} stroke={T.a(T.ice,0.12)} strokeWidth={1} fill="none"/>
+      <Circle cx={size/2} cy={size/2} r={r+sw*0.9} stroke={T.a(T.light,0.3)} strokeWidth={1} fill="none"/>
     </Svg>
     <Text style={{color:T.ice,fontSize:size*0.2,fontWeight:'700'}}>{Math.round(v*100)}%</Text>
     {label&&<Text style={[font.micro,{marginTop:2}]}>{label}</Text>}
@@ -131,7 +147,7 @@ export function Ring({value,size=120,label}:{value:number,size?:number,label?:st
 
 /** Logo officiel EYELIOS (fourni par le propriétaire). */
 export const Logo=({size=56}:{size?:number})=><Image source={require('../../assets/logo.png')} style={{width:size,height:size,borderRadius:size*0.22}} accessibilityLabel="Logo EYELIOS"/>;
-export const Wordmark=({size=30}:{size?:number})=><Text style={{color:T.ice,fontSize:size,fontWeight:'800',fontStyle:'italic',letterSpacing:size*0.06}}>EYELIOS</Text>;
+export const Wordmark=({size=30}:{size?:number})=><Text style={{color:T.ice,fontSize:size,fontWeight:'800',fontStyle:'italic',letterSpacing:size*0.06,textShadowColor:T.electric,textShadowRadius:size*0.5,textShadowOffset:{width:0,height:0}}}>EYELIOS</Text>;
 
 export function Busy({text}:{text:string}){
   return <Modal visible={!!text} transparent animationType="fade" statusBarTranslucent>
@@ -169,5 +185,5 @@ export const Empty=({icon,title,text}:{icon:string,title:string,text:string})=><
 export const mask='••••••••';
 const styles=StyleSheet.create({
   shadow:Platform.select({android:{elevation:0},default:{shadowColor:'#000',shadowOpacity:0.35,shadowRadius:18,shadowOffset:{width:0,height:10}}})!,
-  glowShadow:{shadowColor:T.ice,shadowOpacity:0.35,shadowRadius:14,shadowOffset:{width:0,height:0}},
+
 });
