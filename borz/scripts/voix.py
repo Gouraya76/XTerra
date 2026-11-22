@@ -1,6 +1,7 @@
 """Génère les répliques avec Fish Audio (modèle gratuit) + léger pitch cartoon."""
 import json, sys, os, subprocess, urllib.request
 ep = sys.argv[1]
+ONLY = {int(x) for x in sys.argv[2].split(",")} if len(sys.argv) > 2 else None  # régénérer seulement ces répliques
 d = json.load(open(f"{ep}/dialogues.json"))
 os.makedirs(f"{ep}/voix", exist_ok=True)
 def tts(text, ref, out):
@@ -16,6 +17,10 @@ def pitch(src, dst, semis):
         af + "silenceremove=start_periods=1:start_threshold=-45dB,areverse,silenceremove=start_periods=1:start_threshold=-45dB,areverse,loudnorm=I=-16:TP=-1.5",
         "-ar", "44100", "-ac", "1", dst], check=True)
 for i, l in enumerate(d["lines"]):
+    if ONLY is not None and i not in ONLY: continue
+    if ONLY is not None:
+        for w in l["who"].split("+"): os.path.exists(r := f"{ep}/voix/raw_{i:02d}_{w}.wav") and os.remove(r)
+    elif os.path.exists(f"{ep}/voix/{i:02d}.wav"): continue
     who = l["who"].split("+")
     parts = []
     for w in who:

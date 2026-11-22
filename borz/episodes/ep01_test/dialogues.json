@@ -1,29 +1,122 @@
 {
-  "voices": {
-    "NARRATEUR": {"ref": "4f2a0684dd0247dda68f339738c780e6", "pitch": 0},
-    "ORI":       {"ref": "588134063cd047ffafc43114f3f26746", "pitch": 0},
-    "ZIGO":      {"ref": "9f0935a47689459480b820ed3f6d782d", "pitch": 2},
-    "PIMENT":    {"ref": "0d494e6f958c4f96b7aafeec9cc0e460", "pitch": 4},
-    "PRUNE":     {"ref": "3bce5f0710f949888abe982ded1ef731", "pitch": -1}
+ "voices": {
+  "NARRATEUR": {
+   "ref": "4f2a0684dd0247dda68f339738c780e6",
+   "pitch": 0,
+   "voix": "Le narrateur"
   },
-  "lines": [
-    {"scene": "ville",  "who": "NARRATEUR", "text": "À BORZ City, il y a un quartier où l'énergie ne s'arrête jamais. Un quartier où trois bouteilles un peu spéciales ont décidé de faire la loi... enfin, d'essayer."},
-    {"scene": "garage", "who": "ZIGO",   "text": "Ori ! J'ai un plan. Un plan parfait !"},
-    {"scene": "garage", "who": "ORI",    "text": "La dernière fois que tu as dit ça, on a fait exploser le frigo."},
-    {"scene": "garage", "who": "ZIGO",   "text": "C'était un plan... expérimental."},
-    {"scene": "garage", "who": "ORI",    "text": "Il y avait des glaçons au plafond pendant trois jours, Zigo."},
-    {"scene": "garage", "who": "PIMENT", "text": "LES GARS ! LES GARS ! Catastrophe ! Gros, énorme, gigantesque problème !", "event": "entree_piment"},
-    {"scene": "garage", "who": "ORI",    "text": "Respire, Piment."},
-    {"scene": "garage", "who": "PIMENT", "text": "Je peux pas respirer, je suis une bouteille !"},
-    {"scene": "garage", "who": "ZIGO",   "text": "Techniquement... il a raison."},
-    {"scene": "garage", "who": "PIMENT", "text": "Monsieur Prune veut raser le quartier ! Le garage, le skatepark, la cuisine de Mamie Zara... tout !"},
-    {"scene": "garage", "who": "ZIGO",   "text": "Quoi ?! Il n'a pas le droit !"},
-    {"scene": "prune",  "who": "PRUNE",  "text": "Oh si, j'ai le droit. J'ai même un papier signé... par moi-même. Héhéhé."},
-    {"scene": "prune",  "who": "PRUNE",  "text": "À la place de votre petit quartier, je construirai la Prune Tower. Trois cents étages de pur violet."},
-    {"scene": "prune",  "who": "PRUNE",  "text": "Sauf si... vous remportez le Grand Défi de BORZ City. Mais vous ne gagnerez jamais. Jamais !"},
-    {"scene": "garage2","who": "PIMENT", "text": "Bon. Bah c'est fini. On déménage. Je prends le canapé."},
-    {"scene": "garage2","who": "ORI",    "text": "Non. Personne ne déménage. Ce quartier, c'est notre famille. Alors on va le gagner, ce défi."},
-    {"scene": "garage2","who": "ZIGO",   "text": "Ça tombe bien. J'ai un plan !"},
-    {"scene": "garage2","who": "ORI+PIMENT", "text": "NON !"}
-  ]
+  "ORI": {
+   "ref": "8d65ec4fb84b416e8c9805e14f0df4e2",
+   "pitch": -1,
+   "voix": "Adolescent calme, gentil et charismatique"
+  },
+  "ZIGO": {
+   "ref": "36821537b27f4fac80cb35eaa8dc3b0b",
+   "pitch": 1,
+   "voix": "Anatole"
+  },
+  "PIMENT": {
+   "ref": "caac19b986fa4c91905eb499f2aa3001",
+   "pitch": 3,
+   "voix": "Jeune Homme Dynamique"
+  },
+  "PRUNE": {
+   "ref": "7a1e084ba1b642248fc75c2be54fcf7a",
+   "pitch": -1,
+   "voix": "Vieux riche"
+  }
+ },
+ "lines": [
+  {
+   "scene": "ville",
+   "who": "NARRATEUR",
+   "text": "À BORZ City, il y a un quartier où l'énergie ne s'arrête jamais. Un quartier où trois bouteilles un peu spéciales ont décidé de faire la loi... enfin, d'essayer."
+  },
+  {
+   "scene": "garage",
+   "who": "ZIGO",
+   "text": "Ori ! J'ai un plan. Un plan parfait !"
+  },
+  {
+   "scene": "garage",
+   "who": "ORI",
+   "text": "La dernière fois que tu as dit ça, on a fait exploser le frigo."
+  },
+  {
+   "scene": "garage",
+   "who": "ZIGO",
+   "text": "C'était un plan... expérimental."
+  },
+  {
+   "scene": "garage",
+   "who": "ORI",
+   "text": "Il y avait des glaçons au plafond pendant trois jours, Zigo."
+  },
+  {
+   "scene": "garage",
+   "who": "PIMENT",
+   "text": "LES GARS ! LES GARS ! Catastrophe ! Gros, énorme, gigantesque problème !",
+   "event": "entree_piment"
+  },
+  {
+   "scene": "garage",
+   "who": "ORI",
+   "text": "Respire, Piment."
+  },
+  {
+   "scene": "garage",
+   "who": "PIMENT",
+   "text": "Je peux pas respirer, je suis une bouteille !"
+  },
+  {
+   "scene": "garage",
+   "who": "ZIGO",
+   "text": "Techniquement... il a raison."
+  },
+  {
+   "scene": "garage",
+   "who": "PIMENT",
+   "text": "Monsieur Prune veut raser le quartier ! Le garage, le skatepark, la cuisine de Mamie Zara... tout !"
+  },
+  {
+   "scene": "garage",
+   "who": "ZIGO",
+   "text": "Quoi ?! Il n'a pas le droit !"
+  },
+  {
+   "scene": "prune",
+   "who": "PRUNE",
+   "text": "Oh si, j'ai le droit. J'ai même un papier signé... par moi-même. Héhéhé."
+  },
+  {
+   "scene": "prune",
+   "who": "PRUNE",
+   "text": "À la place de votre petit quartier, je construirai la Prune Tower. Trois cents étages de pur violet."
+  },
+  {
+   "scene": "prune",
+   "who": "PRUNE",
+   "text": "Sauf si... vous remportez le Grand Défi de BORZ City. Mais vous ne gagnerez jamais. Jamais !"
+  },
+  {
+   "scene": "garage2",
+   "who": "PIMENT",
+   "text": "Bon. Bah c'est fini. On déménage. Je prends le canapé."
+  },
+  {
+   "scene": "garage2",
+   "who": "ORI",
+   "text": "Non. Personne ne déménage. Ce quartier, c'est notre famille. Alors on va le gagner, ce défi."
+  },
+  {
+   "scene": "garage2",
+   "who": "ZIGO",
+   "text": "Ça tombe bien. J'ai un plan !"
+  },
+  {
+   "scene": "garage2",
+   "who": "ORI+PIMENT",
+   "text": "NON !"
+  }
+ ]
 }

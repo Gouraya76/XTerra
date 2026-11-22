@@ -4,9 +4,9 @@ from PIL import Image
 from rembg import remove, new_session
 from scipy import ndimage
 
-SRC = sys.argv[1] if len(sys.argv) > 1 else "borz/source"
-OUT = sys.argv[2] if len(sys.argv) > 2 else "borz/personnages"
-MODEL = sys.argv[3] if len(sys.argv) > 3 else "isnet-general-use"
+SRC = sys.argv[1] if len(sys.argv) > 1 and __name__ == "__main__" else "source"
+OUT = sys.argv[2] if len(sys.argv) > 2 and __name__ == "__main__" else "personnages"
+MODEL = sys.argv[3] if len(sys.argv) > 3 and __name__ == "__main__" else "isnet-general-use"
 
 # (fichier, nom, box x0,y0,x1,y1)
 CROPS = [
@@ -25,11 +25,14 @@ CROPS = [
     ("secondaires.png", "grise",    (955, 650, 1199, 1240)),
 ]
 
-sess = new_session(MODEL)
-for fname, name, box in CROPS:
-    im = Image.open(f"{SRC}/{fname}").convert("RGB").crop(box)
-    cut = remove(im, session=sess)
-    a = np.array(cut)
+_S = {}
+def _sess():
+    if "s" not in _S: _S["s"] = new_session(MODEL)
+    return _S["s"]
+
+def cut(im):
+    """Alpha (uint8, même taille que im) du personnage principal de l'image."""
+    a = np.array(remove(im, session=_sess()))
     alpha = a[..., 3]
     lum = a[..., :3].astype(float).mean(axis=2)
     bg = alpha < 10
@@ -61,8 +64,13 @@ for fname, name, box in CROPS:
     soft = ndimage.binary_dilation(grown, iterations=1) & ~grown
     alpha = np.where(grown, 0, alpha)
     alpha = np.where(soft, alpha // 2, alpha).astype(np.uint8)
-    a[..., 3] = alpha
-    ys, xs = np.nonzero(alpha > 10)
-    a = a[ys.min():ys.max() + 1, xs.min():xs.max() + 1]
-    Image.fromarray(a).save(f"{OUT}/{name}.png")
-    print(name, a.shape)
+    return alpha
+
+if __name__ == "__main__":
+    for fname, name, box in CROPS:
+        im = Image.open(f"{SRC}/{fname}").convert("RGB").crop(box)
+        a = np.array(im.convert("RGBA")); alpha = cut(im)
+        a[..., 3] = alpha
+        ys, xs = np.nonzero(alpha > 10)
+        Image.fromarray(a[ys.min():ys.max() + 1, xs.min():xs.max() + 1]).save(f"{OUT}/{name}.png")
+        print(name)
