@@ -1,0 +1,446 @@
+{
+ "0": {
+  "score": 0.933,
+  "entendu": "Il est 3h du matin. La tempête a coupé l'électricité. Il ne reste que des bougies."
+ },
+ "1": {
+  "score": 0.907,
+  "entendu": "Hier soir, on était 8 dans ce chalet. 8 amis. Maintenant, on est plus que 3."
+ },
+ "2": {
+  "score": 0.994,
+  "entendu": "Et je viens de voir quelque chose.  Quelque chose que je n'aurais jamais dû voir."
+ },
+ "3": {
+  "score": 0.943,
+  "entendu": "Ah, le J ! Le J vient vite, il y a quelqu'un par terre !"
+ },
+ "4": {
+  "score": 0.995,
+  "entendu": "le village se réveille et ce matin vous allez découvrir que quelqu'un vous  ment depuis le début"
+ },
+ "5": {
+  "score": 0.955,
+  "entendu": "6 heures plus tôt. Salut tout le monde, c'est Logi.  Ce soir, on joue au jeu le plus traître du monde, le Loup Garou."
+ },
+ "6": {
+  "score": 0.977,
+  "entendu": "J'ai loué un chalet perdu dans la montagne.  Pas de réseau, pas de voisins.  Juste la neige, 8 joueurs et des loups cachés parmi nous."
+ },
+ "7": {
+  "score": 0.991,
+  "entendu": "Les règles sont simples. La nuit, les loups dévorent un joueur.  Le jour, tout le monde vote pour éliminer un suspect.  Si les loups sont démasqués, le village gagne.  Sinon..."
+ },
+ "8": {
+  "score": 1.0,
+  "entendu": "Sinon, les loups vous mangent tous. Bonsoir."
+ },
+ "9": {
+  "score": 0.996,
+  "entendu": "Voici le meneur. Je ne connais même pas son prénom.  Il est arrivé à pied dans la tempête et il n'a jamais enlevé sa capuche."
+ },
+ "10": {
+  "score": 0.985,
+  "entendu": "Et maintenant, les joueurs, attention, chacun d'eux peut être un loup."
+ },
+ "11": {
+  "score": 1.0,
+  "entendu": "Nadia. J'observe, je note et je ne parle que quand j'ai une preuve, donc pas souvent."
+ },
+ "12": {
+  "score": 0.942,
+  "entendu": "Et je vous le dis direct, je sais déjà qui est Lou, c'est toi et toi et lui aussi franchement."
+ },
+ "13": {
+  "score": 0.977,
+  "entendu": "Coucou, moi c'est Luna. C'est ma toute première partie.  Quelqu'un veut un chewing gum à la fraise? J'en ai plein!"
+ },
+ "14": {
+  "score": 1.0,
+  "entendu": "Momo, je suis venu pour la raclette. Si vous me votez, je pleure. Je vous préviens."
+ },
+ "15": {
+  "score": 0.969,
+  "entendu": "Élise, je m'en très bien, je m'en tout le temps et je m'en même quand je dis que je  m'en, bonne chance !"
+ },
+ "16": {
+  "score": 0.946,
+  "entendu": "Keoh ! J'ai analysé ce chalet en arrivant.  Trois sortis, deux fenêtres, et une laté de parquet qui grince. Je surveille tout !"
+ },
+ "17": {
+  "score": 0.906,
+  "entendu": "Gérard, 82 ans. Je jouais au loup-garou avant que vos parents soient nés. Et je gagnais."
+ },
+ "18": {
+  "score": 0.974,
+  "entendu": "Voici vos cartes. Regardez-les et n'édite rien.  Un loup qui parle trop finit toujours sur la table."
+ },
+ "19": {
+  "score": 0.993,
+  "entendu": "Je vous montre ma carte, à vous et seulement à vous, je suis la petite fille."
+ },
+ "20": {
+  "score": 0.978,
+  "entendu": "La nuit, je peux entreouvrir les yeux et espionner les loups, mais s'il me voit, je suis mort."
+ },
+ "21": {
+  "score": 1.0,
+  "entendu": "Ce soir, il y a une règle en plus, l'un de vous a reçu une carte vide, aucun rôle pour l'instant."
+ },
+ "22": {
+  "score": 1.0,
+  "entendu": "À minuit, cette carte se réveillera et elle pourra changer le destin d'un vote, un seul."
+ },
+ "23": {
+  "score": 0.979,
+  "entendu": "Une carte vide ? C'est un piège ! C'est forcément un piège !  Qui a la carte vide ? Levez la main !  Non ! Ne levez pas la main !"
+ },
+ "24": {
+  "score": 1.0,
+  "entendu": "Moi, je dis que celui qui a la carte vide, c'est le loup. Logique."
+ },
+ "25": {
+  "score": 0.903,
+  "entendu": "Cliquez rien de ce que tu dis n'est logique, c'est ton charme."
+ },
+ "26": {
+  "score": 0.991,
+  "entendu": "La nuit tombe sur le chalet.  Tout le monde ferme les yeux."
+ },
+ "27": {
+  "score": 0.972,
+  "entendu": "Les Lougarous, réveillez-vous. Choisissez votre victime."
+ },
+ "28": {
+  "score": 0.987,
+  "entendu": "j'en trouve un œil, doucement, je vois deux ombres, une immense et une toute petite."
+ },
+ "29": {
+  "score": 0.991,
+  "entendu": "Et il y a une odeur, une odeur sucrée, comme de la fraise."
+ },
+ "30": {
+  "score": 1.0,
+  "entendu": "Les loups se rendorment. Voyante, réveille-toi. De qui veux-tu connaître le rôle ?"
+ },
+ "31": {
+  "score": 0.949,
+  "entendu": "Il accuse tout le monde. Je veux savoir pourquoi."
+ },
+ "32": {
+  "score": 0.931,
+  "entendu": "Keke est un simple villageois."
+ },
+ "33": {
+  "score": 0.989,
+  "entendu": "Sorcière, réveille-toi.  Cette nuit, les loups ont attaqué Théo.  Veux-tu utiliser ta potion de vie ?"
+ },
+ "34": {
+  "score": 0.994,
+  "entendu": "Théo est parano, insupportable et utile.  Je le sauve, mais il ne le saura jamais."
+ },
+ "35": {
+  "score": 1.0,
+  "entendu": "Le village se réveille et cette nuit personne n'est mort."
+ },
+ "36": {
+  "score": 0.991,
+  "entendu": "Personne ? C'est impossible, les loups ont attaqué quelqu'un, quelqu'un a été sauvé, et ce quelqu'un c'est moi, je le sens !"
+ },
+ "37": {
+  "score": 0.943,
+  "entendu": "ou alors les loutes ont trouvé trop maigres.  Ça arrive."
+ },
+ "38": {
+  "score": 0.984,
+  "entendu": "Ecoutez-moi, cette nuit j'ai vu une ombre, une très grande ombre."
+ },
+ "39": {
+  "score": 0.984,
+  "entendu": "Une grande ombre ?  Tout le monde regarde Momo !  Momo, c'est toi !"
+ },
+ "40": {
+  "score": 0.988,
+  "entendu": "Moi ? Mais je suis grand parce que je mange bien. C'est pas un crime de bien manger."
+ },
+ "41": {
+  "score": 0.953,
+  "entendu": "Arrêtez ! Mon mot c'est un honours ! Il m'a porté ma valise tout à l'heure !  Un loup ! Ça ne porte pas les valises !"
+ },
+ "42": {
+  "score": 0.97,
+  "entendu": "Toi, tu es innocent. Je le sais. Alors arrête d'accuser au hasard. Tu nous fais perdre."
+ },
+ "43": {
+  "score": 0.985,
+  "entendu": "Tu le sais ? Comment tu le sais ? Seul la voyante peut savoir ça ? Ou un loup qui ment ? Nadia, t'es grillée."
+ },
+ "44": {
+  "score": 1.0,
+  "entendu": "Ce garçon est un ventilateur. Il brasse de l'air dans toutes les directions."
+ },
+ "45": {
+  "score": 0.971,
+  "entendu": "Je propose qu'on vote Keke, pas parce qu'il est loup,  juste pour avoir une heure de silence."
+ },
+ "46": {
+  "score": 0.984,
+  "entendu": "Le problème, c'est que Nadia vient de dire que Keke est innocent. Si on le vote, on perd un villageois. Mais personne ne l'écoute."
+ },
+ "47": {
+  "score": 0.889,
+  "entendu": "l'heure du vote.  Pointe et du doigt le joueur que vous voulez éliminer.  3, 2, 1."
+ },
+ "48": {
+  "score": 0.797,
+  "entendu": "Checker. Quatre voies. Momo. Trois voies. Checker. Tu quittes le village."
+ },
+ "49": {
+  "score": 0.986,
+  "entendu": "Vous allez le regretter, le loup est assis juste à côté de Momo.  Je vous l'ai dit, je vous l'ai toujours dit."
+ },
+ "50": {
+  "score": 0.884,
+  "entendu": "et qui retourne sa carte. Il était villageois."
+ },
+ "51": {
+  "score": 1.0,
+  "entendu": "Il était innocent et le pire c'est que sa dernière phrase je n'arrive pas à l'oublier."
+ },
+ "52": {
+  "score": 0.961,
+  "entendu": "Minuisson. Le joueur à la carte vide ouvre les yeux. Ta carte devient le juge."
+ },
+ "53": {
+  "score": 0.994,
+  "entendu": "Une seule fois dans la partie, tu pourras annuler un vote.  Choisis bien ton moment."
+ },
+ "54": {
+  "score": 0.954,
+  "entendu": "Le juge. Enfin, rôle à ma hauteur."
+ },
+ "55": {
+  "score": 0.982,
+  "entendu": "La nuit retombe.  Voyante, réveille-toi.  Qui veux-tu voir ?"
+ },
+ "56": {
+  "score": 1.0,
+  "entendu": "Momo, je dois savoir."
+ },
+ "57": {
+  "score": 1.0,
+  "entendu": "Non, ce n'est pas possible."
+ },
+ "58": {
+  "score": 1.0,
+  "entendu": "Les loups-garous, réveillez-vous. Choisissez votre victime."
+ },
+ "59": {
+  "score": 0.988,
+  "entendu": "Je n'ose plus ouvrir les yeux. J'entends juste des pains qui vont vers la chambre de Nadia."
+ },
+ "60": {
+  "score": 0.984,
+  "entendu": "Le village se réveille.  Cette nuit les loups ont dévoré.  Nadia."
+ },
+ "61": {
+  "score": 1.0,
+  "entendu": "Attendez, regardez la table. Nadia a gratté quelque chose dans le bois avec sa carte. Une lettre..."
+ },
+ "62": {
+  "score": 0.811,
+  "entendu": "Un monsieur juste un M."
+ },
+ "63": {
+  "score": 0.994,
+  "entendu": "M, M comme meneur ! Il est arrivé à pied dans la tempête avec une capuche ! Qui fait ça ?"
+ },
+ "64": {
+  "score": 0.953,
+  "entendu": "Je ne joue pas, mais continue, c'est très divertissant."
+ },
+ "65": {
+  "score": 0.867,
+  "entendu": "Encom... Momo ?  Non mais attendez, ça peut être plein de choses.  Encom mystère. Encom... Mianne ?"
+ },
+ "66": {
+  "score": 0.96,
+  "entendu": "Ça suffit, je vais vous dire la vérité, c'est moi la voyante.  Et cette nuit, j'ai regardé la carte de logis."
+ },
+ "67": {
+  "score": 1.0,
+  "entendu": "Le J est un loup-garou."
+ },
+ "68": {
+  "score": 0.968,
+  "entendu": "Quoi ? Elle ment. Je suis la petite fille, mais si je le dis, les loups sauront qu'ils espionnent."
+ },
+ "69": {
+  "score": 0.885,
+  "entendu": "Oh non, logis, je te faisais confiance, pardon, mais je vote logis."
+ },
+ "70": {
+  "score": 0.967,
+  "entendu": "Si Elise l'a vu, alors moi aussi je vote le G. Désolé, mon frère."
+ },
+ "71": {
+  "score": 0.818,
+  "entendu": "Le vote. Logi. Quatre voies. Logi. Tu quittes le."
+ },
+ "72": {
+  "score": 1.0,
+  "entendu": "OBJECTION !"
+ },
+ "73": {
+  "score": 0.977,
+  "entendu": "J'ai la carte du juge, et j'annule ce vote. Asseyez-vous, bandamateurs."
+ },
+ "74": {
+  "score": 0.985,
+  "entendu": "Tapi Gérard vient de me sauver la vie. Je crois que je vais pleurer."
+ },
+ "75": {
+  "score": 1.0,
+  "entendu": "Parfait. Maintenant, la vraie vérité. Je ne suis pas la voyante. J'ai menti."
+ },
+ "76": {
+  "score": 0.982,
+  "entendu": "Je suis la sorcière.  J'ai inventé cette histoire pour voir qui sauterait sur l'occasion pour voter logie  et deux personnes ont sauté très vite."
+ },
+ "77": {
+  "score": 0.96,
+  "entendu": "Momo et Luna."
+ },
+ "78": {
+  "score": 1.0,
+  "entendu": "Quoi ? Mais moi j'ai juste suivi ! Je ne comprends rien à ce jeu, je vous le jure !"
+ },
+ "79": {
+  "score": 0.897,
+  "entendu": "Nouveau vote. Le juge a parlé. Le village a entendu.  3, 2, 1."
+ },
+ "80": {
+  "score": 0.96,
+  "entendu": "Momo. Quatre voies.  Momo, tu quittes le village. Retourne ta carte."
+ },
+ "81": {
+  "score": 1.0,
+  "entendu": "Bon, vous m'avez eu, j'étais un loup, mais la raclette, je la mange quand même."
+ },
+ "82": {
+  "score": 1.0,
+  "entendu": "Momo était un loup-garou."
+ },
+ "83": {
+  "score": 0.994,
+  "entendu": "Un loup en moins, mais attention, il en reste un et il est encore assis avec nous."
+ },
+ "84": {
+  "score": 0.973,
+  "entendu": "Dernière nuit. La tempête coupe l'électricité.  Lougarou, tu es seul.  Choisis."
+ },
+ "85": {
+  "score": 0.973,
+  "entendu": "C'est le moment du début de la vidéo, 3 heures du matin. Je regarde et cette fois je vois tout."
+ },
+ "86": {
+  "score": 1.0,
+  "entendu": "Sorcière, réveille-toi. Il te reste ta potion de mort."
+ },
+ "87": {
+  "score": 0.947,
+  "entendu": "Je la garde. Demain, je vais regarder le loup dans les yeux."
+ },
+ "88": {
+  "score": 0.964,
+  "entendu": "Le village se réveille.  Cette nuit, le loup a dévoré.  Theo."
+ },
+ "89": {
+  "score": 0.978,
+  "entendu": "Mais Theo est le chasseur.  Avant de mourir, il doit tirer sur quelqu'un."
+ },
+ "90": {
+  "score": 0.986,
+  "entendu": "Je le savais ! J'avais une théorie !  Le loup, c'est le plus calme !  Celui qui ne dit jamais rien !  Papi Gérard !"
+ },
+ "91": {
+  "score": 0.918,
+  "entendu": "Espèce de Nigo, j'étais le juge."
+ },
+ "92": {
+  "score": 0.994,
+  "entendu": "Et voilà, on était huit, on est plus que trois, exactement comme au début de la vidéo."
+ },
+ "93": {
+  "score": 0.96,
+  "entendu": "C'est Elise. Elle ment depuis le début. Elle a dit qu'elle était voyante, puis sorcière, qui m'en aoutant."
+ },
+ "94": {
+  "score": 0.965,
+  "entendu": "quelqu'un qui joue bien.  Toi par contre, tu joues la petite fille perdue depuis trois heures, c'est l'eau."
+ },
+ "95": {
+  "score": 1.0,
+  "entendu": "Arrêtez je vais vous dire ce que j'ai vu la première nuit j'ai senti une odeur de fraise"
+ },
+ "96": {
+  "score": 1.0,
+  "entendu": "Et cette nuit, dans le noir, j'ai entendu un petit bruit. Un bruit tout bête. Pop."
+ },
+ "97": {
+  "score": 0.993,
+  "entendu": "Mais tout le monde mâche du chewing-gum !  Ce n'est pas une preuve, ça !"
+ },
+ "98": {
+  "score": 0.994,
+  "entendu": "Luna, tu étais la seule à en avoir, tu en as proposé à tout le monde et personne n'en a pris."
+ },
+ "99": {
+  "score": 0.902,
+  "entendu": "Dernier vote.  Trois.  Deux."
+ },
+ "100": {
+  "score": 0.937,
+  "entendu": "Luna, deux voix, Luna, retourne à ta carte."
+ },
+ "101": {
+  "score": 0.974,
+  "entendu": "Bravo ! Vraiment ? Bravo !  Trois heures à jouer la gentille. J'avais presque gagné."
+ },
+ "102": {
+  "score": 0.971,
+  "entendu": "Luna était le dernier loup-garou.  Le village a gagné."
+ },
+ "103": {
+  "score": 0.932,
+  "entendu": "On a gagné, Élise, Papy, Théo, Keke, Nadia, on a gagné pour vous."
+ },
+ "104": {
+  "score": 1.0,
+  "entendu": "Je l'ai toujours su, évidemment."
+ },
+ "105": {
+  "score": 1.0,
+  "entendu": "tu as voté contre moi."
+ },
+ "106": {
+  "score": 1.0,
+  "entendu": "détail."
+ },
+ "107": {
+  "score": 0.991,
+  "entendu": "Félicitations, mais une dernière question.  Personne ne s'est demandé qui a ouvert la fenêtre, la première nuit."
+ },
+ "108": {
+  "score": 1.0,
+  "entendu": "La fenêtre ? Quelle fenêtre ? On ne l'a jamais ouverte, la fenêtre."
+ },
+ "109": {
+  "score": 0.986,
+  "entendu": "Il y avait trois cartes loups dans le paquet.  Je n'en ai distribué que deux."
+ },
+ "110": {
+  "score": 0.974,
+  "entendu": "Bon, on rentre, on rentre.  Abonnez-vous et cette nuit laissez la lumière allumer."
+ }
+}

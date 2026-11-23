@@ -16,7 +16,7 @@ def cle_fish():
 
 ep = sys.argv[1]
 ONLY = {int(x) for x in sys.argv[2].split(",")} if len(sys.argv) > 2 else None  # régénérer seulement ces répliques
-d = json.load(open(f"{ep}/dialogues.json"))
+d = json.load(open(f"{ep}/dialogues.json", encoding="utf-8"))
 os.makedirs(f"{ep}/voix", exist_ok=True)
 def tts(text, ref, out):
     if os.path.exists(out): return

@@ -2,7 +2,7 @@
 import sys, json, subprocess, shutil, re, difflib, os, tempfile, numpy as np
 from faster_whisper import WhisperModel
 ep, idx, N = sys.argv[1], [int(x) for x in sys.argv[2].split(",")], int(sys.argv[3]) if len(sys.argv) > 3 else 4
-L = json.load(open(f"{ep}/dialogues.json"))["lines"]
+L = json.load(open(f"{ep}/dialogues.json", encoding="utf-8"))["lines"]
 m = WhisperModel("small", device="cpu", compute_type="int8")
 n = lambda s: re.sub(r"[^a-zàâçéèêëîïôûùüÿœ ]", "", s.lower())
 def score(i):
