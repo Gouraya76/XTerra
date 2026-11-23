@@ -1,0 +1,1083 @@
+{
+ "titre": "J'AI SURVÉCU 100 JOURS DANS LA VILLE DE MONSIEUR PRUNE",
+ "beats": [
+  {
+   "day": 0,
+   "scene": "place",
+   "shot": "drone",
+   "cast": [
+    "ORI",
+    "ZIGO",
+    "PIMENT",
+    "PASSANTS"
+   ],
+   "who": "ORI",
+   "text": "Imagine une ville où chaque matin, une nouvelle règle tombe du ciel. Une règle complètement absurde."
+  },
+  {
+   "scene": "place",
+   "shot": "boite",
+   "cast": [
+    "GARDE"
+   ],
+   "who": "ORI",
+   "text": "Tu fais trois erreurs… et tu disparais dans La Boîte. Personne n'en est jamais ressorti."
+  },
+  {
+   "scene": "place",
+   "shot": "ori_face",
+   "cast": [
+    "ORI"
+   ],
+   "act": {
+    "ORI": "fierte"
+   },
+   "who": "ORI",
+   "text": "Moi, c'est Ori. Et j'ai décidé de survivre cent jours dans la ville de Monsieur Prune."
+  },
+  {
+   "scene": "place",
+   "shot": "mairie",
+   "cast": [
+    "PRUNE",
+    "GARDE"
+   ],
+   "act": {
+    "PRUNE": "balcon"
+   },
+   "who": "ORI",
+   "text": "Tout a commencé le jour où Monsieur Prune a racheté BORZ City. La mairie, les rues, les panneaux… tout est devenu violet."
+  },
+  {
+   "scene": "place",
+   "shot": "prune_face",
+   "cast": [
+    "PRUNE"
+   ],
+   "who": "PRUNE",
+   "text": "Chers habitants ! Désormais, il y aura une règle par jour. Une seule. C'est facile, non ? Héhéhé."
+  },
+  {
+   "scene": "place",
+   "shot": "trio",
+   "cast": [
+    "ORI",
+    "ZIGO",
+    "PIMENT"
+   ],
+   "who": "PIMENT",
+   "text": "Une règle par jour ? Trop facile ! Moi, je suis le roi des règles !"
+  },
+  {
+   "scene": "place",
+   "shot": "trio",
+   "cast": [
+    "ORI",
+    "ZIGO",
+    "PIMENT"
+   ],
+   "act": {
+    "ZIGO": "lunettes"
+   },
+   "who": "ZIGO",
+   "text": "Piment, la semaine dernière, tu as perdu au jeu du « ni oui ni non » contre un pigeon."
+  },
+  {
+   "day": 1,
+   "rule": "INTERDIT DE COURIR",
+   "scene": "place",
+   "shot": "regle",
+   "who": "ORI",
+   "text": "Jour un. Le panneau s'allume. Interdit de courir."
+  },
+  {
+   "scene": "rue",
+   "shot": "trio",
+   "cast": [
+    "ORI",
+    "ZIGO",
+    "PIMENT"
+   ],
+   "act": {
+    "ALL": "marche_lente"
+   },
+   "who": "ORI",
+   "text": "Facile. On marche tout doucement. Comme des retraités dans un musée."
+  },
+  {
+   "scene": "rue",
+   "shot": "large",
+   "cast": [
+    "ORI",
+    "ZIGO",
+    "PIMENT",
+    "SKATTY"
+   ],
+   "act": {
+    "SKATTY": "skate_passe"
+   },
+   "who": "ORI",
+   "text": "Et là, Skatty passe à côté de nous en skate. Il ne court pas. Il roule. Techniquement, c'est autorisé."
+  },
+  {
+   "scene": "rue",
+   "shot": "piment_face",
+   "cast": [
+    "PIMENT"
+   ],
+   "act": {
+    "PIMENT": "court"
+   },
+   "who": "PIMENT",
+   "text": "Attends-moi Skatty ! Je veux essayer !"
+  },
+  {
+   "scene": "rue",
+   "shot": "large",
+   "cast": [
+    "ORI",
+    "ZIGO",
+    "PIMENT",
+    "GARDE"
+   ],
+   "act": {
+    "GARDE": "siffle",
+    "PIMENT": "fige"
+   },
+   "errors": {
+    "PIMENT": 1
+   },
+   "sfx": "sifflet",
+   "who": "GARDE",
+   "text": "Infraction ! Vous avez couru. Première erreur."
+  },
+  {
+   "scene": "rue",
+   "shot": "piment_face",
+   "cast": [
+    "PIMENT"
+   ],
+   "act": {
+    "PIMENT": "triste"
+   },
+   "who": "PIMENT",
+   "text": "Mais j'ai couru dans ma tête ! C'est mes jambes qui ont suivi !"
+  },
+  {
+   "scene": "rue",
+   "shot": "ori_face",
+   "cast": [
+    "ORI"
+   ],
+   "who": "ORI",
+   "text": "Jour un. Une minute. Et Piment avait déjà une erreur."
+  },
+  {
+   "day": 2,
+   "rule": "INTERDIT DE SOURIRE",
+   "scene": "place",
+   "shot": "regle",
+   "who": "ORI",
+   "text": "Jour deux. Interdit de sourire."
+  },
+  {
+   "scene": "place",
+   "shot": "trio",
+   "cast": [
+    "ORI",
+    "ZIGO",
+    "PIMENT"
+   ],
+   "act": {
+    "ALL": "serieux"
+   },
+   "who": "ORI",
+   "text": "Le problème, c'est qu'on est des bouteilles de boisson énergisante. On est NÉS en souriant."
+  },
+  {
+   "scene": "place",
+   "shot": "large",
+   "cast": [
+    "ORI",
+    "ZIGO",
+    "PIMENT",
+    "PAPI"
+   ],
+   "act": {
+    "PAPI": "rire"
+   },
+   "who": "PAPI",
+   "text": "Hohoho ! Vous avez vu vos têtes ? On dirait trois bouteilles qui ont avalé un citron !"
+  },
+  {
+   "scene": "place",
+   "shot": "trio",
+   "cast": [
+    "ORI",
+    "ZIGO",
+    "PIMENT"
+   ],
+   "act": {
+    "ALL": "serieux"
+   },
+   "who": "ORI",
+   "text": "J'ai mordu ma langue tellement fort que j'ai vu ma vie défiler. Mais je n'ai pas souri."
+  },
+  {
+   "scene": "place",
+   "shot": "large",
+   "cast": [
+    "PAPI",
+    "GARDE"
+   ],
+   "act": {
+    "GARDE": "siffle"
+   },
+   "sfx": "sifflet",
+   "who": "ORI",
+   "text": "Papi Borz, lui, a pris une erreur. Il a dit que ça valait le coup."
+  },
+  {
+   "day": 5,
+   "rule": "INTERDIT DE DIRE NON",
+   "scene": "qg",
+   "shot": "regle",
+   "who": "ORI",
+   "text": "Jour cinq. Interdit de dire « non ». Et ça, c'était un piège pour moi."
+  },
+  {
+   "scene": "qg",
+   "shot": "zigo_face",
+   "cast": [
+    "ZIGO"
+   ],
+   "act": {
+    "ZIGO": "idee"
+   },
+   "who": "ZIGO",
+   "text": "Ori ! J'ai un plan. Un plan parfait !"
+  },
+  {
+   "scene": "qg",
+   "shot": "ori_face",
+   "cast": [
+    "ORI"
+   ],
+   "act": {
+    "ORI": "retient"
+   },
+   "who": "ORI",
+   "text": "Euh… Nouvelle idée ? Génial ! Vas-y, raconte."
+  },
+  {
+   "scene": "qg",
+   "shot": "zigo_face",
+   "cast": [
+    "ZIGO"
+   ],
+   "act": {
+    "ZIGO": "idee"
+   },
+   "who": "ZIGO",
+   "text": "On creuse un tunnel jusqu'à La Boîte pour voir ce qu'il y a dedans ! J'ai déjà calculé : ça prend seulement… quatre-vingt-quinze jours."
+  },
+  {
+   "scene": "qg",
+   "shot": "trio",
+   "cast": [
+    "ORI",
+    "ZIGO",
+    "PIMENT"
+   ],
+   "who": "ORI",
+   "text": "Retiens bien ce chiffre. Quatre-vingt-quinze. Parce que pour une fois… le plan de Zigo allait servir."
+  },
+  {
+   "day": 9,
+   "rule": "INTERDIT DE PORTER DU VERT",
+   "scene": "rue",
+   "shot": "regle",
+   "who": "ORI",
+   "text": "Jour neuf. Interdit de porter du vert."
+  },
+  {
+   "scene": "rue",
+   "shot": "zigo_face",
+   "cast": [
+    "ZIGO"
+   ],
+   "act": {
+    "ZIGO": "panique"
+   },
+   "who": "ZIGO",
+   "text": "Mais je suis VERT ! Je suis vert de partout ! Même mon bouchon est vert !"
+  },
+  {
+   "scene": "rue",
+   "shot": "large",
+   "cast": [
+    "ZIGO",
+    "LOLA"
+   ],
+   "act": {
+    "LOLA": "selfie"
+   },
+   "who": "LOLA",
+   "text": "Bouge pas, chéri. J'ai un sweat rose, des lunettes de soleil, et zéro limite."
+  },
+  {
+   "scene": "rue",
+   "shot": "large",
+   "cast": [
+    "ORI",
+    "ZIGO",
+    "PIMENT",
+    "LOLA",
+    "GARDE"
+   ],
+   "act": {
+    "ZIGO": "deguise"
+   },
+   "who": "ORI",
+   "text": "Pendant toute la journée, Zigo s'est appelé Zigolette. Le garde l'a même complimenté sur son style."
+  },
+  {
+   "day": 15,
+   "rule": "INTERDIT DE PARLER FORT",
+   "scene": "skatepark",
+   "shot": "regle",
+   "who": "ORI",
+   "text": "Jour quinze. Interdit de parler fort. Et là… les choses sont devenues sérieuses."
+  },
+  {
+   "scene": "skatepark",
+   "shot": "tank_face",
+   "cast": [
+    "TANK"
+   ],
+   "act": {
+    "TANK": "crie"
+   },
+   "who": "TANK",
+   "text": "ALLEZ LES JEUNES ! VINGT POMPES ! LA FORCE, ÇA SE TRANSPIRE !"
+  },
+  {
+   "scene": "skatepark",
+   "shot": "large",
+   "cast": [
+    "TANK",
+    "ORI",
+    "PIMENT",
+    "GARDE"
+   ],
+   "act": {
+    "GARDE": "arrete",
+    "TANK": "emmene"
+   },
+   "sfx": "sifflet",
+   "who": "ORI",
+   "text": "Tank ne sait pas parler moins fort. Il a pris trois erreurs en une seule phrase."
+  },
+  {
+   "scene": "place",
+   "shot": "boite",
+   "cast": [
+    "TANK",
+    "GARDE"
+   ],
+   "act": {
+    "TANK": "entre_boite"
+   },
+   "who": "ORI",
+   "text": "On l'a regardé entrer dans La Boîte. La porte s'est refermée. Et pour la première fois… plus personne ne rigolait."
+  },
+  {
+   "scene": "place",
+   "shot": "piment_face",
+   "cast": [
+    "PIMENT"
+   ],
+   "act": {
+    "PIMENT": "triste"
+   },
+   "who": "PIMENT",
+   "text": "Il m'avait promis de m'apprendre à faire une pompe. Une vraie."
+  },
+  {
+   "day": 22,
+   "rule": "INTERDIT DE FAIRE DE LA MUSIQUE",
+   "scene": "qg",
+   "shot": "regle",
+   "who": "ORI",
+   "text": "Jour vingt-deux. Interdit de faire de la musique."
+  },
+  {
+   "scene": "qg",
+   "shot": "large",
+   "cast": [
+    "NOVA",
+    "KENZO",
+    "ORI"
+   ],
+   "act": {
+    "KENZO": "filme"
+   },
+   "who": "KENZO",
+   "text": "Salut la team, c'est Kenzo ! Aujourd'hui, live secret dans le garage. Chut. Abonnez-vous en silence."
+  },
+  {
+   "scene": "qg",
+   "shot": "nova_face",
+   "cast": [
+    "NOVA"
+   ],
+   "who": "NOVA",
+   "text": "Si on ne peut plus faire de musique… alors on va faire du bruit autrement. Ori, il nous faut un plan."
+  },
+  {
+   "scene": "qg",
+   "shot": "ori_face",
+   "cast": [
+    "ORI"
+   ],
+   "who": "ORI",
+   "text": "Ce soir-là, j'ai compris que survivre ne suffisait plus. Il fallait résister."
+  },
+  {
+   "day": 31,
+   "rule": "INTERDIT DE CUISINER",
+   "scene": "cuisine",
+   "shot": "regle",
+   "who": "ORI",
+   "text": "Jour trente et un. Interdit de cuisiner. Ce qui voulait dire… interdit de Mamie Zara."
+  },
+  {
+   "scene": "cuisine",
+   "shot": "zara_face",
+   "cast": [
+    "ZARA"
+   ],
+   "act": {
+    "ZARA": "remue"
+   },
+   "who": "ZARA",
+   "text": "Personne ne m'empêchera de nourrir mes enfants. Ni Prune, ni ses gardes, ni personne."
+  },
+  {
+   "scene": "cuisine",
+   "shot": "large",
+   "cast": [
+    "ZARA",
+    "ORI",
+    "ZIGO",
+    "PIMENT",
+    "NINO",
+    "GARDE"
+   ],
+   "act": {
+    "GARDE": "entre"
+   },
+   "sfx": "porte",
+   "who": "ORI",
+   "text": "Et là, la porte s'ouvre. Un garde. Il voit la marmite. Il voit Mamie. Il sort son carnet."
+  },
+  {
+   "scene": "cuisine",
+   "shot": "ori_face",
+   "cast": [
+    "ORI"
+   ],
+   "act": {
+    "ORI": "avance"
+   },
+   "errors": {
+    "ORI": 1
+   },
+   "who": "ORI",
+   "text": "C'est moi. C'est moi qui ai cuisiné. Mettez-moi l'erreur."
+  },
+  {
+   "scene": "cuisine",
+   "shot": "zara_face",
+   "cast": [
+    "ZARA"
+   ],
+   "who": "ZARA",
+   "text": "Mon fils… tu viens de faire la chose la plus courageuse et la plus bête de ta vie."
+  },
+  {
+   "scene": "cuisine",
+   "shot": "large",
+   "cast": [
+    "ZARA",
+    "ORI",
+    "ZIGO",
+    "PIMENT",
+    "NINO",
+    "ROCCO",
+    "NOVA",
+    "KENZO"
+   ],
+   "act": {
+    "ALL": "equipe"
+   },
+   "hud": "EQUIPE",
+   "who": "ORI",
+   "text": "Ce soir-là, dans la cuisine, on était huit. On s'est donné un nom : La Résistance."
+  },
+  {
+   "scene": "cuisine",
+   "shot": "nino_face",
+   "cast": [
+    "NINO"
+   ],
+   "act": {
+    "NINO": "pouces"
+   },
+   "who": "NINO",
+   "text": "Moi aussi je suis dans La Résistance ? Trop bien ! Je peux avoir un badge ?"
+  },
+  {
+   "day": 40,
+   "rule": "INTERDIT DE DIRE « BORZ »",
+   "scene": "place",
+   "shot": "regle",
+   "who": "ORI",
+   "text": "Jour quarante. Interdit de dire le mot « BORZ ». Le nom de notre quartier. Le nom de notre boisson. Notre nom."
+  },
+  {
+   "scene": "place",
+   "shot": "trio",
+   "cast": [
+    "ORI",
+    "ZIGO",
+    "PIMENT"
+   ],
+   "who": "PIMENT",
+   "text": "Alors on dit quoi ? « Le truc » ? « La boisson qui commence par B » ? « Bo… Bo… Bouteille » ?"
+  },
+  {
+   "scene": "place",
+   "shot": "large",
+   "cast": [
+    "ORI",
+    "ZIGO",
+    "PIMENT",
+    "KENZO",
+    "PASSANTS"
+   ],
+   "act": {
+    "KENZO": "filme"
+   },
+   "who": "ORI",
+   "text": "Kenzo a trouvé la solution. Dans ses vidéos, il disait « le loup ». Parce que Borz, dans la langue de nos ancêtres, ça veut dire loup."
+  },
+  {
+   "scene": "place",
+   "shot": "papi_face",
+   "cast": [
+    "PAPI"
+   ],
+   "who": "PAPI",
+   "text": "Un loup, ça ne se laisse jamais enfermer. Il attend. Il observe. Et quand la meute est prête… il hurle."
+  },
+  {
+   "scene": "place",
+   "shot": "ori_face",
+   "cast": [
+    "ORI"
+   ],
+   "act": {
+    "ORI": "fierte"
+   },
+   "who": "ORI",
+   "text": "À partir de ce jour-là, dans toute la ville, quand quelqu'un voulait dire « tiens bon », il faisait un petit hurlement. Aouuu."
+  },
+  {
+   "day": 50,
+   "rule": "INTERDIT DE DORMIR",
+   "scene": "rueNuit",
+   "shot": "regle",
+   "who": "ORI",
+   "text": "Jour cinquante. Interdit de dormir. La nuit, toute la ville marchait comme des zombies."
+  },
+  {
+   "scene": "rueNuit",
+   "shot": "large",
+   "cast": [
+    "ORI",
+    "PIMENT",
+    "SKATTY"
+   ],
+   "act": {
+    "ALL": "zombie"
+   },
+   "who": "SKATTY",
+   "text": "Moi, je dors les yeux ouverts depuis des années, frérot. Ils peuvent rien contre moi."
+  },
+  {
+   "scene": "rueNuit",
+   "shot": "piment_face",
+   "cast": [
+    "PIMENT"
+   ],
+   "act": {
+    "PIMENT": "baille"
+   },
+   "errors": {
+    "PIMENT": 2
+   },
+   "sfx": "sifflet",
+   "who": "ORI",
+   "text": "Piment, lui, a bâillé. Un seul bâillement. Deuxième erreur."
+  },
+  {
+   "day": 64,
+   "scene": "rueNuit",
+   "shot": "trio",
+   "cast": [
+    "ORI",
+    "ZIGO",
+    "PIMENT",
+    "ROCCO"
+   ],
+   "who": "ORI",
+   "text": "Jour soixante-quatre. Le tunnel de Zigo avançait. Tonton Rocco creusait la nuit, avec une cuillère de Mamie."
+  },
+  {
+   "scene": "rueNuit",
+   "shot": "rocco_face",
+   "cast": [
+    "ROCCO"
+   ],
+   "who": "ROCCO",
+   "text": "Une cuillère. Pour creuser un tunnel. Je te jure, Zigo, si ça marche, je mange mon casque."
+  },
+  {
+   "scene": "boite",
+   "shot": "boite",
+   "cast": [
+    "ZIGO",
+    "ROCCO"
+   ],
+   "act": {
+    "ZIGO": "choc"
+   },
+   "who": "ORI",
+   "text": "Et une nuit, le tunnel a débouché sous La Boîte. Ce qu'on a vu… personne n'était prêt."
+  },
+  {
+   "scene": "boite",
+   "shot": "usine",
+   "cast": [
+    "TANK",
+    "GARDE",
+    "PASSANTS"
+   ],
+   "act": {
+    "TANK": "travaille"
+   },
+   "who": "ORI",
+   "text": "Une usine. Une énorme usine violette. Tous les disparus étaient là, à remplir des bouteilles de Prune Energy. Le nouveau produit de Monsieur Prune."
+  },
+  {
+   "scene": "boite",
+   "shot": "prune_face",
+   "cast": [
+    "PRUNE"
+   ],
+   "act": {
+    "PRUNE": "rire"
+   },
+   "who": "PRUNE",
+   "text": "Dans cent jours, plus personne ne boira BORZ. Toute la ville boira MA boisson. Violette. Comme moi. Héhéhé."
+  },
+  {
+   "day": 70,
+   "rule": "INTERDIT DE RIRE",
+   "scene": "rue",
+   "shot": "regle",
+   "who": "ORI",
+   "text": "Jour soixante-dix. Interdit de rire. Prune était furieux. Il voulait une ville triste."
+  },
+  {
+   "scene": "rue",
+   "shot": "large",
+   "cast": [
+    "ORI",
+    "ZIGO",
+    "PIMENT",
+    "SKATTY",
+    "GARDE"
+   ],
+   "act": {
+    "SKATTY": "skate_passe"
+   },
+   "who": "ORI",
+   "text": "Skatty est passé en skate devant un garde, il a glissé sur une peau de banane, il a fait trois saltos… et il a atterri pile sur ses roues."
+  },
+  {
+   "scene": "rue",
+   "shot": "garde_face",
+   "cast": [
+    "GARDE"
+   ],
+   "act": {
+    "GARDE": "retient"
+   },
+   "who": "GARDE",
+   "text": "Hmpf… Hmmmpf… Je… je ne rigole pas. C'est mon nez qui fait du bruit."
+  },
+  {
+   "scene": "rue",
+   "shot": "ori_face",
+   "cast": [
+    "ORI"
+   ],
+   "who": "ORI",
+   "text": "Et là, j'ai compris un truc énorme. Même les gardes en avaient marre. Il suffisait de les faire craquer."
+  },
+  {
+   "day": 77,
+   "rule": "INTERDIT D'ÊTRE PLUS DE DEUX",
+   "scene": "place",
+   "shot": "regle",
+   "who": "ORI",
+   "text": "Jour soixante-dix-sept. Interdit d'être plus de deux. Prune avait senti que La Résistance grandissait."
+  },
+  {
+   "scene": "place",
+   "shot": "large",
+   "cast": [
+    "ORI",
+    "NOVA",
+    "GARDE",
+    "PASSANTS"
+   ],
+   "who": "ORI",
+   "text": "Alors on a communiqué autrement. Kenzo cachait des messages dans ses lives. Nova cachait des codes dans des sons."
+  },
+  {
+   "day": 83,
+   "rule": "INTERDIT DE MARCHER EN LIGNE DROITE",
+   "scene": "rue",
+   "shot": "regle",
+   "who": "ORI",
+   "text": "Jour quatre-vingt-trois. Interdit de marcher en ligne droite. Oui. Vraiment."
+  },
+  {
+   "scene": "rue",
+   "shot": "large",
+   "cast": [
+    "ORI",
+    "ZIGO",
+    "PIMENT",
+    "PASSANTS"
+   ],
+   "act": {
+    "ALL": "zigzag"
+   },
+   "who": "ORI",
+   "text": "Toute la ville avançait en zigzag. Pour aller à la boulangerie, il fallait vingt minutes. Pour en revenir, quarante."
+  },
+  {
+   "scene": "rue",
+   "shot": "zigo_face",
+   "cast": [
+    "ZIGO"
+   ],
+   "act": {
+    "ZIGO": "idee"
+   },
+   "who": "ZIGO",
+   "text": "Statistiquement, si on marche en cercle, on ne marche jamais en ligne droite. J'ai fait les calculs."
+  },
+  {
+   "scene": "rue",
+   "shot": "piment_face",
+   "cast": [
+    "PIMENT"
+   ],
+   "act": {
+    "PIMENT": "tourne"
+   },
+   "who": "PIMENT",
+   "text": "Zigo… ça fait trois heures que je tourne autour du même lampadaire. Je crois que je suis marié avec lui maintenant."
+  },
+  {
+   "day": 90,
+   "rule": "INTERDIT DE POSER DES QUESTIONS",
+   "scene": "place",
+   "shot": "regle",
+   "who": "ORI",
+   "text": "Jour quatre-vingt-dix. Interdit de poser des questions."
+  },
+  {
+   "scene": "place",
+   "shot": "piment_face",
+   "cast": [
+    "PIMENT"
+   ],
+   "act": {
+    "PIMENT": "fige"
+   },
+   "who": "PIMENT",
+   "text": "Attends… c'est quoi la règle d'aujourd'hui ?"
+  },
+  {
+   "scene": "place",
+   "shot": "large",
+   "cast": [
+    "PIMENT",
+    "GARDE",
+    "ORI"
+   ],
+   "act": {
+    "GARDE": "arrete",
+    "PIMENT": "emmene"
+   },
+   "errors": {
+    "PIMENT": 3
+   },
+   "sfx": "sifflet",
+   "who": "ORI",
+   "text": "Troisième erreur. Ils ont emmené Piment. Mon meilleur ami. Celui qui fonce toujours sans réfléchir."
+  },
+  {
+   "scene": "place",
+   "shot": "ori_face",
+   "cast": [
+    "ORI"
+   ],
+   "act": {
+    "ORI": "decide"
+   },
+   "who": "ORI",
+   "text": "Alors pour une fois… c'est moi qui ai foncé sans réfléchir."
+  },
+  {
+   "scene": "place",
+   "shot": "ori_face",
+   "cast": [
+    "ORI"
+   ],
+   "act": {
+    "ORI": "crie"
+   },
+   "errors": {
+    "ORI": 3
+   },
+   "who": "ORI",
+   "text": "Pourquoi tu as peur de nous, Prune ? Pourquoi ? POURQUOI ?"
+  },
+  {
+   "scene": "place",
+   "shot": "boite",
+   "cast": [
+    "ORI",
+    "GARDE"
+   ],
+   "act": {
+    "ORI": "entre_boite"
+   },
+   "who": "ORI",
+   "text": "Trois questions. Trois erreurs. Direction La Boîte. Exactement comme prévu."
+  },
+  {
+   "day": 95,
+   "scene": "boite",
+   "shot": "usine",
+   "cast": [
+    "ORI",
+    "PIMENT",
+    "TANK",
+    "PASSANTS"
+   ],
+   "act": {
+    "ALL": "equipe"
+   },
+   "who": "ORI",
+   "text": "Jour quatre-vingt-quinze. Le jour où le tunnel de Zigo était censé être fini. Pile à l'heure."
+  },
+  {
+   "scene": "boite",
+   "shot": "zigo_face",
+   "cast": [
+    "ZIGO"
+   ],
+   "act": {
+    "ZIGO": "idee"
+   },
+   "who": "ZIGO",
+   "text": "Ori ! J'ai un plan !"
+  },
+  {
+   "scene": "boite",
+   "shot": "trio",
+   "cast": [
+    "ORI",
+    "ZIGO",
+    "PIMENT"
+   ],
+   "act": {
+    "ALL": "cheer"
+   },
+   "who": "ORI",
+   "text": "Et pour la première fois de ma vie… j'ai dit oui."
+  },
+  {
+   "scene": "boite",
+   "shot": "usine",
+   "cast": [
+    "ORI",
+    "ZIGO",
+    "PIMENT",
+    "TANK",
+    "ROCCO"
+   ],
+   "act": {
+    "ALL": "cheer"
+   },
+   "sfx": "explosion",
+   "who": "ORI",
+   "text": "On a remplacé toutes les bouteilles de Prune Energy par du BORZ. Les machines ont surchauffé. Et BOUM. La Boîte s'est ouverte."
+  },
+  {
+   "day": 99,
+   "scene": "place",
+   "shot": "drone",
+   "cast": [
+    "ORI",
+    "ZIGO",
+    "PIMENT",
+    "TANK",
+    "LOLA",
+    "KENZO",
+    "NOVA",
+    "PAPI",
+    "ZARA",
+    "ROCCO",
+    "NINO",
+    "SKATTY",
+    "PASSANTS"
+   ],
+   "act": {
+    "KENZO": "filme"
+   },
+   "who": "ORI",
+   "text": "Jour quatre-vingt-dix-neuf. Kenzo a lancé un live. Toute la ville a vu l'usine. Toute la ville a vu la vérité."
+  },
+  {
+   "scene": "place",
+   "shot": "prune_face",
+   "cast": [
+    "PRUNE"
+   ],
+   "act": {
+    "PRUNE": "panique"
+   },
+   "who": "PRUNE",
+   "text": "Gardes ! Mettez-les tous dans La Boîte ! TOUS !"
+  },
+  {
+   "scene": "place",
+   "shot": "garde_face",
+   "cast": [
+    "GARDE"
+   ],
+   "who": "GARDE",
+   "text": "Monsieur… La Boîte, elle a explosé. Et ils sont… toute la ville."
+  },
+  {
+   "scene": "place",
+   "shot": "large",
+   "cast": [
+    "ORI",
+    "ZIGO",
+    "PIMENT",
+    "TANK",
+    "PAPI",
+    "ZARA",
+    "NINO",
+    "PASSANTS",
+    "PRUNE"
+   ],
+   "act": {
+    "ALL": "cheer",
+    "PRUNE": "fuit"
+   },
+   "who": "ORI",
+   "text": "On ne peut pas punir toute une ville. Monsieur Prune s'est enfui par la porte de derrière. Avec ses lunettes de travers."
+  },
+  {
+   "day": 100,
+   "rule": "OBLIGATOIRE D'ÊTRE LIBRE",
+   "scene": "place",
+   "shot": "regle",
+   "who": "ORI",
+   "text": "Jour cent. C'est Papi Borz qui a écrit la dernière règle sur le panneau."
+  },
+  {
+   "scene": "place",
+   "shot": "papi_face",
+   "cast": [
+    "PAPI"
+   ],
+   "act": {
+    "PAPI": "rire"
+   },
+   "who": "PAPI",
+   "text": "Obligatoire d'être libre ! Et obligatoire de sourire. Hohoho !"
+  },
+  {
+   "scene": "place",
+   "shot": "trio",
+   "cast": [
+    "ORI",
+    "ZIGO",
+    "PIMENT"
+   ],
+   "act": {
+    "ALL": "cheer"
+   },
+   "who": "PIMENT",
+   "text": "Et moi, j'ai enfin réussi ma pompe ! Une vraie ! Enfin… presque."
+  },
+  {
+   "scene": "place",
+   "shot": "ori_face",
+   "cast": [
+    "ORI"
+   ],
+   "who": "ORI",
+   "text": "J'ai survécu cent jours dans la ville de Monsieur Prune. Mais je ne l'ai pas fait seul. Personne ne survit seul."
+  },
+  {
+   "scene": "place",
+   "shot": "prune_face",
+   "cast": [
+    "PRUNE"
+   ],
+   "act": {
+    "PRUNE": "rire"
+   },
+   "who": "PRUNE",
+   "text": "Profitez bien… J'ai acheté une autre ville. Et là-bas… tout est obligatoire."
+  },
+  {
+   "scene": "place",
+   "shot": "trio",
+   "cast": [
+    "ORI",
+    "ZIGO",
+    "PIMENT"
+   ],
+   "act": {
+    "ALL": "cheer"
+   },
+   "hud": "ABONNE",
+   "who": "ORI",
+   "text": "Abonne-toi pour la suite. Et toi, tu aurais tenu combien de jours ? Dis-le en commentaire."
+  }
+ ]
+}

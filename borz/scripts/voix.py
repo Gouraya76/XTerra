@@ -16,11 +16,21 @@ def pitch(src, dst, semis):
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", src, "-af",
         af + "silenceremove=start_periods=1:start_threshold=-45dB,areverse,silenceremove=start_periods=1:start_threshold=-45dB,areverse,loudnorm=I=-16:TP=-1.5",
         "-ar", "44100", "-ac", "1", dst], check=True)
+from concurrent.futures import ThreadPoolExecutor
+def _pre(il):
+    i, l = il
+    if ONLY is not None and i not in ONLY: return
+    if ONLY is None and os.path.exists(f"{ep}/voix/{i:02d}.wav"): return
+    for w in l["who"].split("+"):
+        r = f"{ep}/voix/raw_{i:02d}_{w}.wav"
+        if ONLY is not None and os.path.exists(r): os.remove(r)
+        for k in range(3):
+            try: tts(l["text"], d["voices"][w]["ref"], r); break
+            except Exception as e: print("retry", i, e)
+with ThreadPoolExecutor(6) as ex: list(ex.map(_pre, enumerate(d["lines"])))
 for i, l in enumerate(d["lines"]):
     if ONLY is not None and i not in ONLY: continue
-    if ONLY is not None:
-        for w in l["who"].split("+"): os.path.exists(r := f"{ep}/voix/raw_{i:02d}_{w}.wav") and os.remove(r)
-    elif os.path.exists(f"{ep}/voix/{i:02d}.wav"): continue
+    elif ONLY is None and os.path.exists(f"{ep}/voix/{i:02d}.wav"): continue
     who = l["who"].split("+")
     parts = []
     for w in who:
