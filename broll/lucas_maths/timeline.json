@@ -1,0 +1,207 @@
+{
+ "end": 94.1,
+ "size": "1080x1920",
+ "shots": [
+  [
+   0.0,
+   "img/01_lucas_maths_tableau.jpg",
+   {
+    "fx": 0.55,
+    "fy": 0.45
+   }
+  ],
+  [
+   2.5,
+   "img/02_tiktok.jpg",
+   {
+    "fx": 0.45
+   }
+  ],
+  [
+   4.6,
+   "img/03_lucas_maths_conference.jpg",
+   {
+    "fx": 0.42
+   }
+  ],
+  [
+   6.7,
+   "img/04_assemblee_nationale.jpg",
+   {
+    "fx": 0.5
+   }
+  ],
+  [
+   9.8,
+   "img/05_lucas_maths_portrait.jpg",
+   {
+    "fx": 0.55,
+    "fy": 0.4
+   }
+  ],
+  [
+   13.3,
+   "img/06_tableau_maths.jpg"
+  ],
+  [
+   15.6,
+   "img/07_tiktok_polemique.jpg",
+   {
+    "fx": 0.4
+   }
+  ],
+  [
+   17.8,
+   "img/08_blocus_lycee.jpg",
+   {
+    "fx": 0.5
+   }
+  ],
+  [
+   20.6,
+   "img/09_cours_en_ligne.jpg",
+   {
+    "fx": 0.55
+   }
+  ],
+  [
+   23.1,
+   "img/10_salle_de_classe.jpg",
+   {
+    "fx": 0.45
+   }
+  ],
+  [
+   27.9,
+   "img/11_livres_lucas_maths.jpg",
+   {
+    "fx": 0.5
+   }
+  ],
+  [
+   30.4,
+   "img/12_paiement_en_ligne.jpg",
+   {
+    "fx": 0.55
+   }
+  ],
+  [
+   33.7,
+   "img/13_promotion_reseaux.jpg",
+   {
+    "fx": 0.45
+   }
+  ],
+  [
+   39.2,
+   "img/14_lucas_maths_reponse.jpg",
+   {
+    "fx": 0.4,
+    "fy": 0.4
+   }
+  ],
+  [
+   41.1,
+   "img/15_camera_interview.jpg",
+   {
+    "fx": 0.45
+   }
+  ],
+  [
+   44.5,
+   "img/16_video_reponse.jpg",
+   {
+    "fx": 0.5
+   }
+  ],
+  [
+   48.8,
+   "img/17_classe_vide.jpg",
+   {
+    "fx": 0.5
+   }
+  ],
+  [
+   54.0,
+   "img/18_eleve_telephone.jpg"
+  ],
+  [
+   57.6,
+   "img/19_donnees_personnelles.jpg",
+   {
+    "fx": 0.55
+   }
+  ],
+  [
+   59.9,
+   "img/20_cyberharcelement.jpg",
+   {
+    "fx": 0.5
+   }
+  ],
+  [
+   64.2,
+   "img/21_messages_haineux.jpg",
+   {
+    "fx": 0.5
+   }
+  ],
+  [
+   68.3,
+   "img/22_salle_de_classe_2.jpg",
+   {
+    "fx": 0.5
+   }
+  ],
+  [
+   70.5,
+   "img/23_victime_harcelement.jpg",
+   {
+    "fx": 0.5
+   }
+  ],
+  [
+   74.3,
+   "img/24_whatsapp_conversation.jpg",
+   {
+    "fx": 0.55
+   }
+  ],
+  [
+   77.9,
+   "img/25_whatsapp.jpg",
+   {
+    "fx": 0.5
+   }
+  ],
+  [
+   80.0,
+   "img/26_harcelement.jpg",
+   {
+    "fx": 0.45
+   }
+  ],
+  [
+   84.9,
+   "img/27_palais_de_justice.jpg",
+   {
+    "fx": 0.5
+   }
+  ],
+  [
+   87.2,
+   "img/28_justice.jpg",
+   {
+    "fx": 0.5
+   }
+  ],
+  [
+   89.3,
+   "img/29_lucas_maths_fin.jpg",
+   {
+    "fx": 0.55,
+    "fy": 0.45
+   }
+  ]
+ ]
+}
