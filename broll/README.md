@@ -13,3 +13,4 @@ python3 ../render_broll.py timeline.json voix_frances1.mp3 plein_ecran.mp4 --siz
 - `timeline.json` : début de chaque plan (en secondes) et l'image associée.
 - `script.txt` : texte lu ; `voix_frances1.mp3` : voix Fish Audio « frances 1 » (modèle s2.1-pro-free).
 - `sources.txt` : provenance de chaque image.
+- `description.txt` : légende de la vidéo (mentionne toujours TERA24).
