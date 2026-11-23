@@ -1,5 +1,19 @@
 """Génère les répliques avec Fish Audio (modèle gratuit) + léger pitch cartoon."""
 import json, sys, os, subprocess, urllib.request
+
+
+def cle_fish():
+    """Clé Fish Audio : variable d'environnement FISH_API_KEY (jamais dans le dépôt)."""
+    k = os.environ.get("FISH_API_KEY")
+    if not k and os.name == "nt":
+        import winreg
+        with winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Environment") as r:
+            k = winreg.QueryValueEx(r, "FISH_API_KEY")[0]
+    if not k:
+        sys.exit("FISH_API_KEY manquante")
+    return k.strip().strip('"')
+
+
 ep = sys.argv[1]
 ONLY = {int(x) for x in sys.argv[2].split(",")} if len(sys.argv) > 2 else None  # régénérer seulement ces répliques
 d = json.load(open(f"{ep}/dialogues.json"))
@@ -8,7 +22,7 @@ def tts(text, ref, out):
     if os.path.exists(out): return
     req = urllib.request.Request("https://api.fish.audio/v1/tts", method="POST",
         data=json.dumps({"text": text, "reference_id": ref, "format": "wav"}).encode(),
-        headers={"Authorization": "Bearer x", "Content-Type": "application/json", "model": "s2.1-pro-free"})
+        headers={"Authorization": f"Bearer {cle_fish()}", "Content-Type": "application/json", "model": "s2.1-pro-free"})
     open(out, "wb").write(urllib.request.urlopen(req, timeout=180).read())
 def pitch(src, dst, semis):
     r = 2 ** (semis / 12)

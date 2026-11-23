@@ -24,4 +24,4 @@ de chaque vidéo : il présente, lance les épreuves, réagit, commente et parle
 - Les tenues sont toujours belles et flatteuses : elles mettent le héros en valeur, avec des coupes nettes, des matières premium et des couleurs qui ressortent à l'écran.
 
 ## À compléter
-- Voix Fish Audio (lien) :
+- Voix Fish Audio : https://fish.audio/m/b268730efffc42a89fa4eaccdde1af48 (identifiant `b268730efffc42a89fa4eaccdde1af48`)
