@@ -14,3 +14,13 @@ python3 ../render_broll.py timeline.json voix_frances1.mp3 plein_ecran.mp4 --siz
 - `script.txt` : texte lu ; `voix_frances1.mp3` : voix Fish Audio « frances 1 » (modèle s2.1-pro-free).
 - `sources.txt` : provenance de chaque image.
 - `description.txt` : légende de la vidéo (mentionne toujours TERA24).
+
+## Vidéo source + voix off (`render_footage.py`)
+Quand l'actu est une vidéo (images amateur, reportage), on garde la vidéo source et on ajoute
+la voix off par-dessus, son d'origine baissé (coupé sur les ralentis), volume normalisé à -14 LUFS.
+
+```
+cd pitbull_lapd
+python3 ../render_footage.py montage.json ../../output/Pitbull_LAPD_VoixOff.mp4
+```
+`montage.json` : liste de segments `[debut, fin, vitesse, note]` de la vidéo source, mis bout à bout.

@@ -41,7 +41,7 @@ def load(p):
 ff = subprocess.Popen(['ffmpeg', '-v', 'error', '-y', '-f', 'rawvideo', '-pix_fmt', 'rgb24',
     '-s', f'{W}x{H}', '-r', str(FPS), '-i', '-', '-i', voice,
     '-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-pix_fmt', 'yuv420p',
-    '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', out],
+    '-af', 'loudnorm=I=-14:TP=-1.5:LRA=11,aresample=44100', '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', out],
     stdin=subprocess.PIPE)
 
 for i, shot in enumerate(shots):
