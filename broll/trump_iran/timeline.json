@@ -1,0 +1,203 @@
+{
+ "end": 85.45,
+ "size": "1080x1920",
+ "shots": [
+  [
+   0.0,
+   "img/01_trump_micro.jpg",
+   {
+    "fx": 0.36,
+    "fy": 0.45
+   }
+  ],
+  [
+   3.7,
+   "img/02_trump_bureau_ovale.jpg",
+   {
+    "fx": 0.36
+   }
+  ],
+  [
+   6.2,
+   "img/03_trump_fox_news.jpg",
+   {
+    "fx": 0.42
+   }
+  ],
+  [
+   10.0,
+   "img/04_b2_bombe.jpg",
+   {
+    "fx": 0.5
+   }
+  ],
+  [
+   13.1,
+   "img/05_teheran_nuit.jpg"
+  ],
+  [
+   16.5,
+   "img/06_destroyer_us.jpg",
+   {
+    "fx": 0.5
+   }
+  ],
+  [
+   18.3,
+   "img/07_blocus_naval.jpg",
+   {
+    "fx": 0.62
+   }
+  ],
+  [
+   22.8,
+   "img/08_tir_missile_navire.jpg",
+   {
+    "fx": 0.42
+   }
+  ],
+  [
+   24.6,
+   "img/09_araghchi.jpg",
+   {
+    "fx": 0.3,
+    "fy": 0.4
+   }
+  ],
+  [
+   29.0,
+   "img/10_negociations.jpg",
+   {
+    "fx": 0.55
+   }
+  ],
+  [
+   32.7,
+   "img/11_gardiens_revolution.jpg",
+   {
+    "fx": 0.5
+   }
+  ],
+  [
+   35.8,
+   "img/12_tir_missile_iranien.jpg",
+   {
+    "fx": 0.33
+   }
+  ],
+  [
+   39.0,
+   "img/13_radar_patriot.jpg",
+   {
+    "fx": 0.58
+   }
+  ],
+  [
+   43.6,
+   "img/14_bahrein.jpg"
+  ],
+  [
+   46.2,
+   "img/15_bahrein_incendie.jpg",
+   {
+    "fx": 0.55
+   }
+  ],
+  [
+   50.5,
+   "img/16_mq9_reaper.jpg",
+   {
+    "fx": 0.44
+   }
+  ],
+  [
+   53.6,
+   "img/17_carte_ormuz.jpg",
+   {
+    "fx": 0.66,
+    "fy": 0.42,
+    "fx1": 0.66
+   }
+  ],
+  [
+   56.6,
+   "img/18_predator.jpg",
+   {
+    "fx": 0.5
+   }
+  ],
+  [
+   58.0,
+   "img/19_ile_qeshm.jpg",
+   {
+    "fx": 0.45
+   }
+  ],
+  [
+   59.0,
+   "img/20_pentagone.jpg",
+   {
+    "fx": 0.5
+   }
+  ],
+  [
+   61.3,
+   "img/21_petroliers_ormuz.jpg",
+   {
+    "fx": 0.42
+   }
+  ],
+  [
+   63.8,
+   "img/22_petrolier.jpg",
+   {
+    "fx": 0.55
+   }
+  ],
+  [
+   67.3,
+   "img/23_trump_conseillers.jpg",
+   {
+    "fx": 0.5
+   }
+  ],
+  [
+   70.7,
+   "img/24_offensive_aerienne.jpg",
+   {
+    "fx": 0.5
+   }
+  ],
+  [
+   73.3,
+   "img/25_porte_avions.jpg",
+   {
+    "fx": 0.5
+   }
+  ],
+  [
+   76.0,
+   "img/26_netanyahou.jpg",
+   {
+    "fx": 0.5,
+    "fy": 0.4
+   }
+  ],
+  [
+   79.6,
+   "img/27_trump_khamenei.jpg",
+   {
+    "fx": 0.3,
+    "fx1": 0.74,
+    "fy": 0.45
+   }
+  ],
+  [
+   83.4,
+   "img/28_drapeau_iran_teheran.jpg",
+   {
+    "fx": 0.5
+   }
+  ]
+ ]
+}

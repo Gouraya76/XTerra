@@ -2,7 +2,7 @@
 
 Vidéo composée uniquement de photos réelles liées au script : zoom lent (Ken Burns),
 coupes franches calées sur la voix off, sans texte ni effets sonores.
-Format par défaut 1080×960 (la moitié basse d'une vidéo 9:16, à poser sous la face caméra).
+Format : `"size"` dans timeline.json (1080x1920 plein écran vertical, ou 1080x960 pour la moitié basse).
 
 ```
 cd zelensky_merkury
