@@ -1,4 +1,4 @@
-# Le héros de la chaîne (hôte de toutes les vidéos)
+# LE J – le héros de la chaîne « Le J »
 
 Référence : `hote_reference.png`
 
@@ -24,5 +24,4 @@ de chaque vidéo : il présente, lance les épreuves, réagit, commente et parle
 - Les tenues sont toujours belles et flatteuses : elles mettent le héros en valeur, avec des coupes nettes, des matières premium et des couleurs qui ressortent à l'écran.
 
 ## À compléter
-- Nom :
 - Voix Fish Audio (lien) :
