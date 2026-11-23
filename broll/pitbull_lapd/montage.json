@@ -1,9 +1,49 @@
-{"source": "source_abc7.mp4", "voice": "voix_frances1.mp3", "orig_volume": 0.12,
+{
+ "source": "source_abc7.mp4",
+ "voice": "voix_frances1.mp3",
+ "orig_volume": 0.12,
  "segments": [
-  [4.0, 16.6, 1.0, "morsure et lutte pour la laisse"],
-  [16.6, 26.2, 1.0, "l'homme récupère le chien"],
-  [4.0, 8.0, 0.571, "ralenti sur la morsure (son coupé)"],
-  [26.2, 36.2, 1.0, "fuite avec le chien, poursuite"],
-  [58.0, 69.0, 1.0, "renforts et arrestation"],
-  [36.2, 48.2, 1.0, "le policier dans la rue"],
-  [69.0, 71.65, 1.0, "fin sur l'arrestation"]]}
+  [
+   5.0,
+   16.6,
+   1.0,
+   "morsure et lutte pour la laisse"
+  ],
+  [
+   16.6,
+   26.2,
+   1.0,
+   "l'homme récupère le chien"
+  ],
+  [
+   5.0,
+   8.0,
+   0.4286,
+   "ralenti sur la morsure (son coupé)"
+  ],
+  [
+   26.2,
+   36.2,
+   1.0,
+   "fuite avec le chien, poursuite"
+  ],
+  [
+   57.0,
+   69.0,
+   1.0,
+   "renforts et arrestation"
+  ],
+  [
+   36.2,
+   48.2,
+   1.0,
+   "le policier dans la rue"
+  ],
+  [
+   69.0,
+   71.65,
+   1.0,
+   "fin sur l'arrestation"
+  ]
+ ]
+}

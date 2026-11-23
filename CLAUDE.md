@@ -10,7 +10,11 @@
 - Voix off : Fish Audio, voix « frances 1 » (reference_id 966a09df9c194c04818dbb9bf27e6ae0),
   en-tête `model: s2.1-pro-free` (gratuit ; l'ASR Fish Audio est payant → transcription locale faster-whisper).
 - Recherche d'images : Yandex Images (Bing ne garde que le premier mot de la requête).
-- Si l'utilisateur envoie une vidéo d'images réelles (amateur, reportage) : garder la vidéo source,
-  voix off française par-dessus (`broll/render_footage.py`), créditer la source dans la description.
+- Si l'utilisateur envoie un lien vers une vidéo d'images réelles (amateur, reportage) : garder la vidéo source,
+  voix off française par-dessus (`broll/render_footage.py`), puis habillage TERA24 + VFX (`broll/tera24_vfx.py`) :
+  haut gauche « VILLE, PAYS » + date de l'événement, logo TERA24 haut droite (inchangé), titre adapté en bas
+  (5 s max), cercles et flèches rouges sur l'action. Pas d'effets sonores. Créditer la source dans la description.
+- Les filigranes / logos / crédits des comptes et médias d'origine ne sont pas effacés ni floutés
+  (retrait d'informations de droits d'auteur) — expliqué à l'utilisateur le 23/11/2026.
 - Toujours vérifier les faits (recherche web) avant d'écrire le script ; accusations = attribuées et nuancées.
 - Son : normalisé à -14 LUFS (déjà fait par les deux scripts de rendu).
