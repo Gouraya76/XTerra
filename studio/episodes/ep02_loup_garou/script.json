@@ -1,0 +1,1075 @@
+{
+ "titre": "LOUP-GAROU : 8 AMIS, 1 CHALET, DES TRAÎTRES",
+ "joueurs": [
+  "LE_J",
+  "NADIA",
+  "KEKE",
+  "LOUNA",
+  "MOMO",
+  "ELISE",
+  "THEO",
+  "PAPI_GERARD"
+ ],
+ "meneur": "MENEUR",
+ "noms": {
+  "LE_J": "LE J",
+  "MENEUR": "LE MENEUR",
+  "NADIA": "NADIA",
+  "KEKE": "KÉKÉ",
+  "LOUNA": "LOUNA",
+  "MOMO": "MOMO",
+  "ELISE": "ÉLISE",
+  "THEO": "THÉO",
+  "PAPI_GERARD": "PAPI GÉRARD"
+ },
+ "shorts": [
+  {
+   "n": 1,
+   "titre": "3 h du matin : on n'est plus que trois",
+   "beats": [
+    0,
+    1,
+    2,
+    3,
+    4
+   ]
+  },
+  {
+   "n": 2,
+   "titre": "Personne n'est mort cette nuit… pourquoi ?",
+   "beats": [
+    35,
+    36,
+    37
+   ]
+  },
+  {
+   "n": 3,
+   "titre": "Il était innocent (et il avait raison)",
+   "beats": [
+    48,
+    49,
+    50,
+    51
+   ]
+  },
+  {
+   "n": 4,
+   "titre": "Le message secret de Nadia : un M",
+   "beats": [
+    61,
+    62,
+    63,
+    64
+   ]
+  },
+  {
+   "n": 5,
+   "titre": "Elle m'accuse d'être le loup",
+   "beats": [
+    66,
+    67,
+    68,
+    69
+   ]
+  },
+  {
+   "n": 6,
+   "titre": "« Objection ! » : Papi me sauve",
+   "beats": [
+    71,
+    72,
+    73,
+    74
+   ]
+  },
+  {
+   "n": 7,
+   "titre": "Le gentil géant était un loup",
+   "beats": [
+    80,
+    81,
+    82,
+    83
+   ]
+  },
+  {
+   "n": 8,
+   "titre": "Le chasseur tire sur la mauvaise personne",
+   "beats": [
+    88,
+    89,
+    90,
+    91,
+    92
+   ]
+  },
+  {
+   "n": 9,
+   "titre": "Le bruit qui a tout trahi : pop",
+   "beats": [
+    95,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101
+   ]
+  },
+  {
+   "n": 10,
+   "titre": "La troisième carte loup",
+   "beats": [
+    107,
+    108,
+    109,
+    110
+   ]
+  }
+ ],
+ "beats": [
+  {
+   "scene": "chalet_nuit",
+   "shot": "camera",
+   "lumiere": "nuit",
+   "sfx": "orage",
+   "act": {
+    "LE_J": "chuchote"
+   },
+   "short": 1,
+   "who": "LE_J",
+   "text": "Il est trois heures du matin. La tempête a coupé l'électricité. Il ne reste que des bougies."
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "camera",
+   "short": 1,
+   "who": "LE_J",
+   "text": "Hier soir, on était huit dans ce chalet. Huit amis. Maintenant… on n'est plus que trois."
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "camera",
+   "sfx": "boum",
+   "short": 1,
+   "who": "LE_J",
+   "text": "Et je viens de voir quelque chose. Quelque chose que je n'aurais jamais dû voir."
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "couloir",
+   "sfx": "cri",
+   "act": {
+    "LOUNA": "panique"
+   },
+   "short": 1,
+   "who": "LOUNA",
+   "text": "Aaaah ! Le J ! Le J, viens vite, il y a quelqu'un par terre !"
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "meneur",
+   "lumiere": "suspense",
+   "sfx": "gong",
+   "short": 1,
+   "who": "MENEUR",
+   "text": "Le village se réveille. Et ce matin, vous allez découvrir que quelqu'un vous ment depuis le début."
+  },
+  {
+   "scene": "chalet",
+   "shot": "camera",
+   "lumiere": "normal",
+   "ecran": "6 HEURES PLUS TÔT",
+   "sfx": "whoosh",
+   "act": {
+    "LE_J": "salut"
+   },
+   "who": "LE_J",
+   "text": "Six heures plus tôt. Salut tout le monde, c'est Le J ! Ce soir, on joue au jeu le plus traître du monde : le Loup-Garou."
+  },
+  {
+   "scene": "chalet",
+   "shot": "large",
+   "who": "LE_J",
+   "text": "J'ai loué un chalet perdu dans la montagne. Pas de réseau. Pas de voisins. Juste la neige, huit joueurs, et des loups cachés parmi nous."
+  },
+  {
+   "scene": "chalet",
+   "shot": "camera",
+   "who": "LE_J",
+   "text": "Les règles sont simples. La nuit, les loups dévorent un joueur. Le jour, tout le monde vote pour éliminer un suspect. Si les loups sont démasqués, le village gagne. Sinon…"
+  },
+  {
+   "scene": "chalet",
+   "shot": "meneur",
+   "sfx": "gong",
+   "act": {
+    "MENEUR": "apparait"
+   },
+   "who": "MENEUR",
+   "text": "Sinon, les loups vous mangent tous. Bonsoir."
+  },
+  {
+   "scene": "chalet",
+   "shot": "camera",
+   "act": {
+    "LE_J": "gene"
+   },
+   "who": "LE_J",
+   "text": "Voici le Meneur. Je ne connais même pas son prénom. Il est arrivé à pied, dans la tempête, et il n'a jamais enlevé sa capuche."
+  },
+  {
+   "scene": "chalet",
+   "shot": "large",
+   "ecran": "LES JOUEURS",
+   "sfx": "whoosh",
+   "who": "LE_J",
+   "text": "Et maintenant, les joueurs ! Attention : chacun d'eux peut être un loup."
+  },
+  {
+   "scene": "chalet",
+   "shot": "NADIA",
+   "act": {
+    "NADIA": "salut"
+   },
+   "who": "NADIA",
+   "text": "Nadia. J'observe, je note, et je ne parle que quand j'ai une preuve. Donc pas souvent."
+  },
+  {
+   "scene": "chalet",
+   "shot": "KEKE",
+   "act": {
+    "KEKE": "pointe"
+   },
+   "who": "KEKE",
+   "text": "Kéké ! Et je vous le dis direct : je sais déjà qui est le loup. C'est toi. Et toi. Et lui aussi, franchement."
+  },
+  {
+   "scene": "chalet",
+   "shot": "LOUNA",
+   "act": {
+    "LOUNA": "salut"
+   },
+   "who": "LOUNA",
+   "text": "Coucou, moi c'est Louna ! C'est ma toute première partie. Quelqu'un veut un chewing-gum à la fraise ? J'en ai plein !"
+  },
+  {
+   "scene": "chalet",
+   "shot": "MOMO",
+   "act": {
+    "MOMO": "salut"
+   },
+   "who": "MOMO",
+   "text": "Momo. Je suis venu pour la raclette. Si vous me votez, je pleure. Je vous préviens."
+  },
+  {
+   "scene": "chalet",
+   "shot": "ELISE",
+   "act": {
+    "ELISE": "sourire"
+   },
+   "who": "ELISE",
+   "text": "Élise. Je mens très bien, je mens tout le temps, et je mens même quand je dis que je mens. Bonne chance."
+  },
+  {
+   "scene": "chalet",
+   "shot": "THEO",
+   "act": {
+    "THEO": "parano"
+   },
+   "who": "THEO",
+   "text": "Théo. J'ai analysé ce chalet en arrivant. Trois sorties, deux fenêtres, et une latte de parquet qui grince. Je surveille tout."
+  },
+  {
+   "scene": "chalet",
+   "shot": "PAPI_GERARD",
+   "act": {
+    "PAPI_GERARD": "bras_croises"
+   },
+   "who": "PAPI_GERARD",
+   "text": "Gérard. Quatre-vingt-deux ans. Je jouais au Loup-Garou avant que vos parents soient nés. Et je gagnais."
+  },
+  {
+   "scene": "chalet",
+   "shot": "table",
+   "lumiere": "suspense",
+   "sfx": "cartes",
+   "who": "MENEUR",
+   "text": "Voici vos cartes. Regardez-les et ne dites rien. Un loup qui parle trop finit toujours sur la table."
+  },
+  {
+   "scene": "chalet",
+   "shot": "camera",
+   "act": {
+    "LE_J": "montre_carte"
+   },
+   "who": "LE_J",
+   "text": "Je vous montre ma carte, à vous et seulement à vous. Je suis… la Petite Fille !"
+  },
+  {
+   "scene": "chalet",
+   "shot": "camera",
+   "who": "LE_J",
+   "text": "La nuit, je peux entrouvrir les yeux et espionner les loups. Mais s'ils me voient, je suis mort."
+  },
+  {
+   "scene": "chalet",
+   "shot": "meneur",
+   "sfx": "boum",
+   "who": "MENEUR",
+   "text": "Ce soir, il y a une règle en plus. L'un de vous a reçu une carte vide. Aucun rôle. Pour l'instant."
+  },
+  {
+   "scene": "chalet",
+   "shot": "meneur",
+   "who": "MENEUR",
+   "text": "À minuit, cette carte se réveillera. Et elle pourra changer le destin d'un vote. Un seul."
+  },
+  {
+   "scene": "chalet",
+   "shot": "THEO",
+   "act": {
+    "THEO": "panique"
+   },
+   "who": "THEO",
+   "text": "Une carte vide ? C'est un piège. C'est forcément un piège. Qui a la carte vide ? Levez la main ! Non, ne levez pas la main !"
+  },
+  {
+   "scene": "chalet",
+   "shot": "KEKE",
+   "who": "KEKE",
+   "text": "Moi je dis que celui qui a la carte vide, c'est le loup. Logique."
+  },
+  {
+   "scene": "chalet",
+   "shot": "ELISE",
+   "act": {
+    "ELISE": "sourire"
+   },
+   "who": "ELISE",
+   "text": "Kéké, rien de ce que tu dis n'est logique. C'est ton charme."
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "large",
+   "lumiere": "nuit",
+   "hud": "NUIT 1",
+   "sfx": "hurlement",
+   "who": "MENEUR",
+   "text": "La nuit tombe sur le chalet. Tout le monde ferme les yeux."
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "meneur",
+   "who": "MENEUR",
+   "text": "Les loups-garous… réveillez-vous. Choisissez votre victime."
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "camera",
+   "act": {
+    "LE_J": "espionne"
+   },
+   "who": "LE_J",
+   "text": "J'entrouvre un œil… doucement… Je vois deux ombres. Une immense. Et une toute petite."
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "camera",
+   "who": "LE_J",
+   "text": "Et il y a une odeur. Une odeur sucrée. Comme… de la fraise ?"
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "meneur",
+   "who": "MENEUR",
+   "text": "Les loups se rendorment. Voyante, réveille-toi. De qui veux-tu connaître le rôle ?"
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "NADIA",
+   "act": {
+    "NADIA": "chuchote"
+   },
+   "who": "NADIA",
+   "text": "Kéké. Il accuse tout le monde. Je veux savoir pourquoi."
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "meneur",
+   "who": "MENEUR",
+   "text": "Kéké est… un simple villageois."
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "meneur",
+   "who": "MENEUR",
+   "text": "Sorcière, réveille-toi. Cette nuit, les loups ont attaqué Théo. Veux-tu utiliser ta potion de vie ?"
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "ELISE",
+   "act": {
+    "ELISE": "chuchote"
+   },
+   "who": "ELISE",
+   "text": "Théo est parano, insupportable… et utile. Je le sauve. Mais il ne le saura jamais."
+  },
+  {
+   "scene": "chalet",
+   "shot": "large",
+   "lumiere": "normal",
+   "hud": "JOUR 1",
+   "sfx": "cloche",
+   "short": 2,
+   "who": "MENEUR",
+   "text": "Le village se réveille. Et cette nuit… personne n'est mort."
+  },
+  {
+   "scene": "chalet",
+   "shot": "THEO",
+   "act": {
+    "THEO": "panique"
+   },
+   "short": 2,
+   "who": "THEO",
+   "text": "Personne ? C'est impossible ! Les loups ont attaqué quelqu'un ! Quelqu'un a été sauvé, et ce quelqu'un c'est moi, je le sens !"
+  },
+  {
+   "scene": "chalet",
+   "shot": "ELISE",
+   "act": {
+    "ELISE": "sourire"
+   },
+   "short": 2,
+   "who": "ELISE",
+   "text": "Ou alors les loups t'ont trouvé trop maigre. Ça arrive."
+  },
+  {
+   "scene": "chalet",
+   "shot": "LE_J",
+   "who": "LE_J",
+   "text": "Écoutez-moi. Cette nuit, j'ai vu une ombre. Une très grande ombre."
+  },
+  {
+   "scene": "chalet",
+   "shot": "KEKE",
+   "act": {
+    "KEKE": "pointe"
+   },
+   "sfx": "boum",
+   "who": "KEKE",
+   "text": "Une grande ombre ? Tout le monde regarde Momo ! Momo, c'est toi !"
+  },
+  {
+   "scene": "chalet",
+   "shot": "MOMO",
+   "act": {
+    "MOMO": "triste"
+   },
+   "who": "MOMO",
+   "text": "Moi ? Mais je suis grand parce que je mange bien ! C'est pas un crime de bien manger !"
+  },
+  {
+   "scene": "chalet",
+   "shot": "LOUNA",
+   "act": {
+    "LOUNA": "defend"
+   },
+   "sfx": "bulle",
+   "who": "LOUNA",
+   "text": "Arrêtez, Momo c'est un nounours ! Il m'a porté ma valise tout à l'heure. Un loup, ça ne porte pas les valises !"
+  },
+  {
+   "scene": "chalet",
+   "shot": "NADIA",
+   "who": "NADIA",
+   "text": "Kéké. Toi, tu es innocent. Je le sais. Alors arrête d'accuser au hasard, tu nous fais perdre."
+  },
+  {
+   "scene": "chalet",
+   "shot": "KEKE",
+   "act": {
+    "KEKE": "pointe"
+   },
+   "who": "KEKE",
+   "text": "Tu le sais ? Comment tu le sais ? Seule la voyante peut savoir ça… ou un loup qui ment ! Nadia, t'es grillée !"
+  },
+  {
+   "scene": "chalet",
+   "shot": "PAPI_GERARD",
+   "who": "PAPI_GERARD",
+   "text": "Ce garçon est un ventilateur. Il brasse de l'air dans toutes les directions."
+  },
+  {
+   "scene": "chalet",
+   "shot": "ELISE",
+   "who": "ELISE",
+   "text": "Je propose qu'on vote Kéké. Pas parce qu'il est loup. Juste pour avoir une heure de silence."
+  },
+  {
+   "scene": "chalet",
+   "shot": "camera",
+   "act": {
+    "LE_J": "inquiet"
+   },
+   "who": "LE_J",
+   "text": "Le problème, c'est que Nadia vient de dire que Kéké est innocent. Si on le vote, on perd un villageois. Mais personne ne l'écoute."
+  },
+  {
+   "scene": "chalet",
+   "shot": "large",
+   "lumiere": "suspense",
+   "hud": "VOTE",
+   "sfx": "tambour",
+   "who": "MENEUR",
+   "text": "L'heure du vote. Pointez du doigt le joueur que vous voulez éliminer. Trois… deux… un."
+  },
+  {
+   "scene": "chalet",
+   "shot": "meneur",
+   "sfx": "buzzer",
+   "elimine": "KEKE",
+   "short": 3,
+   "who": "MENEUR",
+   "text": "Kéké : quatre voix. Momo : trois voix. Kéké, tu quittes le village."
+  },
+  {
+   "scene": "chalet",
+   "shot": "KEKE",
+   "act": {
+    "KEKE": "crie"
+   },
+   "short": 3,
+   "who": "KEKE",
+   "text": "Vous allez le regretter ! Le loup est assis juste à côté de Momo ! Je vous l'ai dit ! Je vous l'ai toujours dit !"
+  },
+  {
+   "scene": "chalet",
+   "shot": "table",
+   "sfx": "boum",
+   "short": 3,
+   "who": "MENEUR",
+   "text": "Kéké retourne sa carte. Il était… villageois."
+  },
+  {
+   "scene": "chalet",
+   "shot": "camera",
+   "act": {
+    "LE_J": "inquiet"
+   },
+   "short": 3,
+   "who": "LE_J",
+   "text": "Il était innocent. Et le pire, c'est que sa dernière phrase, je n'arrive pas à l'oublier."
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "meneur",
+   "lumiere": "suspense",
+   "hud": "MINUIT",
+   "sfx": "cloche",
+   "who": "MENEUR",
+   "text": "Minuit sonne. Le joueur à la carte vide… ouvre les yeux. Ta carte devient : le Juge."
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "meneur",
+   "who": "MENEUR",
+   "text": "Une seule fois dans la partie, tu pourras annuler un vote. Choisis bien ton moment."
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "PAPI_GERARD",
+   "act": {
+    "PAPI_GERARD": "chuchote"
+   },
+   "who": "PAPI_GERARD",
+   "text": "Le Juge. Enfin un rôle à ma hauteur."
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "meneur",
+   "lumiere": "nuit",
+   "hud": "NUIT 2",
+   "sfx": "hurlement",
+   "who": "MENEUR",
+   "text": "La nuit retombe. Voyante, réveille-toi. Qui veux-tu voir ?"
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "NADIA",
+   "act": {
+    "NADIA": "chuchote"
+   },
+   "who": "NADIA",
+   "text": "Momo. Je dois savoir."
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "NADIA",
+   "act": {
+    "NADIA": "choc"
+   },
+   "sfx": "boum",
+   "who": "NADIA",
+   "text": "Non… Ce n'est pas possible."
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "meneur",
+   "who": "MENEUR",
+   "text": "Les loups-garous, réveillez-vous. Choisissez votre victime."
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "camera",
+   "act": {
+    "LE_J": "espionne"
+   },
+   "sfx": "pas",
+   "who": "LE_J",
+   "text": "Je n'ose plus ouvrir les yeux. J'entends juste des pas… qui vont vers la chambre de Nadia."
+  },
+  {
+   "scene": "chalet",
+   "shot": "large",
+   "lumiere": "normal",
+   "hud": "JOUR 2",
+   "sfx": "cloche",
+   "elimine": "NADIA",
+   "who": "MENEUR",
+   "text": "Le village se réveille. Cette nuit, les loups ont dévoré… Nadia."
+  },
+  {
+   "scene": "chalet",
+   "shot": "table",
+   "sfx": "boum",
+   "short": 4,
+   "who": "LE_J",
+   "text": "Attendez. Regardez la table. Nadia a gratté quelque chose dans le bois avec sa carte. Une lettre."
+  },
+  {
+   "scene": "chalet",
+   "shot": "table",
+   "lumiere": "suspense",
+   "short": 4,
+   "who": "LE_J",
+   "text": "Un M. Juste un M."
+  },
+  {
+   "scene": "chalet",
+   "shot": "THEO",
+   "act": {
+    "THEO": "pointe"
+   },
+   "short": 4,
+   "who": "THEO",
+   "text": "M ! M comme Meneur ! Il est arrivé à pied, dans la tempête, avec une capuche ! Qui fait ça ?"
+  },
+  {
+   "scene": "chalet",
+   "shot": "meneur",
+   "short": 4,
+   "who": "MENEUR",
+   "text": "Théo. Je ne joue pas. Mais continue, c'est très divertissant."
+  },
+  {
+   "scene": "chalet",
+   "shot": "MOMO",
+   "act": {
+    "MOMO": "panique"
+   },
+   "who": "MOMO",
+   "text": "M comme… Momo ? Non mais attendez, ça peut être plein de choses ! M comme mystère ! M comme… miam ?"
+  },
+  {
+   "scene": "chalet",
+   "shot": "ELISE",
+   "lumiere": "suspense",
+   "short": 5,
+   "who": "ELISE",
+   "text": "Ça suffit. Je vais vous dire la vérité. C'est moi, la voyante. Et cette nuit, j'ai regardé la carte de Le J."
+  },
+  {
+   "scene": "chalet",
+   "shot": "ELISE",
+   "sfx": "boum",
+   "act": {
+    "ELISE": "pointe"
+   },
+   "short": 5,
+   "who": "ELISE",
+   "text": "Le J est un loup-garou."
+  },
+  {
+   "scene": "chalet",
+   "shot": "camera",
+   "act": {
+    "LE_J": "choc"
+   },
+   "short": 5,
+   "who": "LE_J",
+   "text": "Quoi ? Elle ment ! Je suis la Petite Fille ! Mais si je le dis, les loups sauront qui les espionne."
+  },
+  {
+   "scene": "chalet",
+   "shot": "LOUNA",
+   "act": {
+    "LOUNA": "triste"
+   },
+   "short": 5,
+   "who": "LOUNA",
+   "text": "Oh non… Le J… je te faisais confiance. Pardon, mais je vote Le J."
+  },
+  {
+   "scene": "chalet",
+   "shot": "MOMO",
+   "who": "MOMO",
+   "text": "Si Élise l'a vu, alors moi aussi je vote Le J. Désolé, mon frère."
+  },
+  {
+   "scene": "chalet",
+   "shot": "meneur",
+   "hud": "VOTE",
+   "sfx": "tambour",
+   "short": 6,
+   "who": "MENEUR",
+   "text": "Le vote. Le J : quatre voix. Le J, tu quittes le…"
+  },
+  {
+   "scene": "chalet",
+   "shot": "PAPI_GERARD",
+   "sfx": "gong",
+   "act": {
+    "PAPI_GERARD": "debout"
+   },
+   "short": 6,
+   "who": "PAPI_GERARD",
+   "text": "Objection !"
+  },
+  {
+   "scene": "chalet",
+   "shot": "PAPI_GERARD",
+   "short": 6,
+   "who": "PAPI_GERARD",
+   "text": "J'ai la carte du Juge. Et j'annule ce vote. Asseyez-vous, bande d'amateurs."
+  },
+  {
+   "scene": "chalet",
+   "shot": "camera",
+   "act": {
+    "LE_J": "soulage"
+   },
+   "short": 6,
+   "who": "LE_J",
+   "text": "Papi Gérard vient de me sauver la vie. Je crois que je vais pleurer."
+  },
+  {
+   "scene": "chalet",
+   "shot": "ELISE",
+   "act": {
+    "ELISE": "sourire"
+   },
+   "who": "ELISE",
+   "text": "Parfait. Maintenant, la vraie vérité. Je ne suis pas la voyante. J'ai menti."
+  },
+  {
+   "scene": "chalet",
+   "shot": "ELISE",
+   "who": "ELISE",
+   "text": "Je suis la Sorcière. J'ai inventé cette histoire pour voir qui sauterait sur l'occasion pour voter Le J. Et deux personnes ont sauté très vite."
+  },
+  {
+   "scene": "chalet",
+   "shot": "large",
+   "sfx": "boum",
+   "lumiere": "suspense",
+   "who": "ELISE",
+   "text": "Momo. Et Louna."
+  },
+  {
+   "scene": "chalet",
+   "shot": "LOUNA",
+   "act": {
+    "LOUNA": "pleure"
+   },
+   "who": "LOUNA",
+   "text": "Quoi ? Mais moi j'ai juste suivi ! Je ne comprends rien à ce jeu, je vous le jure !"
+  },
+  {
+   "scene": "chalet",
+   "shot": "large",
+   "hud": "VOTE",
+   "sfx": "tambour",
+   "who": "MENEUR",
+   "text": "Nouveau vote. Le Juge a parlé, le village a entendu. Trois… deux… un."
+  },
+  {
+   "scene": "chalet",
+   "shot": "meneur",
+   "sfx": "buzzer",
+   "elimine": "MOMO",
+   "short": 7,
+   "who": "MENEUR",
+   "text": "Momo : quatre voix. Momo, tu quittes le village. Retourne ta carte."
+  },
+  {
+   "scene": "chalet",
+   "shot": "MOMO",
+   "act": {
+    "MOMO": "revele"
+   },
+   "short": 7,
+   "who": "MOMO",
+   "text": "Bon. Vous m'avez eu. J'étais un loup. Mais la raclette, je la mange quand même."
+  },
+  {
+   "scene": "chalet",
+   "shot": "table",
+   "sfx": "gong",
+   "lumiere": "revelation",
+   "short": 7,
+   "who": "MENEUR",
+   "text": "Momo était… un loup-garou."
+  },
+  {
+   "scene": "chalet",
+   "shot": "camera",
+   "lumiere": "suspense",
+   "short": 7,
+   "who": "LE_J",
+   "text": "Un loup en moins ! Mais attention. Il en reste un. Et il est encore assis avec nous."
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "meneur",
+   "lumiere": "nuit",
+   "hud": "NUIT 3",
+   "sfx": "orage",
+   "who": "MENEUR",
+   "text": "Dernière nuit. La tempête coupe l'électricité. Loup-garou… tu es seul. Choisis."
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "camera",
+   "act": {
+    "LE_J": "espionne"
+   },
+   "who": "LE_J",
+   "text": "C'est le moment du début de la vidéo. Trois heures du matin. Je regarde. Et cette fois… je vois tout."
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "meneur",
+   "who": "MENEUR",
+   "text": "Sorcière, réveille-toi. Il te reste ta potion de mort."
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "ELISE",
+   "act": {
+    "ELISE": "chuchote"
+   },
+   "who": "ELISE",
+   "text": "Je la garde. Demain, je veux regarder le loup dans les yeux."
+  },
+  {
+   "scene": "chalet",
+   "shot": "large",
+   "lumiere": "normal",
+   "hud": "JOUR 3",
+   "sfx": "cloche",
+   "elimine": "THEO",
+   "short": 8,
+   "who": "MENEUR",
+   "text": "Le village se réveille. Cette nuit, le loup a dévoré… Théo."
+  },
+  {
+   "scene": "chalet",
+   "shot": "meneur",
+   "lumiere": "suspense",
+   "short": 8,
+   "who": "MENEUR",
+   "text": "Mais Théo est le Chasseur. Avant de mourir, il doit tirer sur quelqu'un."
+  },
+  {
+   "scene": "chalet",
+   "shot": "THEO",
+   "act": {
+    "THEO": "pointe"
+   },
+   "sfx": "tir",
+   "short": 8,
+   "who": "THEO",
+   "text": "Je le savais ! J'avais une théorie ! Le loup, c'est le plus calme ! Celui qui ne dit jamais rien ! Papi Gérard !"
+  },
+  {
+   "scene": "chalet",
+   "shot": "PAPI_GERARD",
+   "act": {
+    "PAPI_GERARD": "tombe"
+   },
+   "elimine": "PAPI_GERARD",
+   "short": 8,
+   "who": "PAPI_GERARD",
+   "text": "Espèce de nigaud… J'étais le Juge !"
+  },
+  {
+   "scene": "chalet",
+   "shot": "camera",
+   "short": 8,
+   "who": "LE_J",
+   "text": "Et voilà. On était huit. On n'est plus que trois. Exactement comme au début de la vidéo."
+  },
+  {
+   "scene": "chalet",
+   "shot": "LOUNA",
+   "lumiere": "suspense",
+   "hud": "FACE À FACE",
+   "act": {
+    "LOUNA": "pointe"
+   },
+   "who": "LOUNA",
+   "text": "C'est Élise ! Elle ment depuis le début ! Elle a dit qu'elle était voyante, puis sorcière ! Qui ment autant ?"
+  },
+  {
+   "scene": "chalet",
+   "shot": "ELISE",
+   "who": "ELISE",
+   "text": "Quelqu'un qui joue bien. Toi, par contre, tu joues la petite fille perdue depuis trois heures. C'est long."
+  },
+  {
+   "scene": "chalet",
+   "shot": "LE_J",
+   "short": 9,
+   "who": "LE_J",
+   "text": "Arrêtez. Je vais vous dire ce que j'ai vu. La première nuit, j'ai senti une odeur de fraise."
+  },
+  {
+   "scene": "chalet",
+   "shot": "LE_J",
+   "sfx": "bulle",
+   "short": 9,
+   "who": "LE_J",
+   "text": "Et cette nuit, dans le noir, j'ai entendu un petit bruit. Un bruit tout bête. Pop."
+  },
+  {
+   "scene": "chalet",
+   "shot": "LOUNA",
+   "act": {
+    "LOUNA": "panique"
+   },
+   "short": 9,
+   "who": "LOUNA",
+   "text": "Mais… tout le monde mâche du chewing-gum ! Ce n'est pas une preuve, ça !"
+  },
+  {
+   "scene": "chalet",
+   "shot": "LE_J",
+   "sfx": "boum",
+   "short": 9,
+   "who": "LE_J",
+   "text": "Louna. Tu étais la seule à en avoir. Tu en as proposé à tout le monde. Et personne n'en a pris."
+  },
+  {
+   "scene": "chalet",
+   "shot": "large",
+   "hud": "VOTE",
+   "sfx": "tambour",
+   "short": 9,
+   "who": "MENEUR",
+   "text": "Dernier vote. Trois… deux… un."
+  },
+  {
+   "scene": "chalet",
+   "shot": "meneur",
+   "elimine": "LOUNA",
+   "short": 9,
+   "who": "MENEUR",
+   "text": "Louna : deux voix. Louna… retourne ta carte."
+  },
+  {
+   "scene": "chalet",
+   "shot": "LOUNA",
+   "act": {
+    "LOUNA": "revele"
+   },
+   "lumiere": "revelation",
+   "short": 9,
+   "who": "LOUNA",
+   "text": "Bravo. Vraiment, bravo. Trois heures à jouer la gentille. J'avais presque gagné."
+  },
+  {
+   "scene": "chalet",
+   "shot": "large",
+   "sfx": "victoire",
+   "who": "MENEUR",
+   "text": "Louna était… le dernier loup-garou. Le village a gagné !"
+  },
+  {
+   "scene": "chalet",
+   "shot": "camera",
+   "act": {
+    "LE_J": "joie"
+   },
+   "who": "LE_J",
+   "text": "On a gagné ! Élise, Papi, Théo, Kéké, Nadia… on a gagné pour vous !"
+  },
+  {
+   "scene": "chalet",
+   "shot": "ELISE",
+   "act": {
+    "ELISE": "sourire"
+   },
+   "who": "ELISE",
+   "text": "Je l'ai toujours su, évidemment."
+  },
+  {
+   "scene": "chalet",
+   "shot": "LE_J",
+   "who": "LE_J",
+   "text": "Tu as voté contre moi."
+  },
+  {
+   "scene": "chalet",
+   "shot": "ELISE",
+   "who": "ELISE",
+   "text": "Détail."
+  },
+  {
+   "scene": "chalet",
+   "shot": "meneur",
+   "lumiere": "suspense",
+   "short": 10,
+   "who": "MENEUR",
+   "text": "Félicitations. Mais une dernière question. Personne ne s'est demandé qui a ouvert la fenêtre, la première nuit ?"
+  },
+  {
+   "scene": "chalet",
+   "shot": "fenetre",
+   "sfx": "hurlement",
+   "short": 10,
+   "who": "LE_J",
+   "text": "La fenêtre ? Quelle fenêtre ? On ne l'a jamais ouverte, la fenêtre…"
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "meneur",
+   "sfx": "boum",
+   "short": 10,
+   "who": "MENEUR",
+   "text": "Il y avait trois cartes loup dans le paquet. Je n'en ai distribué que deux."
+  },
+  {
+   "scene": "chalet_nuit",
+   "shot": "camera",
+   "act": {
+    "LE_J": "salut"
+   },
+   "short": 10,
+   "who": "LE_J",
+   "text": "Bon. On rentre ? On rentre. Abonnez-vous, et cette nuit, laissez la lumière allumée."
+  }
+ ]
+}
