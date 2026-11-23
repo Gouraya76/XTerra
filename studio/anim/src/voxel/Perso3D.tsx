@@ -3,67 +3,72 @@ import * as THREE from 'three';
 import {RoundedBox} from '@react-three/drei';
 
 export type Acc =
-  | 'headphones' | 'sunglasses' | 'shades' | 'hoops' | 'towel' | 'cane' | 'skateboard' | 'backpack'
-  | 'cap' | 'capBack' | 'beard' | 'beardDark' | 'goatee' | 'glassesRect' | 'glassesRound' | 'headscarf'
-  | 'apron' | 'spoon' | 'pot' | 'toolbelt' | 'hair' | 'lashes' | 'tie' | 'longcoat' | 'skirt' | 'muscles'
-  | 'bag' | 'handbag' | 'earpiece' | 'scarf' | 'collar' | 'overalls' | 'necklace' | 'chain' | 'clipboard' | 'pocketSquare';
+  | 'headphones' | 'headset' | 'sunglasses' | 'hoops' | 'backpack' | 'cap' | 'capBack'
+  | 'glassesRect' | 'glassesRound' | 'apron' | 'tie' | 'bowtie' | 'neckerchief' | 'necklace'
+  | 'micro' | 'carnet' | 'tattoo' | 'lashes';
 
-/** Description d'un personnage BORZ en style voxel. */
+export type Hair = 'court' | 'banane' | 'chauve' | 'tresses' | 'chignon' | 'boucles' | 'meche';
+
+/** Description d'un personnage en style voxel. */
 export type Look = {
-  bottle: string;      // couleur de la bouteille (tête + mains)
-  cap: string;         // bouchon
-  top: string;         // sweat / veste
-  topText?: string;    // texte sur le torse
-  topTextColor?: string;
-  topPattern?: 'plaid' | 'floral';
-  patternColors?: string[];
-  inner?: string;      // vêtement visible sous une veste ouverte (crop top, chemise, gilet)
-  belly?: boolean;     // ventre visible sous le crop top
-  vest?: string;       // doudoune / gilet sans manches par-dessus
-  sleeves?: string;    // couleur des manches si différente (veste teddy)
-  bareArms?: boolean;  // bras nus (débardeur)
+  head?: 'bouteille' | 'humain';   // défaut : bouteille (ancien style)
+  skin?: string;        // peau (tête humaine + mains)
+  bottle?: string;      // couleur de la bouteille (tête-bouteille + mains)
+  cap?: string;         // bouchon (tête-bouteille)
+  hair?: Hair;
+  hairColor?: string;
+  mustache?: string;    // couleur de la moustache
+  beardShort?: string;  // couleur de la barbe courte
+  toque?: 'normale' | 'petite';
+  blush?: boolean;
+  top: string;          // haut (veste, sweat, t-shirt)
+  topRough?: number;    // 0.3 = cuir / satiné
+  sparkle?: boolean;    // paillettes
+  hood?: boolean;       // capuche dans le dos
+  chef?: boolean;       // veste de chef croisée (2 rangées de boutons + col)
+  inner?: string;       // vêtement visible sous une veste ouverte
+  bigBelly?: boolean;
+  bodyW?: number;       // largeur du torse (défaut 1)
+  sleevesLong?: boolean; // manches trop longues (mains à moitié cachées)
   pants: string;
-  stripe?: string;     // bande sur le pantalon
-  shorts?: boolean;
-  sock?: string;
+  pantsPattern?: 'pied-de-poule';
+  stripe?: string;
   shoe: string;
   shoeAccent: string;
-  shoeStyle?: 'sneaker' | 'boot' | 'dress';
+  shoeStyle?: 'sneaker' | 'boot' | 'dress' | 'sabot';
   brows?: string;
   browThick?: number;
   eyesSquint?: boolean;
-  hairColor?: string;
-  hatColor?: string;   // casquette
-  accColor?: string;   // couleur principale des accessoires (foulard, écharpe…)
+  hatColor?: string;
+  apronColor?: string;   // tablier uni
+  apronFloral?: string[]; // tablier à fleurs : [fond, fleurs…]
+  accColor?: string;
   scale?: number;
   acc?: Acc[];
-  extra?: 'clipboard' | 'none';
 };
 
-const P = {
-  // passants : déclinaisons simples
-};
-void P;
+const CHEF = '#f7f6f1';
+const SK = {claire: '#f2c9a5', claireMate: '#e2b088', rosee: '#f6bfa2', mate: '#c98a5c', brune: '#8a5737', fonce: '#6e4229'};
 
 export const LOOKS: Record<string, Look> = {
-  ORI: {bottle: '#eef1f4', cap: '#ffffff', top: '#f4f4f4', topText: 'BORZ', topTextColor: '#151515', pants: '#e9e9e9', stripe: '#151515', shoe: '#ffffff', shoeAccent: '#d9d9d9'},
-  ZIGO: {bottle: '#8fd629', cap: '#1f9e1f', top: '#4f7a1c', topText: 'BORZ', topTextColor: '#e8ffd0', pants: '#4a7019', stripe: '#2e4710', shoe: '#ffffff', shoeAccent: '#2f8f2f', extra: 'clipboard'},
-  PIMENT: {bottle: '#ff3326', cap: '#d0160e', top: '#b3150f', topText: 'BORZ', topTextColor: '#ffd21f', pants: '#a3120d', stripe: '#ffd21f', shoe: '#ffffff', shoeAccent: '#d41a12'},
-  KENZO: {bottle: '#1f6fff', cap: '#1452d1', top: '#1d4fd6', vest: '#17181c', pants: '#1f4fc9', shoe: '#ffffff', shoeAccent: '#1a1a1a', acc: ['headphones', 'bag']},
-  LOLA: {bottle: '#ff69b4', cap: '#e0347f', top: '#ee4f98', inner: '#ffffff', belly: true, pants: '#f0559c', stripe: '#ffffff', shoe: '#ffffff', shoeAccent: '#ffc1dc', acc: ['sunglasses', 'hoops', 'lashes', 'handbag', 'necklace']},
-  TANK: {bottle: '#ff8a1c', cap: '#e86a00', top: '#141416', bareArms: true, pants: '#141416', stripe: '#ff8a1c', shorts: true, sock: '#ffffff', shoe: '#ffffff', shoeAccent: '#ff8a1c', scale: 1.08, acc: ['muscles', 'towel']},
-  PRUNE: {bottle: '#9b4dff', cap: '#6e2bd1', top: '#2a2233', inner: '#3b3046', pants: '#2a2233', shoe: '#0d0d0f', shoeAccent: '#0d0d0f', shoeStyle: 'dress', acc: ['glassesRect', 'goatee', 'tie', 'longcoat', 'pocketSquare', 'chain']},
-  SKATTY: {bottle: '#ffd21f', cap: '#f0b800', top: '#ffc61a', pants: '#24231f', shoe: '#ffffff', shoeAccent: '#e8b400', hatColor: '#18181a', acc: ['capBack', 'backpack', 'skateboard']},
-  PAPI: {bottle: '#e8352b', cap: '#c41e15', top: '#7a4a2a', inner: '#5c3018', pants: '#3a2c24', shoe: '#6b4423', shoeAccent: '#4a2e16', shoeStyle: 'boot', brows: '#ffffff', browThick: 1.3, eyesSquint: true, accColor: '#9e2a2a', acc: ['beard', 'collar', 'scarf', 'cane']},
-  NINO: {bottle: '#22c7c2', cap: '#0f9c98', top: '#1d5f63', sleeves: '#f4f1e6', inner: '#ffffff', pants: '#6e6b4a', shoe: '#ffffff', shoeAccent: '#1d6f73', hatColor: '#1d8f8f', scale: 0.82, acc: ['capBack', 'backpack']},
-  ZARA: {bottle: '#b15fd6', cap: '#8a2fc0', top: '#6e2b6e', pants: '#6e2b6e', shoe: '#4a2a1a', shoeAccent: '#3a1e10', shoeStyle: 'dress', accColor: '#5b3a8c', acc: ['headscarf', 'glassesRound', 'skirt', 'apron', 'spoon', 'pot']},
-  ROCCO: {bottle: '#6fae2a', cap: '#3f7d16', top: '#4a4f45', topPattern: 'plaid', patternColors: ['#3c4038', '#1e211c', '#7c8070'], pants: '#3f4c63', shoe: '#6b4423', shoeAccent: '#3e2814', shoeStyle: 'boot', hatColor: '#23252b', acc: ['cap', 'beardDark', 'toolbelt', 'overalls']},
-  NOVA: {bottle: '#f2f2f2', cap: '#ffffff', top: '#3a3b40', inner: '#ffffff', belly: true, pants: '#bcbcbc', stripe: '#111111', shoe: '#ffffff', shoeAccent: '#e6e6e6', hairColor: '#141414', hatColor: '#2a2a2e', acc: ['hair', 'cap', 'headphones', 'lashes']},
-  GARDE: {bottle: '#5b2a86', cap: '#3d1a5e', top: '#111114', inner: '#1a1a1f', pants: '#111114', shoe: '#050505', shoeAccent: '#050505', shoeStyle: 'dress', scale: 1.08, acc: ['shades', 'earpiece', 'tie']},
-  PASSANT1: {bottle: '#f2994a', cap: '#d9772a', top: '#3f6fb5', pants: '#2b2f3a', shoe: '#ffffff', shoeAccent: '#c0392b', hatColor: '#c0392b', acc: ['cap']},
-  PASSANT2: {bottle: '#56ccf2', cap: '#2d9cdb', top: '#f2c94c', pants: '#4f4f4f', shoe: '#ffffff', shoeAccent: '#2d9cdb', hairColor: '#6b3e1e', acc: ['hair', 'lashes']},
-  PASSANT3: {bottle: '#9b9b9b', cap: '#6f6f6f', top: '#8e44ad', pants: '#34495e', shoe: '#222222', shoeAccent: '#555555', acc: ['backpack']},
-  PASSANT4: {bottle: '#27ae60', cap: '#1e8449', top: '#e74c3c', pants: '#2c3e50', stripe: '#ffffff', shoe: '#ffffff', shoeAccent: '#e74c3c', acc: ['headphones']},
+  // ----- l'émission -----
+  SACHA: {head: 'humain', skin: SK.claireMate, hair: 'banane', hairColor: '#141218', top: '#1f4fe8', sparkle: true, inner: '#ffffff', pants: '#1c45cc', shoe: '#111114', shoeAccent: '#111114', shoeStyle: 'dress', acc: ['bowtie', 'micro']},
+  LEO: {head: 'humain', skin: SK.claire, hair: 'meche', hairColor: '#6b4524', top: '#d9a521', hood: true, pants: '#3b5a86', shoe: '#ffffff', shoeAccent: '#e6e6e6', acc: ['glassesRect', 'carnet']},
+  INES: {head: 'humain', skin: SK.brune, hair: 'tresses', hairColor: '#17120f', top: '#b81f1a', topRough: 0.32, inner: '#ffffff', pants: '#17171b', shoe: '#e02a22', shoeAccent: '#ffffff', acc: ['hoops', 'lashes']},
+  // ----- les 5 candidats (même tenue de chef) -----
+  MARCEL: {head: 'humain', skin: SK.rosee, blush: true, hair: 'court', hairColor: '#c2581f', mustache: '#c2581f', toque: 'normale', top: CHEF, chef: true, bigBelly: true, bodyW: 1.22,
+    pants: '#2a2a2a', pantsPattern: 'pied-de-poule', shoe: '#121214', shoeAccent: '#121214', shoeStyle: 'sabot', apronColor: '#dfe3e8', brows: '#a9481a', browThick: 1.2},
+  YASMINE: {head: 'humain', skin: SK.mate, hair: 'chignon', hairColor: '#120f0d', toque: 'normale', top: CHEF, chef: true, pants: '#26262b', shoe: '#18181b', shoeAccent: '#18181b', shoeStyle: 'dress', browThick: 0.6, accColor: '#1c2a5c', acc: ['neckerchief', 'lashes']},
+  BRUNO: {head: 'humain', skin: SK.fonce, hair: 'chauve', beardShort: '#141010', toque: 'petite', top: CHEF, chef: true, bodyW: 1.24, pants: '#2b2b30', shoe: '#121214', shoeAccent: '#121214', shoeStyle: 'boot', scale: 1.12, brows: '#120d0b', browThick: 1.25, acc: ['tattoo']},
+  JULES: {head: 'humain', skin: SK.claire, hair: 'boucles', hairColor: '#e8c25a', toque: 'normale', top: CHEF, chef: true, sleevesLong: true, bodyW: 0.94, pants: '#3a3a40', shoe: '#ffffff', shoeAccent: '#2f6fd6', scale: 0.95, brows: '#b8902e'},
+  COLETTE: {head: 'humain', skin: SK.claire, blush: true, hair: 'chignon', hairColor: '#ecebea', toque: 'normale', top: CHEF, chef: true, pants: '#6a6a72', shoe: '#7a4a2a', shoeAccent: '#5a3418', shoeStyle: 'dress', scale: 0.9, brows: '#cfcfcf',
+    apronFloral: ['#ffe4ee', '#ff6f9a', '#ff9fbf', '#e0407a'], acc: ['glassesRound']},
+  // ----- figurants -----
+  PUBLIC1: {head: 'humain', skin: SK.claire, hair: 'court', hairColor: '#3a2416', top: '#2f9e5b', pants: '#2b3344', shoe: '#ffffff', shoeAccent: '#2f9e5b'},
+  PUBLIC2: {head: 'humain', skin: SK.brune, hair: 'boucles', hairColor: '#16110e', top: '#f08a24', pants: '#3a3a44', shoe: '#ffffff', shoeAccent: '#f08a24', acc: ['lashes']},
+  PUBLIC3: {head: 'humain', skin: SK.mate, hair: 'court', hairColor: '#120f0d', top: '#7a3fc4', pants: '#24304a', shoe: '#222', shoeAccent: '#555', hatColor: '#d93a3a', acc: ['capBack']},
+  PUBLIC4: {head: 'humain', skin: SK.rosee, hair: 'chignon', hairColor: '#e0a040', top: '#2bb3c4', pants: '#f2f2f2', shoe: '#ffffff', shoeAccent: '#2bb3c4', acc: ['lashes', 'glassesRound']},
+  TECH: {head: 'humain', skin: SK.claireMate, hair: 'court', hairColor: '#2a1c12', beardShort: '#2a1c12', top: '#151518', pants: '#151518', shoe: '#0c0c0e', shoeAccent: '#2a2a2e', shoeStyle: 'boot', acc: ['headset']},
 };
 
 export type Pose = {
@@ -95,36 +100,42 @@ const mkTex = (key: string, draw: (g: CanvasRenderingContext2D) => void, size = 
   texCache.set(key, t);
   return t;
 };
-const textTexture = (text: string, color: string, bg: string) => mkTex(`txt|${text}|${color}|${bg}`, (g) => {
-  g.fillStyle = bg; g.fillRect(0, 0, 512, 512);
-  g.fillStyle = color; g.font = '900 150px ID, Arial Black, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
-  g.fillText(text, 256, 230);
-});
-const plaidTexture = (cols: string[]) => mkTex(`plaid|${cols.join()}`, (g) => {
-  const [a, b, c] = cols;
-  g.fillStyle = a; g.fillRect(0, 0, 512, 512);
-  g.globalAlpha = 0.85; g.fillStyle = b;
-  for (let i = 0; i < 512; i += 128) { g.fillRect(i, 0, 44, 512); g.fillRect(0, i, 512, 44); }
-  g.globalAlpha = 0.9; g.fillStyle = c;
-  for (let i = 64; i < 512; i += 128) { g.fillRect(i, 0, 10, 512); g.fillRect(0, i, 512, 10); }
-  g.globalAlpha = 1;
-}, 256);
 const floralTexture = (bg: string, petals: string[]) => mkTex(`floral|${bg}|${petals.join()}`, (g) => {
   g.fillStyle = bg; g.fillRect(0, 0, 512, 512);
   let s = 7;
   const rnd = () => ((s = (s * 9301 + 49297) % 233280) / 233280);
-  for (let i = 0; i < 26; i++) {
-    const x = rnd() * 512, y = rnd() * 512, r = 18 + rnd() * 18, col = petals[i % petals.length];
-    g.fillStyle = '#4f8a3a';
+  for (let i = 0; i < 22; i++) {
+    const x = rnd() * 512, y = rnd() * 512, r = 20 + rnd() * 16, col = petals[i % petals.length];
+    g.fillStyle = '#5c9a48';
     g.fillRect(x - r * 1.4, y + r * 0.3, r * 0.9, r * 0.45);
     g.fillStyle = col;
     for (let k = 0; k < 5; k++) { const a = (k / 5) * Math.PI * 2; g.beginPath(); g.arc(x + Math.cos(a) * r * 0.6, y + Math.sin(a) * r * 0.6, r * 0.5, 0, Math.PI * 2); g.fill(); }
     g.fillStyle = '#ffd23f'; g.beginPath(); g.arc(x, y, r * 0.3, 0, Math.PI * 2); g.fill();
   }
 });
+const sparkleTexture = (base: string) => mkTex(`sparkle|${base}`, (g) => {
+  g.fillStyle = base; g.fillRect(0, 0, 512, 512);
+  let s = 11;
+  const rnd = () => ((s = (s * 9301 + 49297) % 233280) / 233280);
+  for (let i = 0; i < 900; i++) {
+    const x = rnd() * 512, y = rnd() * 512, r = 2 + rnd() * 4;
+    g.fillStyle = rnd() < 0.5 ? 'rgba(190,215,255,0.9)' : 'rgba(40,70,190,0.8)';
+    g.fillRect(x, y, r, r);
+  }
+}, 256);
+const checkTexture = () => mkTex('pdp', (g) => {
+  g.fillStyle = '#f2f2f2'; g.fillRect(0, 0, 256, 256);
+  g.fillStyle = '#1a1a1a';
+  const n = 16, c = 256 / n;
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) if ((x + y) % 2 === 0) {
+    g.fillRect(x * c, y * c, c, c);
+    g.fillRect(x * c + c, y * c + c * 0.35, c * 0.35, c * 0.3);
+  }
+}, 256);
 
 // ---------- bloc arrondi ----------
-type BP = {p: [number, number, number]; s: [number, number, number]; c: string; r?: number; rough?: number; clear?: boolean; map?: THREE.Texture | null; rot?: [number, number, number]; metal?: number; emissive?: string};
+type V3 = [number, number, number];
+type BP = {p: V3; s: V3; c: string; r?: number; rough?: number; clear?: boolean; map?: THREE.Texture | null; rot?: V3; metal?: number; emissive?: string};
 const B: React.FC<BP> = ({p, s, c, r = 0.06, rough = 0.75, clear, map, rot, metal = 0, emissive}) => (
   <RoundedBox args={s} radius={Math.min(r, Math.min(...s) / 2.01)} smoothness={3} position={p} rotation={rot} castShadow receiveShadow>
     {clear ? <meshPhysicalMaterial color={c} roughness={0.28} clearcoat={1} clearcoatRoughness={0.15} />
@@ -142,55 +153,106 @@ const Frame: React.FC<{w: number; h: number; t: number; c: string; z: number}> =
   </>
 );
 
+const shade = (hex: string, k: number) => {
+  const c = new THREE.Color(hex); c.multiplyScalar(k); return `#${c.getHexString()}`;
+};
+
+/** Coiffures en blocs, sur une tête cube x∈[-0.5,0.5], y∈[0.12,1.12], z∈[-0.45,0.45]. */
+const Coiffure: React.FC<{hair: Hair; c: string; toque: boolean}> = ({hair, c, toque}) => {
+  const H = (p: V3, s: V3, rot?: V3, r = 0.05) => <B key={`${p}${s}`} p={p} s={s} c={c} r={r} rough={0.6} rot={rot} />;
+  if (hair === 'chauve') return null;
+  const parts: React.ReactNode[] = [];
+  const top = !toque;
+  // base commune : arrière + côtés
+  parts.push(H([0, 0.8, -0.49], [1.06, 0.66, 0.12]));
+  [-1, 1].forEach((sd) => parts.push(H([sd * 0.52, 0.92, -0.08], [0.1, 0.38, 0.78])));
+  if (top) parts.push(H([0, 1.17, -0.02], [1.08, 0.2, 0.98]));
+  switch (hair) {
+    case 'court':
+      parts.push(H([0, 1.06, 0.46], [1.0, 0.12, 0.08]));
+      break;
+    case 'banane':
+      parts.push(H([0, 1.06, 0.46], [1.0, 0.12, 0.08]));
+      if (top) { parts.push(H([0, 1.36, 0.16], [0.86, 0.32, 0.62], [-0.25, 0, 0], 0.12)); parts.push(H([0, 1.3, 0.47], [0.8, 0.22, 0.2], [-0.4, 0, 0], 0.08)); }
+      break;
+    case 'meche':
+      parts.push(H([-0.12, 1.02, 0.47], [0.72, 0.18, 0.1], [0, 0, -0.22]));
+      parts.push(H([0.3, 1.08, 0.46], [0.36, 0.1, 0.08]));
+      break;
+    case 'tresses':
+      parts.push(H([0, 1.08, 0.46], [1.0, 0.1, 0.06]));
+      parts.push(H([0, 0.45, -0.5], [1.02, 0.85, 0.1]));
+      [-1, 1].forEach((sd) => [0, 1, 2, 3, 4].forEach((k) => parts.push(H([sd * 0.36, 0.3 - k * 0.24, -0.32], [0.17, 0.2, 0.17], undefined, 0.06))));
+      [-1, 1].forEach((sd) => parts.push(H([sd * 0.36, 0.3 - 5 * 0.24 + 0.06, -0.32], [0.12, 0.12, 0.12], undefined, 0.04)));
+      break;
+    case 'chignon':
+      parts.push(H([0, 1.07, 0.46], [1.0, 0.1, 0.06]));
+      parts.push(H(toque ? [0, 0.86, -0.64] : [0, 1.36, -0.2], [0.42, 0.38, 0.36], undefined, 0.12));
+      break;
+    case 'boucles': {
+      const curls: V3[] = toque
+        ? [[-0.42, 1.08, 0.42], [-0.18, 1.1, 0.48], [0.12, 1.1, 0.48], [0.38, 1.08, 0.42], [-0.56, 0.9, 0.15], [0.56, 0.9, 0.15], [-0.56, 0.68, -0.1], [0.56, 0.68, -0.1], [-0.3, 0.6, -0.56], [0.3, 0.6, -0.56], [0, 0.72, -0.58]]
+        : [[-0.36, 1.26, 0.3], [0, 1.3, 0.34], [0.36, 1.26, 0.3], [-0.3, 1.3, -0.1], [0.3, 1.3, -0.1], [0, 1.32, -0.3], [-0.56, 0.95, 0.15], [0.56, 0.95, 0.15]];
+      curls.forEach((p) => parts.push(H(p, [0.26, 0.24, 0.26], undefined, 0.1)));
+      break;
+    }
+  }
+  return <>{parts}</>;
+};
+
 /** Personnage voxel. Les pieds sont à y=0, hauteur totale ≈ 3,3 unités (avant échelle). */
-export const Perso3D: React.FC<{who: string; pose?: Pose; position?: [number, number, number]; rotation?: number; scale?: number}> = ({who, pose = {}, position = [0, 0, 0], rotation = 0, scale = 1}) => {
-  const L = LOOKS[who] ?? LOOKS.ORI;
+export const Perso3D: React.FC<{who: string; pose?: Pose; position?: V3; rotation?: number; scale?: number}> = ({who, pose = {}, position = [0, 0, 0], rotation = 0, scale = 1}) => {
+  const L = LOOKS[who] ?? LOOKS.SACHA;
   const A = new Set<Acc>(L.acc ?? []);
-  if (L.extra === 'clipboard') A.add('clipboard');
+  const human = L.head === 'humain';
+  const skin = L.skin ?? L.bottle ?? '#f2c9a5';
+  const glossy = !human;
   const {walk, walkAmp = 1, talk = 0, look = [0, 0], brows = 0, blink = 0, armL = 0, armR = 0, armSideL = 0, armSideR = 0, headTurn = 0, headTilt = 0, bob = 0, squash = 0, smile = 1} = pose;
   const sw = walk === undefined ? 0 : Math.sin(walk) * 0.6 * walkAmp;
   const walkBob = walk === undefined ? 0 : Math.abs(Math.cos(walk)) * 0.08 * walkAmp;
-  const tex = useMemo(() => (L.topText ? textTexture(L.topText, L.topTextColor ?? '#000', L.top) : null), [L]);
-  const topMap = useMemo(() => (L.topPattern === 'plaid' ? plaidTexture(L.patternColors ?? ['#a33', '#622', '#ddd']) : null), [L]);
-  const scarfMap = useMemo(() => (A.has('headscarf') ? floralTexture(L.accColor ?? '#5b3a8c', ['#ff7aa8', '#ffb347', '#ffffff', '#ff4d6d']) : null), [L]);
-  const apronMap = useMemo(() => (A.has('apron') ? floralTexture('#f5ead6', ['#e0455f', '#f08aa0', '#c9354e']) : null), [L]);
-  const plaidScarf = useMemo(() => (A.has('scarf') ? plaidTexture([L.accColor ?? '#9e2a2a', '#3b1a1a', '#e0b84a']) : null), [L]);
+  const topMap = useMemo(() => (L.sparkle ? sparkleTexture(L.top) : null), [L]);
+  const pantsMap = useMemo(() => (L.pantsPattern ? checkTexture() : null), [L]);
+  const apronMap = useMemo(() => (L.apronFloral ? floralTexture(L.apronFloral[0], L.apronFloral.slice(1)) : null), [L]);
 
   const s0 = scale * (L.scale ?? 1);
-  const musc = A.has('muscles');
-  const skirt = A.has('skirt');
   const legH = 0.75, bodyH = 0.95, bodyY = 0.2 + legH;
-  const bodyW = musc ? 1.28 : 1.0;
-  const armX = musc ? 0.8 : 0.64;
-  const armW = musc ? 0.42 : 0.28;
+  const bodyW = L.bodyW ?? 1.0;
+  const armX = bodyW / 2 + 0.14;
+  const armW = bodyW > 1.15 ? 0.32 : 0.28;
   const headY = bodyY + bodyH;          // bas de la tête
   const squint = !!L.eyesSquint;
   const eyeOpen = squint ? 0.18 : Math.max(0.08, 1 - blink);
   const mouthH = 0.04 + 0.09 * smile + talk * 0.18;
   const browRot = brows < 0 ? 0.35 * -brows : 0;
   const browUp = brows > 0 ? 0.08 * brows : 0;
-  const armColor = (L.bareArms ? L.bottle : L.sleeves ?? L.top);
-  const bootH = L.shoeStyle === 'boot' ? 0.34 : 0.2;
+  const shoeStyle = L.shoeStyle ?? 'sneaker';
+  const rolled = A.has('tattoo');
+  // géométrie du visage
+  const faceZ = human ? 0.455 : 0.415;
+  const eyeY = human ? 0.72 : 0.8;
+  const eyeX = human ? 0.2 : 0.215;
+  const eyeW = human ? 0.3 : 0.33, eyeH = human ? 0.34 : 0.38;
+  const mouthY = human ? (L.mustache ? 0.27 : 0.3) : 0.36;
+  const browCol = L.brows ?? (human ? (L.hairColor ?? '#1a1410') : '#141414');
+  const toque = human && !!L.toque;
+  const tq = L.toque === 'petite' ? 0.78 : 1;
 
   return (
     <group position={[position[0], position[1] + bob + walkBob, position[2]]} rotation={[0, rotation, 0]} scale={[s0 * (1 + squash * 0.15), s0 * (1 - squash * 0.2), s0 * (1 + squash * 0.15)]}>
       {/* jambes */}
       {[-1, 1].map((side) => {
-        const a = side * sw * (skirt ? 0.35 : 1);
+        const a = side * sw;
         return (
           <group key={side} position={[side * 0.24, 0.2 + legH, 0]} rotation={[a, 0, 0]}>
-            {!skirt && !L.shorts && <B p={[0, -legH / 2, 0]} s={[0.4, legH, 0.42]} c={L.pants} />}
-            {!skirt && L.shorts && <>
-              <B p={[0, -0.2, 0]} s={[0.46, 0.42, 0.46]} c={L.pants} />
-              <B p={[0, -0.52, 0]} s={[0.34, 0.36, 0.36]} c={L.bottle} clear />
-              <B p={[0, -0.68, 0]} s={[0.36, 0.16, 0.38]} c={L.sock ?? '#ffffff'} r={0.04} />
-            </>}
-            {!skirt && L.stripe && <B p={[side * (L.shorts ? 0.235 : 0.205), L.shorts ? -0.2 : -legH / 2, 0]} s={[0.02, L.shorts ? 0.38 : legH * 0.95, 0.12]} c={L.stripe} r={0.005} />}
-            {/* chaussure */}
-            {L.shoeStyle === 'dress' ? (
+            <B p={[0, -legH / 2, 0]} s={[0.4, legH, 0.42]} c={L.pants} map={pantsMap} />
+            {L.stripe && <B p={[side * 0.205, -legH / 2, 0]} s={[0.02, legH * 0.95, 0.12]} c={L.stripe} r={0.005} />}
+            {shoeStyle === 'dress' ? (
               <B p={[0, -legH - 0.13, 0.06]} s={[0.4, 0.15, 0.56]} c={L.shoe} r={0.06} rough={0.15} />
-            ) : L.shoeStyle === 'boot' ? (<>
-              <B p={[0, -legH - 0.2 + bootH / 2 - 0.0, 0.02]} s={[0.46, bootH, 0.5]} c={L.shoe} r={0.06} rough={0.7} />
+            ) : shoeStyle === 'sabot' ? (<>
+              <B p={[0, -legH - 0.1, 0.08]} s={[0.46, 0.22, 0.6]} c={L.shoe} r={0.1} rough={0.25} />
+              <B p={[0, -legH - 0.18, 0.08]} s={[0.47, 0.06, 0.61]} c="#f0f0f0" r={0.02} rough={0.5} />
+            </>) : shoeStyle === 'boot' ? (<>
+              <B p={[0, -legH - 0.03, 0.02]} s={[0.46, 0.34, 0.5]} c={L.shoe} r={0.06} rough={0.7} />
               <B p={[0, -legH - 0.16, 0.1]} s={[0.48, 0.1, 0.6]} c={L.shoeAccent} r={0.04} rough={0.8} />
             </>) : (<>
               <B p={[0, -legH - 0.1, 0.06]} s={[0.44, 0.2, 0.58]} c={L.shoe} r={0.07} rough={0.5} />
@@ -199,93 +261,44 @@ export const Perso3D: React.FC<{who: string; pose?: Pose; position?: [number, nu
           </group>
         );
       })}
-      {/* jupe longue */}
-      {skirt && <>
-        <B p={[0, 0.55, 0]} s={[1.08, 0.82, 0.74]} c={L.pants} r={0.12} />
-        <B p={[0, 0.22, 0]} s={[1.14, 0.2, 0.8]} c={L.pants} r={0.08} />
-      </>}
-      {/* longue veste (sous la taille) */}
-      {A.has('longcoat') && <>
-        {[-1, 1].map((sd) => <B key={sd} p={[sd * 0.47, 0.62, 0.02]} s={[0.16, 0.72, 0.62]} c={L.top} r={0.05} />)}
-        <B p={[0, 0.62, -0.3]} s={[1.08, 0.72, 0.1]} c={L.top} r={0.04} />
-      </>}
-      {/* salopette : bavette + bretelles */}
-      {A.has('overalls') && <>
-        <B p={[0, bodyY + 0.3, 0.285]} s={[0.62, 0.55, 0.04]} c={L.pants} r={0.03} />
-        {[-1, 1].map((sd) => <B key={sd} p={[sd * 0.25, bodyY + 0.72, 0.29]} s={[0.1, 0.4, 0.04]} c={L.pants} r={0.02} />)}
-        <B p={[0, bodyY + 0.38, 0.31]} s={[0.24, 0.16, 0.03]} c="#2f3a4f" r={0.02} />
-        <B p={[0, bodyY + 0.05, 0]} s={[bodyW + 0.02, 0.22, 0.6]} c={L.pants} r={0.05} />
-      </>}
       {/* corps */}
-      <B p={[0, bodyY + bodyH / 2, 0]} s={[bodyW, bodyH, 0.56]} c={L.top} r={0.1} map={topMap} />
-      {musc && <>
-        {[-1, 1].map((sd) => <B key={sd} p={[sd * 0.27, bodyY + 0.66, 0.24]} s={[0.5, 0.36, 0.14]} c={L.bottle} r={0.1} clear />)}
-        <B p={[0, bodyY + 0.5, 0.26]} s={[0.12, 0.5, 0.1]} c={L.top} r={0.03} />
+      <B p={[0, bodyY + bodyH / 2, 0]} s={[bodyW, bodyH, 0.56]} c={L.top} r={0.1} map={topMap} rough={L.topRough ?? (L.sparkle ? 0.35 : 0.75)} metal={L.sparkle ? 0.35 : 0} />
+      {L.bigBelly && <B p={[0, bodyY + 0.36, 0.22]} s={[bodyW * 0.82, 0.62, 0.28]} c={L.top} r={0.16} />}
+      {/* veste ouverte : vêtement intérieur */}
+      {L.inner && <B p={[0, bodyY + bodyH / 2, 0.27]} s={[0.4, bodyH * 0.96, 0.05]} c={L.inner} r={0.03} />}
+      {/* veste de chef croisée */}
+      {L.chef && <>
+        <B p={[0.12, bodyY + bodyH / 2 + 0.02, 0.29 + (L.bigBelly ? 0.14 : 0)]} s={[bodyW * 0.62, bodyH * 0.9, 0.03]} c={shade(L.top, 0.96)} r={0.02} />
+        {[-1, 1].map((sd) => [0, 1, 2].map((k) => (
+          <B key={`${sd}${k}`} p={[sd * 0.2 + 0.08, bodyY + 0.75 - k * 0.24, 0.32 + (L.bigBelly ? 0.14 : 0)]} s={[0.08, 0.08, 0.04]} c="#2c2c33" r={0.03} rough={0.3} />
+        )))}
+        <B p={[0, headY + 0.03, 0.02]} s={[0.66, 0.12, 0.6]} c={L.top} r={0.04} />
       </>}
-      {tex && (
-        <mesh position={[0, bodyY + bodyH * 0.55, 0.283]}>
-          <planeGeometry args={[0.8, 0.8]} />
-          <meshStandardMaterial map={tex} roughness={0.8} />
-        </mesh>
-      )}
-      {/* veste ouverte : vêtement intérieur + ventre */}
-      {L.inner && (
-        <B p={[0, bodyY + (L.belly ? 0.62 : bodyH / 2), 0.27]} s={[0.42, L.belly ? 0.5 : bodyH * 0.96, 0.05]} c={L.inner} r={0.03} />
-      )}
-      {L.belly && <B p={[0, bodyY + 0.2, 0.27]} s={[0.4, 0.3, 0.04]} c={L.bottle} r={0.03} clear />}
-      {/* doudoune sans manches */}
-      {L.vest && <>
-        <B p={[-0.3, bodyY + bodyH / 2, 0.02]} s={[0.46, bodyH + 0.04, 0.62]} c={L.vest} r={0.12} rough={0.35} />
-        <B p={[0.3, bodyY + bodyH / 2, 0.02]} s={[0.46, bodyH + 0.04, 0.62]} c={L.vest} r={0.12} rough={0.35} />
-        {[0.25, 0.5, 0.75].map((h) => <B key={h} p={[0, bodyY + bodyH * h, 0.335]} s={[1.02, 0.03, 0.01]} c="#000000" r={0.005} />)}
+      {/* tablier */}
+      {(L.apronColor || L.apronFloral) && <>
+        <B p={[0, bodyY + 0.6, 0.3 + (L.bigBelly ? 0.14 : 0)]} s={[0.5, 0.42, 0.03]} c={L.apronColor ?? '#ffffff'} map={apronMap} r={0.02} />
+        <B p={[0, 0.62, 0.36 + (L.bigBelly ? 0.12 : 0)]} s={[0.84, 0.82, 0.03]} c={L.apronColor ?? '#ffffff'} map={apronMap} r={0.03} />
+        <B p={[0, bodyY + 0.05, 0]} s={[bodyW + 0.04, 0.08, 0.62 + (L.bigBelly ? 0.28 : 0)]} c={L.apronColor ? shade(L.apronColor, 0.85) : L.apronFloral![2]} r={0.02} />
       </>}
-      {/* cravate (+ chemise) */}
+      {/* nœud papillon */}
+      {A.has('bowtie') && <>
+        {[-1, 1].map((sd) => <B key={sd} p={[sd * 0.1, headY - 0.1, 0.31]} s={[0.15, 0.13, 0.05]} c="#0c0c0e" r={0.03} rot={[0, 0, sd * 0.2]} />)}
+        <B p={[0, headY - 0.1, 0.33]} s={[0.06, 0.07, 0.05]} c="#0c0c0e" r={0.02} />
+      </>}
+      {/* foulard de cou */}
+      {A.has('neckerchief') && <>
+        <B p={[0, headY - 0.02, 0.3]} s={[0.42, 0.12, 0.06]} c={L.accColor ?? '#1c2a5c'} r={0.03} />
+        <B p={[0.04, headY - 0.17, 0.32]} s={[0.16, 0.2, 0.05]} c={L.accColor ?? '#1c2a5c'} r={0.03} rot={[0, 0, 0.5]} />
+      </>}
       {A.has('tie') && <>
-        <B p={[0, bodyY + 0.72, 0.3]} s={[0.24, 0.42, 0.03]} c="#f4f4f4" r={0.02} />
-        <B p={[0, bodyY + 0.62, 0.32]} s={[0.1, 0.5, 0.03]} c={who === 'PRUNE' ? '#3a2a55' : '#0b0b0d'} r={0.02} />
-        <B p={[0, bodyY + 0.88, 0.32]} s={[0.13, 0.08, 0.03]} c={who === 'PRUNE' ? '#3a2a55' : '#0b0b0d'} r={0.02} />
-        {[-1, 1].map((sd) => <B key={sd} p={[sd * 0.2, bodyY + 0.66, 0.3]} s={[0.1, 0.6, 0.03]} c={L.top} r={0.02} rot={[0, 0, sd * 0.25]} />)}
+        <B p={[0, bodyY + 0.62, 0.32]} s={[0.1, 0.5, 0.03]} c={L.accColor ?? '#0b0b0d'} r={0.02} />
+        <B p={[0, bodyY + 0.88, 0.32]} s={[0.13, 0.08, 0.03]} c={L.accColor ?? '#0b0b0d'} r={0.02} />
       </>}
-      {A.has('chain') && <B p={[0.22, bodyY + 0.38, 0.3]} s={[0.26, 0.03, 0.02]} c="#d4af37" r={0.01} metal={0.8} rough={0.3} />}
-      {A.has('pocketSquare') && <B p={[0.32, bodyY + 0.72, 0.3]} s={[0.12, 0.06, 0.03]} c="#b58cff" r={0.01} />}
       {A.has('necklace') && <B p={[0, bodyY + 0.9, 0.29]} s={[0.36, 0.03, 0.02]} c="#e9c14a" r={0.01} metal={0.8} rough={0.3} />}
-      {/* ceinture à outils */}
-      {A.has('toolbelt') && <>
-        <B p={[0, bodyY + 0.06, 0]} s={[bodyW + 0.06, 0.12, 0.62]} c="#5a3a1e" r={0.03} />
-        <B p={[0, bodyY + 0.06, 0.32]} s={[0.14, 0.1, 0.02]} c="#c9a24a" r={0.01} metal={0.7} />
-        {[-1, 1].map((sd) => <group key={sd}>
-          <B p={[sd * 0.42, bodyY - 0.1, 0.25]} s={[0.24, 0.3, 0.16]} c="#7a4e2a" r={0.03} />
-          <B p={[sd * 0.38, bodyY + 0.08, 0.27]} s={[0.05, 0.22, 0.05]} c={sd < 0 ? '#e0b020' : '#d43a2a'} r={0.015} />
-          <B p={[sd * 0.47, bodyY + 0.06, 0.27]} s={[0.05, 0.18, 0.05]} c="#9aa3ad" r={0.015} metal={0.6} />
-        </group>)}
-      </>}
-      {/* sacoche en bandoulière */}
-      {A.has('bag') && <>
-        <B p={[0.02, bodyY + 0.5, 0.31]} s={[0.07, 1.15, 0.02]} c="#111" r={0.01} rot={[0, 0, -0.75]} />
-        <B p={[-0.42, bodyY + 0.12, 0.3]} s={[0.36, 0.28, 0.14]} c="#1b1b1f" r={0.05} rough={0.5} />
-        <B p={[-0.42, bodyY + 0.14, 0.38]} s={[0.12, 0.06, 0.02]} c="#c9a24a" r={0.01} metal={0.7} />
-      </>}
-      {/* petit sac blanc à l'épaule */}
-      {A.has('handbag') && <>
-        <B p={[-0.5, bodyY + 0.6, 0.12]} s={[0.05, 0.7, 0.03]} c="#f2f2f2" r={0.01} rot={[0, 0, 0.15]} />
-        <B p={[-0.58, bodyY + 0.18, 0.12]} s={[0.12, 0.3, 0.38]} c="#ffffff" r={0.05} rough={0.4} />
-      </>}
       {/* sac à dos */}
       {A.has('backpack') && <>
-        <B p={[0, bodyY + 0.48, -0.44]} s={[0.78, 0.82, 0.34]} c={who === 'SKATTY' ? '#1d1d20' : who === 'NINO' ? '#1d4f52' : '#2f3542'} r={0.1} />
-        <B p={[0, bodyY + 0.3, -0.63]} s={[0.5, 0.3, 0.06]} c={who === 'SKATTY' ? '#2a2a2e' : '#2b6b6e'} r={0.04} />
+        <B p={[0, bodyY + 0.48, -0.44]} s={[0.78, 0.82, 0.34]} c={L.accColor ?? '#2f3542'} r={0.1} />
         {[-1, 1].map((sd) => <B key={sd} p={[sd * 0.3, bodyY + 0.6, 0.29]} s={[0.1, 0.62, 0.03]} c="#1a1a1a" r={0.02} />)}
-      </>}
-      {/* col en mouton + écharpe */}
-      {A.has('collar') && <B p={[0, headY + 0.0, -0.02]} s={[1.08, 0.24, 0.66]} c="#efe2c4" r={0.1} rough={0.95} />}
-      {A.has('scarf') && <>
-        <B p={[0, headY + 0.08, 0.0]} s={[0.92, 0.18, 0.7]} c="#ffffff" map={plaidScarf} r={0.08} />
-        <B p={[0.16, bodyY + 0.6, 0.32]} s={[0.24, 0.62, 0.08]} c="#ffffff" map={plaidScarf} r={0.04} />
-      </>}
-      {/* serviette sur l'épaule */}
-      {A.has('towel') && <>
-        <B p={[0.5, headY + 0.02, 0]} s={[0.38, 0.12, 0.66]} c="#f7f7f2" r={0.05} rough={0.95} />
-        <B p={[0.5, bodyY + 0.6, 0.3]} s={[0.36, 0.62, 0.08]} c="#f7f7f2" r={0.04} rough={0.95} />
       </>}
       {/* casque audio autour du cou */}
       {A.has('headphones') && <>
@@ -293,164 +306,119 @@ export const Perso3D: React.FC<{who: string; pose?: Pose; position?: [number, nu
         {[-1, 1].map((sd) => <B key={sd} p={[sd * 0.43, headY + 0.08, 0.24]} s={[0.16, 0.3, 0.3]} c="#ffffff" r={0.07} rough={0.3} />)}
       </>}
       {/* capuche */}
-      {!A.has('collar') && !A.has('tie') && !musc && <B p={[0, headY + 0.02, -0.22]} s={[0.86, 0.22, 0.26]} c={L.top} r={0.1} />}
+      {L.hood && <B p={[0, headY + 0.02, -0.22]} s={[0.86, 0.22, 0.26]} c={L.top} r={0.1} />}
       {/* bras */}
       {[-1, 1].map((side) => {
         const lift = side < 0 ? armL : armR;
         const spread = side < 0 ? armSideL : armSideR;
         const a = -side * sw * 0.9 - lift;
+        const sleeveCol = L.top;
         return (
           <group key={side} position={[side * armX, bodyY + bodyH - 0.12, 0]} rotation={[a, 0, side * (0.08 + spread)]}>
-            {L.bareArms ? <>
-              <B p={[0, -0.12, 0]} s={[armW + 0.06, 0.26, armW + 0.06]} c={L.bottle} r={0.12} clear />
-              <B p={[0, -0.44, 0]} s={[armW, 0.5, armW + 0.04]} c={L.bottle} r={0.12} clear />
-            </> : <B p={[0, -0.36, 0]} s={[armW, 0.72, 0.32]} c={armColor} r={0.09} />}
-            {L.sleeves && <B p={[0, -0.66, 0]} s={[armW + 0.02, 0.1, 0.34]} c={L.top} r={0.03} />}
-            {musc && <B p={[0, -0.7, 0.02]} s={[0.36, 0.12, 0.36]} c="#141416" r={0.03} />}
-            <B p={[0, -0.8, 0.02]} s={[musc ? 0.34 : 0.26, 0.22, musc ? 0.34 : 0.28]} c={L.bottle} r={0.08} clear />
-            {A.has('clipboard') && side < 0 && (
-              <group position={[0.05, -0.82, 0.24]} rotation={[0.2 + lift * 0.5, 0, 0]}>
-                <B p={[0, 0, 0]} s={[0.5, 0.62, 0.05]} c="#c08a52" r={0.02} />
-                <B p={[0, 0.3, 0.03]} s={[0.2, 0.08, 0.04]} c="#8c8c8c" r={0.015} rough={0.3} />
+            {rolled ? <>
+              <B p={[0, -0.2, 0]} s={[armW + 0.02, 0.42, 0.34]} c={sleeveCol} r={0.09} map={topMap} />
+              <B p={[0, -0.44, 0]} s={[armW + 0.05, 0.1, 0.36]} c={shade(sleeveCol, 0.93)} r={0.04} />
+              <B p={[0, -0.6, 0]} s={[armW - 0.02, 0.36, 0.28]} c={skin} r={0.08} />
+              {side > 0 && <B p={[0, -0.6, 0.145]} s={[0.16, 0.18, 0.02]} c="#22365e" r={0.02} />}
+            </> : <B p={[0, L.sleevesLong ? -0.42 : -0.36, 0]} s={[armW, L.sleevesLong ? 0.84 : 0.72, 0.32]} c={sleeveCol} r={0.09} map={topMap} rough={L.topRough ?? 0.75} metal={L.sparkle ? 0.35 : 0} />}
+            <B p={[0, L.sleevesLong ? -0.88 : -0.8, 0.02]} s={[L.sleevesLong ? 0.2 : 0.26, L.sleevesLong ? 0.12 : 0.22, L.sleevesLong ? 0.22 : 0.28]} c={skin} r={0.06} clear={glossy} rough={0.7} />
+            {A.has('micro') && side > 0 && (
+              <group position={[0, -0.86, 0.14]} rotation={[-0.25, 0, 0]}>
+                <B p={[0, 0, 0.12]} s={[0.08, 0.08, 0.34]} c="#1a1a1e" r={0.03} rough={0.4} />
+                <B p={[0, 0.02, 0.34]} s={[0.17, 0.17, 0.17]} c="#5b5d66" r={0.08} rough={0.35} metal={0.5} />
+                <B p={[0, 0.02, 0.27]} s={[0.11, 0.11, 0.03]} c="#d02b2b" r={0.02} />
               </group>
             )}
-            {A.has('cane') && side > 0 && (
-              <group position={[0, -0.86, 0.16]}>
-                <B p={[0, -0.42, 0]} s={[0.08, 0.86, 0.08]} c="#9c6a3a" r={0.03} />
-                <B p={[0, 0.02, -0.08]} s={[0.08, 0.08, 0.24]} c="#9c6a3a" r={0.03} />
-              </group>
-            )}
-            {A.has('skateboard') && side > 0 && (
-              <group position={[0.12, -0.9, 0.18]} rotation={[0, -1.25, 0.12]}>
-                <B p={[0, -0.25, 0]} s={[0.07, 1.25, 0.42]} c="#1d1d20" r={0.03} />
-                <B p={[0.04, -0.25, 0]} s={[0.01, 0.9, 0.18]} c="#ff9f1a" r={0.005} />
-                {[-0.65, 0.15].map((y) => [-1, 1].map((zz) => <B key={`${y}${zz}`} p={[-0.07, y, zz * 0.14]} s={[0.08, 0.1, 0.1]} c="#e8e2d0" r={0.03} />))}
-              </group>
-            )}
-            {A.has('spoon') && side < 0 && (
-              <group position={[0, -0.82, 0.18]} rotation={[0.5, 0, 0]}>
-                <B p={[0, 0.25, 0]} s={[0.06, 0.6, 0.06]} c="#b5793e" r={0.02} />
-                <B p={[0, 0.6, 0]} s={[0.18, 0.22, 0.08]} c="#b5793e" r={0.05} />
-              </group>
-            )}
-            {A.has('pot') && side > 0 && (
-              <group position={[-0.12, -0.84, 0.32]}>
-                <B p={[0, 0, 0]} s={[0.56, 0.36, 0.48]} c="#8a4b26" r={0.08} rough={0.45} metal={0.3} />
-                <B p={[0, 0.2, 0]} s={[0.6, 0.06, 0.52]} c="#a0592e" r={0.03} rough={0.45} metal={0.3} />
-                <B p={[0, 0.26, 0]} s={[0.1, 0.06, 0.1]} c="#5a3a1e" r={0.02} />
+            {A.has('carnet') && side < 0 && (
+              <group position={[0.04, -0.84, 0.22]} rotation={[0.25 + lift * 0.4, 0, 0]}>
+                <B p={[0, 0, 0]} s={[0.36, 0.46, 0.06]} c="#1f3d7a" r={0.02} />
+                <B p={[0.0, 0, 0.035]} s={[0.3, 0.4, 0.02]} c="#f5f1e4" r={0.01} />
+                <B p={[0.12, 0.05, 0.06]} s={[0.04, 0.34, 0.04]} c="#e8b42a" r={0.015} rot={[0, 0, -0.4]} />
               </group>
             )}
           </group>
         );
       })}
-      {/* tablier (devant tout) */}
-      {A.has('apron') && <>
-        <B p={[0, bodyY + 0.62, 0.3]} s={[0.5, 0.5, 0.03]} c="#ffffff" map={apronMap} r={0.02} />
-        <B p={[0, 0.65, 0.39]} s={[0.84, 0.8, 0.03]} c="#ffffff" map={apronMap} r={0.03} />
-        <B p={[0, bodyY + 0.06, 0.3]} s={[1.02, 0.08, 0.6]} c="#f5ead6" r={0.02} />
-      </>}
-      {/* tête-bouteille */}
+      {/* ----- tête ----- */}
       <group position={[0, headY, 0]} rotation={[headTilt, headTurn, 0]}>
-        <B p={[0, 0.62, 0]} s={[0.98, 1.24, 0.82]} c={L.bottle} r={0.16} clear />
-        <B p={[0, 1.3, 0]} s={[0.66, 0.18, 0.6]} c={L.bottle} r={0.08} clear />
-        <B p={[0, 1.46, 0]} s={[0.44, 0.16, 0.42]} c={L.bottle} r={0.05} clear />
-        <B p={[0, 1.57, 0]} s={[0.56, 0.06, 0.54]} c={L.cap} r={0.02} />
-        <B p={[0, 1.71, 0]} s={[0.52, 0.24, 0.5]} c={L.cap} r={0.05} rough={0.45} />
-        {/* cheveux (derrière / côtés / frange) */}
-        {A.has('hair') && <>
-          <B p={[0, 0.62, -0.45]} s={[1.06, 1.18, 0.14]} c={L.hairColor ?? '#151515'} r={0.06} rough={0.5} />
-          {[-1, 1].map((sd) => <B key={sd} p={[sd * 0.53, 0.5, -0.05]} s={[0.12, 1.0, 0.76]} c={L.hairColor ?? '#151515'} r={0.05} rough={0.5} />)}
-          <B p={[-0.2, 1.12, 0.38]} s={[0.62, 0.2, 0.12]} c={L.hairColor ?? '#151515'} r={0.05} rough={0.5} rot={[0, 0, -0.15]} />
-          <B p={[-0.5, 0.0, -0.02]} s={[0.14, 0.35, 0.6]} c={L.hairColor ?? '#151515'} r={0.05} rough={0.5} />
-        </>}
-        {/* foulard fleuri */}
-        {A.has('headscarf') && <>
-          <B p={[0, 1.13, -0.02]} s={[1.1, 0.34, 0.92]} c="#ffffff" map={scarfMap} r={0.12} />
-          {[-1, 1].map((sd) => <B key={sd} p={[sd * 0.54, 0.6, -0.04]} s={[0.12, 1.1, 0.9]} c="#ffffff" map={scarfMap} r={0.05} />)}
-          <B p={[0, 0.62, -0.46]} s={[1.1, 1.2, 0.12]} c="#ffffff" map={scarfMap} r={0.05} />
-          <B p={[0, -0.02, 0.1]} s={[0.9, 0.16, 0.7]} c="#ffffff" map={scarfMap} r={0.06} />
+        {human ? <>
+          <B p={[0, 0.06, 0]} s={[0.42, 0.14, 0.4]} c={shade(skin, 0.92)} r={0.04} rough={0.7} />
+          <B p={[0, 0.62, 0]} s={[1.0, 1.0, 0.9]} c={skin} r={0.1} rough={0.7} />
+          {[-1, 1].map((sd) => <B key={sd} p={[sd * 0.52, 0.62, 0.02]} s={[0.08, 0.22, 0.16]} c={shade(skin, 0.94)} r={0.03} rough={0.7} />)}
+          <B p={[0, 0.5, faceZ + 0.04]} s={[0.14, 0.14, 0.1]} c={shade(skin, 0.9)} r={0.04} rough={0.7} />
+          {L.blush && [-1, 1].map((sd) => <B key={sd} p={[sd * 0.32, 0.48, faceZ + 0.005]} s={[0.17, 0.08, 0.02]} c="#f2869a" r={0.02} rough={0.8} />)}
+          {L.hair && <Coiffure hair={L.hair} c={L.hairColor ?? '#1a1410'} toque={toque} />}
+          {toque && <group position={[0, 1.12, 0]} scale={[tq, tq, tq]}>
+            <B p={[0, 0.12, 0]} s={[1.06, 0.26, 0.96]} c="#ffffff" r={0.05} rough={0.85} />
+            <B p={[0, 0.58, 0]} s={[1.18, 0.7, 1.06]} c="#ffffff" r={0.22} rough={0.9} />
+            {[-0.3, 0, 0.3].map((x) => <B key={x} p={[x, 0.58, 0.535]} s={[0.04, 0.6, 0.02]} c="#ececec" r={0.01} />)}
+          </group>}
+          {L.mustache && <>
+            <B p={[0, 0.41, faceZ + 0.04]} s={[0.56, 0.15, 0.1]} c={L.mustache} r={0.05} rough={0.8} />
+            {[-1, 1].map((sd) => <B key={sd} p={[sd * 0.33, 0.45, faceZ + 0.03]} s={[0.2, 0.1, 0.08]} c={L.mustache!} r={0.04} rough={0.8} rot={[0, 0, sd * 0.45]} />)}
+          </>}
+          {L.beardShort && <>
+            <B p={[0, 0.22, faceZ + 0.01]} s={[0.98, 0.28, 0.06]} c={L.beardShort} r={0.06} rough={0.9} />
+            {[-1, 1].map((sd) => <B key={sd} p={[sd * 0.5, 0.42, 0.18]} s={[0.04, 0.46, 0.5]} c={L.beardShort!} r={0.02} rough={0.9} />)}
+          </>}
+          {A.has('headset') && <>
+            <B p={[0, 1.2, 0]} s={[1.1, 0.08, 0.16]} c="#2a2a30" r={0.03} />
+            {[-1, 1].map((sd) => <B key={sd} p={[sd * 0.56, 0.68, 0.02]} s={[0.14, 0.34, 0.32]} c="#1c1c20" r={0.06} />)}
+            <B p={[-0.38, 0.38, 0.4]} s={[0.4, 0.05, 0.05]} c="#2a2a30" r={0.02} rot={[0, -0.5, 0.3]} />
+          </>}
+        </> : <>
+          <B p={[0, 0.62, 0]} s={[0.98, 1.24, 0.82]} c={L.bottle ?? '#eee'} r={0.16} clear />
+          <B p={[0, 1.3, 0]} s={[0.66, 0.18, 0.6]} c={L.bottle ?? '#eee'} r={0.08} clear />
+          <B p={[0, 1.46, 0]} s={[0.44, 0.16, 0.42]} c={L.bottle ?? '#eee'} r={0.05} clear />
+          <B p={[0, 1.57, 0]} s={[0.56, 0.06, 0.54]} c={L.cap ?? '#fff'} r={0.02} />
+          <B p={[0, 1.71, 0]} s={[0.52, 0.24, 0.5]} c={L.cap ?? '#fff'} r={0.05} rough={0.45} />
         </>}
         {/* casquette */}
         {(A.has('cap') || A.has('capBack')) && <>
-          <B p={[0, 1.18, 0]} s={[1.04, 0.3, 0.88]} c={L.hatColor ?? '#222'} r={0.12} rough={0.6} />
-          <B p={[0, 1.07, A.has('capBack') ? -0.62 : 0.62]} s={[0.84, 0.06, 0.44]} c={L.hatColor ?? '#222'} r={0.03} rough={0.6} />
-          {A.has('cap') && who === 'ROCCO' && <B p={[0, 1.2, 0.45]} s={[0.24, 0.16, 0.02]} c="#c9c9c9" r={0.02} />}
+          <B p={[0, human ? 1.2 : 1.18, 0]} s={[1.06, 0.26, 0.94]} c={L.hatColor ?? '#222'} r={0.12} rough={0.6} />
+          <B p={[0, human ? 1.1 : 1.07, A.has('capBack') ? -0.64 : 0.64]} s={[0.84, 0.06, 0.44]} c={L.hatColor ?? '#222'} r={0.03} rough={0.6} />
         </>}
-        {/* lunettes de soleil posées sur le haut de la tête */}
-        {A.has('sunglasses') && <group position={[0, 1.2, 0.3]} rotation={[-0.35, 0, 0]}>
-          {[-1, 1].map((sd) => <group key={sd} position={[sd * 0.22, 0, 0]}>
-            <B p={[0, 0, 0.02]} s={[0.36, 0.24, 0.05]} c="#111" r={0.04} rough={0.1} />
-            <Frame w={0.4} h={0.28} t={0.05} c="#ffffff" z={0.05} />
-          </group>)}
-          <B p={[0, 0.04, 0.06]} s={[0.12, 0.05, 0.05]} c="#ffffff" r={0.015} />
-        </group>}
         {/* créoles */}
         {A.has('hoops') && [-1, 1].map((sd) => (
-          <mesh key={sd} position={[sd * 0.56, 0.3, 0.12]} rotation={[0, sd * 0.5, 0]} castShadow>
-            <torusGeometry args={[0.13, 0.025, 8, 20]} />
+          <mesh key={sd} position={[sd * (human ? 0.57 : 0.56), human ? 0.42 : 0.3, 0.06]} rotation={[0, sd * 0.5, 0]} castShadow>
+            <torusGeometry args={[0.12, 0.025, 8, 20]} />
             <meshStandardMaterial color="#e5b73b" metalness={0.85} roughness={0.25} />
           </mesh>
         ))}
-        {/* oreillette */}
-        {A.has('earpiece') && <>
-          <B p={[0.51, 0.62, 0.05]} s={[0.06, 0.12, 0.1]} c="#2a2a2a" r={0.02} />
-          <B p={[0.51, 0.3, -0.02]} s={[0.025, 0.55, 0.025]} c="#c9c9c9" r={0.01} />
-        </>}
         {/* yeux */}
         {[-1, 1].map((side) => (
-          <group key={side} position={[side * 0.215, 0.8, 0.415]}>
-            {squint ? (
-              <group rotation={[0, 0, side * 0.0]}>
-                <B p={[0, 0.0, 0.01]} s={[0.28, 0.07, 0.04]} c="#1a1209" r={0.03} />
-                <B p={[-0.13, -0.05, 0.01]} s={[0.07, 0.1, 0.04]} c="#1a1209" r={0.03} />
-                <B p={[0.13, -0.05, 0.01]} s={[0.07, 0.1, 0.04]} c="#1a1209" r={0.03} />
-              </group>
-            ) : (<>
-              <B p={[0, 0, 0]} s={[0.33, 0.38 * eyeOpen, 0.04]} c="#ffffff" r={0.04} rough={0.3} />
-              <B p={[look[0] * 0.06, look[1] * 0.06 * eyeOpen - 0.01, 0.025]} s={[0.15, 0.19 * eyeOpen, 0.03]} c="#24150b" r={0.03} rough={0.2} />
-              <B p={[look[0] * 0.06 + 0.035, look[1] * 0.06 * eyeOpen + 0.04, 0.045]} s={[0.05, 0.05 * eyeOpen, 0.01]} c="#ffffff" r={0.005} rough={0.1} />
+          <group key={side} position={[side * eyeX, eyeY, faceZ]}>
+            {squint ? (<>
+              <B p={[0, 0.0, 0.01]} s={[0.28, 0.07, 0.04]} c="#1a1209" r={0.03} />
+              <B p={[-0.13, -0.05, 0.01]} s={[0.07, 0.1, 0.04]} c="#1a1209" r={0.03} />
+              <B p={[0.13, -0.05, 0.01]} s={[0.07, 0.1, 0.04]} c="#1a1209" r={0.03} />
+            </>) : (<>
+              <B p={[0, 0, 0]} s={[eyeW, eyeH * eyeOpen, 0.04]} c="#ffffff" r={0.04} rough={0.3} />
+              <B p={[look[0] * 0.06, look[1] * 0.06 * eyeOpen - 0.01, 0.025]} s={[eyeW * 0.46, eyeH * 0.5 * eyeOpen, 0.03]} c="#24150b" r={0.03} rough={0.2} />
+              <B p={[look[0] * 0.06 + 0.035, look[1] * 0.06 * eyeOpen + 0.035, 0.045]} s={[0.05, 0.05 * eyeOpen, 0.01]} c="#ffffff" r={0.005} rough={0.1} />
             </>)}
             {A.has('lashes') && !squint && <>
-              <B p={[side * 0.17, 0.16 * eyeOpen + 0.02, 0.03]} s={[0.1, 0.05, 0.03]} c="#111" r={0.015} rot={[0, 0, side * 0.6]} />
-              <B p={[side * 0.19, 0.08 * eyeOpen + 0.02, 0.03]} s={[0.08, 0.04, 0.03]} c="#111" r={0.015} rot={[0, 0, side * 0.3]} />
+              <B p={[side * 0.15, eyeH * 0.42 * eyeOpen + 0.02, 0.03]} s={[0.1, 0.05, 0.03]} c="#111" r={0.015} rot={[0, 0, side * 0.6]} />
+              <B p={[side * 0.17, eyeH * 0.2 * eyeOpen + 0.02, 0.03]} s={[0.08, 0.04, 0.03]} c="#111" r={0.015} rot={[0, 0, side * 0.3]} />
             </>}
-            {A.has('glassesRect') && <Frame w={0.4} h={0.36} t={0.045} c="#1a1325" z={0.06} />}
-            {A.has('glassesRound') && <Frame w={0.4} h={0.4} t={0.05} c="#3a1f55" z={0.06} />}
-            {A.has('shades') && <B p={[0, 0.0, 0.07]} s={[0.4, 0.3, 0.04]} c="#08080a" r={0.05} rough={0.08} />}
+            {A.has('glassesRect') && <Frame w={0.4} h={0.36} t={0.05} c="#111116" z={0.06} />}
+            {A.has('glassesRound') && <Frame w={0.38} h={0.38} t={0.045} c="#8a5a2a" z={0.06} />}
             {/* sourcil */}
-            <group position={[0, 0.27 + browUp, 0.02]} rotation={[0, 0, side * (browRot - 0.12)]}>
-              <B p={[0, 0, 0]} s={[0.36, 0.1 * (L.browThick ?? 1), 0.06]} c={L.brows ?? '#141414'} r={0.04} />
+            <group position={[0, eyeH * 0.5 + 0.11 + browUp, 0.02]} rotation={[0, 0, side * (browRot - 0.12)]}>
+              <B p={[0, 0, 0]} s={[0.34, 0.1 * (L.browThick ?? 1), 0.06]} c={browCol} r={0.035} />
             </group>
           </group>
         ))}
-        {(A.has('glassesRect') || A.has('glassesRound')) && <B p={[0, 0.82, 0.48]} s={[0.07, 0.04, 0.04]} c="#1a1325" r={0.01} />}
-        {A.has('shades') && <B p={[0, 0.84, 0.49]} s={[0.1, 0.05, 0.04]} c="#08080a" r={0.01} />}
-        {/* barbe blanche (Papi) */}
-        {A.has('beard') && <>
-          <B p={[0, 0.2, 0.42]} s={[1.0, 0.56, 0.18]} c="#f6f6f3" r={0.12} rough={0.95} />
-          <B p={[0, -0.06, 0.38]} s={[0.7, 0.3, 0.18]} c="#f6f6f3" r={0.1} rough={0.95} />
-          {[-1, 1].map((sd) => <B key={sd} p={[sd * 0.2, 0.52, 0.5]} s={[0.36, 0.12, 0.08]} c="#ffffff" r={0.05} rough={0.95} rot={[0, 0, sd * -0.15]} />)}
-        </>}
-        {/* barbe noire courte (Rocco) */}
-        {A.has('beardDark') && <>
-          <B p={[0, 0.22, 0.4]} s={[0.94, 0.4, 0.08]} c="#1e1a16" r={0.08} rough={0.9} />
-          {[-1, 1].map((sd) => <B key={sd} p={[sd * 0.46, 0.45, 0.25]} s={[0.08, 0.5, 0.3]} c="#1e1a16" r={0.03} rough={0.9} />)}
-          <B p={[0, 0.5, 0.46]} s={[0.46, 0.08, 0.04]} c="#1e1a16" r={0.03} rough={0.9} />
-        </>}
-        {/* bouc (Prune) */}
-        {A.has('goatee') && <>
-          <B p={[0, 0.12, 0.43]} s={[0.12, 0.2, 0.04]} c="#141018" r={0.03} />
-          {[-1, 1].map((sd) => <B key={sd} p={[sd * 0.13, 0.53, 0.43]} s={[0.2, 0.045, 0.03]} c="#141018" r={0.015} rot={[0, 0, sd * 0.22]} />)}
-        </>}
-        {/* bouche souriante : bloc central + coins relevés */}
+        {(A.has('glassesRect') || A.has('glassesRound')) && <B p={[0, eyeY + 0.02, faceZ + 0.065]} s={[0.08, 0.045, 0.04]} c={A.has('glassesRect') ? '#111116' : '#8a5a2a'} r={0.01} />}
+        {/* bouche */}
         {(() => {
-          const z = A.has('beard') ? 0.52 : A.has('beardDark') ? 0.45 : 0.42;
-          const mw = A.has('goatee') ? 0.34 : 0.46;
+          const z = faceZ + (L.beardShort ? 0.05 : 0.005);
+          const mw = human ? 0.42 : 0.46;
           return <>
-            <B p={[0, 0.36, z]} s={[mw, mouthH, 0.03]} c="#3a0d0d" r={0.03} rough={0.6} />
-            {smile > 0.4 && [-1, 1].map((sd) => <B key={sd} p={[sd * (mw / 2 + 0.03), 0.36 + mouthH / 2 - 0.02, z]} s={[0.1, 0.07, 0.03]} c="#3a0d0d" r={0.02} rough={0.6} />)}
-            <B p={[0, 0.36 + mouthH / 2 - 0.03, z + 0.013]} s={[mw - 0.06, 0.055, 0.015]} c="#ffffff" r={0.01} rough={0.4} />
-            <B p={[0, 0.36 - mouthH / 2 + 0.035, z + 0.013]} s={[mw * 0.52, Math.min(0.07, mouthH * 0.35), 0.012]} c="#ff7a8a" r={0.01} />
+            <B p={[0, mouthY, z]} s={[mw, mouthH, 0.03]} c="#3a0d0d" r={0.03} rough={0.6} />
+            {smile > 0.4 && [-1, 1].map((sd) => <B key={sd} p={[sd * (mw / 2 + 0.03), mouthY + mouthH / 2 - 0.02, z]} s={[0.1, 0.07, 0.03]} c="#3a0d0d" r={0.02} rough={0.6} />)}
+            <B p={[0, mouthY + mouthH / 2 - 0.03, z + 0.013]} s={[mw - 0.06, 0.055, 0.015]} c="#ffffff" r={0.01} rough={0.4} />
+            <B p={[0, mouthY - mouthH / 2 + 0.035, z + 0.013]} s={[mw * 0.52, Math.min(0.07, mouthH * 0.35), 0.012]} c="#ff7a8a" r={0.01} />
           </>;
         })()}
       </group>

@@ -284,9 +284,9 @@ export const QGGarage: React.FC<{t?: number}> = ({t = 0}) => {
       <MurBriques p={[9, 4, 1]} w={12.4} h={8} rot={[0, -Math.PI / 2, 0]} />
       <Bloc p={[0, 8.1, 1]} s={[18.4, 0.3, 12.8]} c="#2b2430" r={0.02} shadow={false} />
       {[-6, -2, 2, 6].map((x) => <Bloc key={x} p={[x, 7.7, 1]} s={[0.5, 0.5, 12.4]} c="#4a3b30" r={0.05} shadow={false} />)}
-      {/* néon BORZ */}
+      {/* néon QG */}
       <Bloc p={[0, 6.1, -4.9]} s={[6.4, 1.9, 0.12]} c="#1a1a1a" r={0.08} />
-      <Texte3D p={[0, 6.1, -4.82]} w={6} h={1.8} text="BORZ" color="#8dff3a" font={1.35} glow={2.2} />
+      <Texte3D p={[0, 6.1, -4.82]} w={6} h={1.8} text="QG" color="#8dff3a" font={1.35} glow={2.2} />
       <pointLight position={[0, 6, -3.8]} intensity={10 * flick / 1.6} distance={9} color="#8dff3a" />
       <Texte3D p={[0, 4.75, -4.95]} w={6} h={0.5} text="QG DU QUARTIER" color="#ffffff" font={0.3} />
       {/* canapé rouge */}
@@ -315,7 +315,7 @@ export const QGGarage: React.FC<{t?: number}> = ({t = 0}) => {
         <Bloc p={[0, 3.2, -0.55]} s={[3.4, 2.4, 0.08]} c="#8a6a48" r={0.02} />
         {[-1.2, -0.4, 0.4, 1.2].map((x) => <Bloc key={x} p={[x, 3.2, -0.45]} s={[0.12, 1.0, 0.1]} c="#5a5f68" rough={0.3} />)}
       </group>
-      {/* étagère de bouteilles BORZ */}
+      {/* étagère de bouteilles */}
       <group position={[0.2, 0, -4.7]}>
         {[2.2, 3.4].map((y) => <Bloc key={y} p={[0, y, 0]} s={[3.2, 0.15, 0.6]} c="#6b4a2b" />)}
         {['#8fd629', '#ffffff', '#ff3326', '#2f7bff', '#ffd23f', '#ff5fa2', '#9b4dff', '#ff8a1f'].map((c, i) => (
@@ -453,7 +453,7 @@ export const Skatepark: React.FC<{t?: number}> = () => (
     ))}
     {/* tags sur un mur */}
     <Bloc p={[0, 2.6, -10]} s={[20, 5.2, 0.6]} c="#d8d0c0" r={0.05} />
-    <Texte3D p={[-5, 4.1, -9.68]} w={6} h={2.4} text="BORZ" color="#8dff3a" font={1.5} rot={[0, 0, 0.08]} stroke="#123d00" />
+    <Texte3D p={[-5, 4.1, -9.68]} w={6} h={2.4} text="SK8" color="#8dff3a" font={1.5} rot={[0, 0, 0.08]} stroke="#123d00" />
     <Texte3D p={[2.5, 4.2, -9.68]} w={5} h={2} text="SKATTY" color="#ffd23f" font={0.95} rot={[0, 0, -0.06]} stroke="#5a3a00" />
     <Texte3D p={[7.5, 4.0, -9.68]} w={3} h={2} text="★" color="#ff4fd8" font={1.4} stroke="#4a0040" />
     <Arbre x={-15} z={10} s={1.2} /><Arbre x={15} z={10} s={1.2} /><Arbre x={-16} z={-6} s={1.3} /><Arbre x={16} z={-6} s={1.3} />
@@ -487,7 +487,7 @@ export const SPOTS_RUE_NUIT = {
   camera_large: {pos: [4, 4.5, 16], target: [0, 2.6, -8]} as Cam,
   camera_proche: {pos: [2.5, 3.4, 8], target: [0, 2.4, 0]} as Cam,
 };
-/** Rue de BORZ City ; avec `night`, fenêtres et lampadaires s'allument (à combiner avec <Eclairage mode="nuit" />). */
+/** Rue de la ville ; avec `night`, fenêtres et lampadaires s'allument (à combiner avec <Eclairage mode="nuit" />). */
 export const RueNuit: React.FC<{night?: boolean; t?: number}> = ({night = true}) => (
   <group>
     <Rue len={80} />
