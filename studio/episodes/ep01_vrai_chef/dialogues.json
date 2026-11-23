@@ -1,44 +1,44 @@
 {
  "voices": {
   "SACHA": {
-   "ref": "6124ec634a50496bbdf0822189fdd1e4",
+   "ref": "b268730efffc42a89fa4eaccdde1af48",
    "pitch": 0,
-   "voix": "Narrateur Anime Dynamique"
+   "voix": "Narrateur Français Clair (voix perso)"
   },
   "LEO": {
-   "ref": "36821537b27f4fac80cb35eaa8dc3b0b",
+   "ref": "b3c40d800fbf401e91444ba5ff2ac3bc",
    "pitch": 0,
-   "voix": "Anatole"
+   "voix": "Voix Française Claire et Nuancée (voix perso)"
   },
   "INES": {
-   "ref": "bd39d84756eb4087b92378eea7aafaf8",
+   "ref": "10a3a20742114a4ea6dd441e7591850f",
    "pitch": 0,
-   "voix": "Voix Adolescente Joyeuse"
-  },
-  "MARCEL": {
-   "ref": "086c410aabfa4ec2abcceca708db9836",
-   "pitch": 0,
-   "voix": "Vieux"
+   "voix": "Manon"
   },
   "YASMINE": {
-   "ref": "5567200c7d8341738f0892bbacd3be3c",
+   "ref": "d52e258386bd44f7ac3d80267388dc9f",
    "pitch": 0,
-   "voix": "Féminine"
-  },
-  "BRUNO": {
-   "ref": "e99c97abdf9d4064944003fccc775c5d",
-   "pitch": -1,
-   "voix": "Voix grave"
-  },
-  "JULES": {
-   "ref": "b4798c9d3ae84c3b8eb097e67bab49a9",
-   "pitch": 1,
-   "voix": "Adolescent Enjoué"
+   "voix": "Emilie"
   },
   "COLETTE": {
-   "ref": "c7515cf3a93c411f91b3405cca006c30",
+   "ref": "5efc335186f544808d99ad2ff7b0336d",
    "pitch": 0,
-   "voix": "Grand-mère"
+   "voix": "Voix Féminine Chaleureuse"
+  },
+  "MARCEL": {
+   "ref": "cbc273a2d9b94c99b2bc18fc6ca34d04",
+   "pitch": 0,
+   "voix": "Guyzo"
+  },
+  "BRUNO": {
+   "ref": "b6efa2e7896645c28589046c576ddb2e",
+   "pitch": 0,
+   "voix": "Voix de documentaire"
+  },
+  "JULES": {
+   "ref": "d962df72a15c442ba09f05003f17b3e1",
+   "pitch": 1,
+   "voix": "Verity"
   }
  },
  "lines": [

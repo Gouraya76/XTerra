@@ -24,10 +24,11 @@ def _pre(il):
     for w in l["who"].split("+"):
         r = f"{ep}/voix/raw_{i:02d}_{w}.wav"
         if ONLY is not None and os.path.exists(r): os.remove(r)
-        for k in range(3):
+        import time
+        for k in range(8):
             try: tts(l["text"], d["voices"][w]["ref"], r); break
-            except Exception as e: print("retry", i, e)
-with ThreadPoolExecutor(6) as ex: list(ex.map(_pre, enumerate(d["lines"])))
+            except Exception as e: print("retry", i, e, flush=True); time.sleep(5 * (k + 1))
+with ThreadPoolExecutor(4) as ex: list(ex.map(_pre, enumerate(d["lines"])))
 for i, l in enumerate(d["lines"]):
     if ONLY is not None and i not in ONLY: continue
     elif ONLY is None and os.path.exists(f"{ep}/voix/{i:02d}.wav"): continue
