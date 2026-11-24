@@ -11,7 +11,7 @@ Règle : chaque personnage a UNE planche de référence faite par le propriétai
 | 3 | NADIA | La maligne qui devine tout | À faire |
 | 4 | KÉKÉ | Le bavard qui accuse tout le monde (casquette bleue, sweat rouge) | À faire |
 | 5 | LOUNA | La gentille… en apparence (sweat rose, chewing-gum, créoles dorées) | Complète le 24/11/2026 (`LOUNA/FICHE.md`) |
-| 6 | MOMO | Le gentil géant gourmand (barbe, chemise à carreaux) | À faire |
+| 6 | MOMO | Le gentil géant gourmand (barbe, chemise à carreaux) | Fiche reçue le 24/11/2026 (manque : 14 bouches en grand) |
 | 7 | ÉLISE | La menteuse de génie, élégante (rouge et noir) | À faire |
 | 8 | THÉO | Le complotiste à lunettes, toujours une théorie | À faire |
 | 9 | PAPI GÉRARD | Le papi sarcastique (béret, gilet, canne) | À faire |
