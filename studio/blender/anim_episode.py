@@ -339,8 +339,9 @@ r = SC.render
 r.engine = "BLENDER_EEVEE"
 r.fps = FPS
 r.resolution_x, r.resolution_y = 1920, 1080
-r.resolution_percentage = 100 if QUALITE == "final" else 50
-SC.eevee.taa_render_samples = 24 if QUALITE == "final" else 8
+r.resolution_percentage = 50 if QUALITE == "brouillon" else 100
+# final = 24 échantillons ; rapide = 12 (environ 2 fois plus vite, différence peu visible)
+SC.eevee.taa_render_samples = {"final": 24, "rapide": 12}.get(QUALITE, 8)
 for attr, val in (("use_raytracing", False), ("shadow_pool_size", "1024"), ("use_shadows", True)):
     try:
         setattr(SC.eevee, attr, val)

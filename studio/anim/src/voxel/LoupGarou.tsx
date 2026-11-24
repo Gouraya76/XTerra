@@ -98,13 +98,17 @@ const Mots: React.FC<{b: Item; t: number}> = ({b, t}) => {
   for (let i = 0; i < ws.length; i++) if (t >= ws[i].s - 0.05 && t < (ws[i + 1]?.s ?? ws[i].e + 0.25) - 0.05) cur = i;
   if (cur < 0) return null;
   const w = ws[cur];
-  const word = w.w.replace(/^[«"(]+|[»".,!?…:;)]+$/g, '');
+  // Whisper coupe les mots composés (« sous » + « -titres ») : on recolle avec le mot d'avant
+  let brut = w.w.trim();
+  if (brut.startsWith('-') && cur > 0) brut = ws[cur - 1].w.trim() + brut;
+  if (ws[cur + 1]?.w.trim().startsWith('-')) brut = brut + ws[cur + 1].w.trim();
+  const word = brut.replace(/^[«"(]+|[»".,!?…:;)]+$/g, '');
   if (!word) return null;
   const s = pop(t, w.s, 12, 260);
   return (
     <div style={{position: 'absolute', left: 0, right: 0, bottom: 110, textAlign: 'center'}}>
       <span style={{display: 'inline-block', transform: `scale(${0.7 + 0.3 * s})`, fontFamily: 'ID', fontSize: 86, color: '#fff',
-        WebkitTextStroke: '14px #000', paintOrder: 'stroke fill', textShadow: '0 8px 0 rgba(0,0,0,0.35)'}}>{word.toLowerCase()}</span>
+        WebkitTextStroke: '14px #000', paintOrder: 'stroke fill', textShadow: '0 8px 0 rgba(0,0,0,0.35)'}}>{word.toLowerCase().replace(/^j$/, 'J')}</span>
     </div>
   );
 };
