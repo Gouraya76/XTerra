@@ -7,7 +7,7 @@ Règle : chaque personnage a UNE planche de référence faite par le propriétai
 | # | Nom | Rôle permanent | Statut |
 |---|---|---|---|
 | 1 | LE J | Hôte de la chaîne, joue ou présente | Complet le 24/11/2026 (avec moustache : `tete_vide_et_14_bouches_moustache.png`) |
-| 2 | LE MENEUR | Maître du jeu mystérieux (cape, capuche, yeux ambrés) : arbitre de tous les jeux | À faire |
+| 2 | LE MENEUR | Maître du jeu mystérieux (capuche, visage-écran, or et noir) : arbitre de tous les jeux | Complet le 24/11/2026 (`MENEUR/FICHE.md`) |
 | 3 | NADIA | La maligne qui devine tout | À faire |
 | 4 | KÉKÉ | Le bavard qui accuse tout le monde (casquette bleue, sweat rouge) | À faire |
 | 5 | LOUNA | La gentille… en apparence (sweat rose, chewing-gum, créoles dorées) | Complète le 24/11/2026 (`LOUNA/FICHE.md`) |
