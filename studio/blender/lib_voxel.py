@@ -79,6 +79,67 @@ def mat_texture(nom, c1, c2, echelle, motif="maille", rough=0.85, bump=0.35, eti
         src = mx.outputs[0]
         b.inputs["Sheen Weight"].default_value = 0.6
         b.inputs["Sheen Roughness"].default_value = 0.4
+    elif motif == "meches":  # cheveux : fines mèches parallèles, très contrastées
+        w = N.new("ShaderNodeTexWave")
+        w.wave_type = "BANDS"
+        w.bands_direction = "X"
+        w.wave_profile = "SAW"
+        w.inputs["Scale"].default_value = echelle
+        w.inputs["Distortion"].default_value = 1.2
+        w.inputs["Detail"].default_value = 4
+        w.inputs["Detail Scale"].default_value = 2.0
+        L.new(mp.outputs["Vector"], w.inputs["Vector"])
+        src = w.outputs["Fac"]
+        b.inputs["Coat Weight"].default_value = 0.5
+        b.inputs["Coat Roughness"].default_value = 0.15
+    elif motif == "torsade":  # pull en maille torsadée : colonnes de torsades + côtes
+        w = N.new("ShaderNodeTexWave")
+        w.wave_type = "BANDS"
+        w.bands_direction = "Z"
+        w.inputs["Scale"].default_value = echelle
+        w.inputs["Distortion"].default_value = 6.0
+        w.inputs["Detail"].default_value = 1
+        w.inputs["Detail Scale"].default_value = 0.6
+        col = N.new("ShaderNodeTexWave")
+        col.wave_type = "BANDS"
+        col.bands_direction = "X"
+        col.inputs["Scale"].default_value = echelle * 0.45
+        mx = N.new("ShaderNodeMath")
+        mx.operation = "MULTIPLY"
+        L.new(mp.outputs["Vector"], w.inputs["Vector"])
+        L.new(mp.outputs["Vector"], col.inputs["Vector"])
+        L.new(w.outputs["Fac"], mx.inputs[0])
+        L.new(col.outputs["Fac"], mx.inputs[1])
+        src = mx.outputs[0]
+        b.inputs["Sheen Weight"].default_value = 0.8
+        b.inputs["Sheen Roughness"].default_value = 0.35
+    elif motif == "tartan":  # chemise à carreaux : bandes croisées
+        sep = N.new("ShaderNodeSeparateXYZ")
+        L.new(mp.outputs["Vector"], sep.inputs["Vector"])
+        acc = []
+        for axe in ("X", "Z"):
+            m2 = N.new("ShaderNodeMath")
+            m2.operation = "SINE"
+            mul = N.new("ShaderNodeMath")
+            mul.operation = "MULTIPLY"
+            mul.inputs[1].default_value = echelle
+            L.new(sep.outputs[axe], mul.inputs[0])
+            L.new(mul.outputs[0], m2.inputs[0])
+            gt = N.new("ShaderNodeMath")
+            gt.operation = "GREATER_THAN"
+            gt.inputs[1].default_value = 0.2
+            L.new(m2.outputs[0], gt.inputs[0])
+            acc.append(gt.outputs[0])
+        ad = N.new("ShaderNodeMath")
+        ad.operation = "ADD"
+        L.new(acc[0], ad.inputs[0])
+        L.new(acc[1], ad.inputs[1])
+        mul2 = N.new("ShaderNodeMath")
+        mul2.operation = "MULTIPLY"
+        mul2.inputs[1].default_value = 0.5
+        L.new(ad.outputs[0], mul2.inputs[0])
+        src = mul2.outputs[0]
+        b.inputs["Sheen Weight"].default_value = 0.4
     elif motif == "bois":
         w = N.new("ShaderNodeTexWave")
         w.wave_type = "RINGS"
@@ -178,30 +239,104 @@ def mat_peau(nom, peau):
 
 
 def visage(tete, nom, peau, sourcils, regard=(0.0, 0.0)):
-    """Yeux en amande, sourcils épais, petit sourire en coin. Face avant = -Y."""
-    blanc = mat_simple("oeil_blanc", (0.92, 0.92, 0.9), rough=0.25)
-    iris = mat_simple("iris_brun", (0.10, 0.05, 0.025), rough=0.15)
-    mat_s = mat_simple(f"sourcil_{nom}", sourcils, rough=0.8)
-    bouche = mat_simple(f"bouche_{nom}", tuple(c * 0.35 for c in peau), rough=0.6)
+    """Style « cartoon voxel premium » (voir personnages/style/STYLE.md). Face avant = -Y.
+    Grands yeux (blanc haut, gros iris brillant, pupille, reflet lumineux, trait de paupière), sourcils épais,
+    petit nez, bouche avec intérieur rouge sombre, dents et langue (la bouche s'ouvre en l'étirant en Z)."""
+    blanc = mat_simple("oeil_blanc", (0.96, 0.95, 0.93), rough=0.18)
+    iris = mat_simple("iris_brun", (0.07, 0.03, 0.012), rough=0.08)
+    pupille = mat_simple("pupille", (0.012, 0.008, 0.006), rough=0.06)
+    reflet = mat_simple("reflet_oeil", (1, 1, 1), rough=0.1, emission=(1, 1, 1), force=3.0)
+    mat_s = mat_simple(f"sourcil_{nom}", tuple(c * 0.8 for c in sourcils), rough=0.7)
+    interieur = mat_simple(f"bouche_{nom}", (0.24, 0.025, 0.03), rough=0.5)
+    dents = mat_simple("dents", (0.95, 0.94, 0.90), rough=0.25)
+    langue = mat_simple("langue", (0.85, 0.30, 0.32), rough=0.4, sss=0.2)
+    m_peau = mat_peau(nom, peau)
     y = -0.335
     for cote in (-1, 1):
-        x = 0.14 * cote
-        bloc(f"{nom}_oeil{cote}", (0.15, 0.03, 0.10), (x, y, 0.04), blanc, 0.012, tete)
-        ix = x + regard[0] * 0.035
-        bloc(f"{nom}_iris{cote}", (0.07, 0.03, 0.085), (ix, y - 0.008, 0.035 + regard[1] * 0.02), iris, 0.01, tete)
-        bloc(f"{nom}_reflet{cote}", (0.022, 0.02, 0.022), (ix + 0.015, y - 0.02, 0.06), blanc, 0.005, tete)
-        bloc(f"{nom}_sourcil{cote}", (0.19, 0.04, 0.05), (x, y - 0.005, 0.14), mat_s, 0.012, tete,
-             rot=(0, -0.03 * cote, 0))
-    bloc(f"{nom}_bouche", (0.15, 0.025, 0.032), (0.03, y + 0.002, -0.16), bouche, 0.01, tete, rot=(0, -0.15, 0))
+        x = 0.145 * cote
+        bloc(f"{nom}_oeil{cote}", (0.18, 0.03, 0.17), (x, y, 0.025), blanc, 0.022, tete)
+        ix, iz = x + regard[0] * 0.03 - 0.008 * cote, 0.012 + regard[1] * 0.02
+        bloc(f"{nom}_iris{cote}", (0.11, 0.03, 0.135), (ix, y - 0.008, iz), iris, 0.02, tete)
+        bloc(f"{nom}_pupille{cote}", (0.06, 0.02, 0.075), (ix, y - 0.017, iz - 0.006), pupille, 0.012, tete)
+        bloc(f"{nom}_reflet{cote}", (0.038, 0.02, 0.038), (ix + 0.022, y - 0.027, iz + 0.035), reflet, 0.008, tete)
+        bloc(f"{nom}_sourcil{cote}", (0.22, 0.05, 0.068), (x, y - 0.012, 0.185), mat_s, 0.02, tete,
+             rot=(0, -0.08 * cote, 0))
+    bloc(f"{nom}_nez", (0.075, 0.045, 0.07), (0.0, y - 0.018, -0.06), m_peau, 0.022, tete)
+    b = bloc(f"{nom}_bouche", (0.17, 0.025, 0.034), (0.0, y + 0.002, -0.19), interieur, 0.012, tete)
+    bloc(f"{nom}_dents", (0.15, 0.012, 0.010), (0, -0.012, 0.011), dents, 0.003, b)
+    bloc(f"{nom}_langue", (0.10, 0.012, 0.011), (0, -0.010, -0.010), langue, 0.004, b)
     for cote in (-1, 1):
-        bloc(f"{nom}_oreille{cote}", (0.05, 0.10, 0.13), (0.345 * cote, 0.02, 0.0), mat_peau(nom, peau), 0.02, tete)
+        bloc(f"{nom}_oreille{cote}", (0.05, 0.10, 0.13), (0.345 * cote, 0.02, 0.0), m_peau, 0.02, tete)
+
+
+def barbe(nom, couleur, style="courte"):
+    """Barbe en blocs : « courte » (collier taillé) ou « pleine » (grosse barbe de papi)."""
+    m = mat_cheveux(f"barbe_{nom}", couleur)
+    tete = bpy.data.objects[f"{nom}_tete_pivot"]
+    ep = 0.05 if style == "courte" else 0.09
+    bas = 0.12 if style == "courte" else 0.26
+    bloc(f"{nom}_barbe_menton", (0.58, ep, bas), (0, -0.335, -0.27 - bas / 2 + 0.06), m, 0.03, tete)
+    for cote in (-1, 1):
+        bloc(f"{nom}_barbe_joue{cote}", (0.10, ep, 0.30), (0.29 * cote, -0.335, -0.15), m, 0.03, tete)
+        bloc(f"{nom}_favori{cote}", (0.05, 0.28, 0.32), (0.345 * cote, -0.13, -0.12), m, 0.02, tete)
+    bloc(f"{nom}_moustache", (0.30, ep, 0.045), (0.0, -0.345, -0.128), m, 0.02, tete)
+    # la bouche passe devant la barbe (sinon elle disparaît quand elle s'ouvre)
+    b = bpy.data.objects.get(f"{nom}_bouche")
+    if b:
+        b.location.y = -0.335 - ep - 0.004
+
+
+def pose(nom, quoi):
+    """Poses de bras : « croises », « menton » (main droite au menton), « tete » (main droite sur la tête), « repos »."""
+    g, d = bpy.data.objects[f"{nom}_epaule-1"], bpy.data.objects[f"{nom}_epaule1"]
+    if quoi == "croises":
+        g.rotation_euler, d.rotation_euler = (-1.45, 0, 0.7), (-1.35, 0, -0.7)
+    elif quoi == "menton":
+        d.rotation_euler = (-2.15, 0, -0.55)
+    elif quoi == "tete":
+        d.rotation_euler = (0.25, math.radians(165), 0.0)
+    else:
+        g.rotation_euler = d.rotation_euler = (0, 0, 0)
+
+
+# expressions : (inclinaison des sourcils, hauteur des sourcils, ouverture des yeux, bouche (largeur, hauteur))
+EXPRESSIONS = {
+    "neutre": (-0.08, 0.0, 1.0, (1.0, 1.0)),
+    "choc": (0.22, 0.045, 1.12, (1.35, 3.9)),
+    "peur": (0.30, 0.03, 1.05, (0.95, 2.4)),
+    "colere": (-0.35, -0.02, 0.85, (1.1, 1.6)),
+    "mefiant": (-0.22, -0.015, 0.62, (0.8, 1.0)),
+    "rire": (0.05, 0.03, 0.55, (1.45, 3.2)),
+    "sourire": (-0.02, 0.015, 0.9, (1.3, 1.6)),
+}
+
+
+def expression(nom, quoi="neutre", sourcil_unique=False):
+    """Change la tête d'un personnage. sourcil_unique : un seul sourcil levé (air sceptique)."""
+    inc, haut, yeux, (bx, bz) = EXPRESSIONS[quoi]
+    for cote in (-1, 1):
+        s = bpy.data.objects.get(f"{nom}_sourcil{cote}")
+        if s is None:
+            continue
+        s.rotation_euler.y = inc * cote
+        s.location.z = 0.185 + haut + (0.04 if sourcil_unique and cote == 1 else 0)
+        for part in ("oeil", "iris", "pupille"):
+            o = bpy.data.objects.get(f"{nom}_{part}{cote}")
+            if o:
+                o.scale.z = yeux
+    b = bpy.data.objects.get(f"{nom}_bouche")
+    if b:
+        b.scale.x, b.scale.z = bx, bz
+        b.location.z = -0.19 - 0.034 * (bz - 1) / 2  # le haut de la bouche reste à sa place
 
 
 def mat_cheveux(nom, couleur):
-    m = mat_texture(f"cheveux_{nom}", tuple(c * 0.5 for c in couleur), tuple(min(1, c * 1.6 + 0.012) for c in couleur),
-                    45, motif="maille", rough=0.32, bump=0.3, etire=(1, 0.3, 1))
-    _bsdf(m).inputs["Sheen Weight"].default_value = 0.0
-    _bsdf(m).inputs["Coat Weight"].default_value = 0.25
+    # mèches : sombre dans les creux, reflet chaud sur les crêtes (cheveux brillants du style de référence)
+    clair = tuple(min(1, c * 2.2 + 0.02) for c in couleur)
+    m = mat_texture(f"cheveux_{nom}", tuple(c * 0.4 for c in couleur), clair, 38, motif="meches", rough=0.35,
+                    bump=0.55, etire=(1, 0.35, 1))
+    _bsdf(m).inputs["Coat Weight"].default_value = 0.08
+    _bsdf(m).inputs["Specular IOR Level"].default_value = 0.3
     return m
 
 
@@ -222,6 +357,11 @@ def cheveux_pompadour(tete, nom, couleur):
                  (xx, yy, 0.40 + haut / 2 - 0.02 + random.uniform(0, 0.03)), m, 0.05, tete,
                  rot=(-0.45 + i * 0.1, random.uniform(-0.05, 0.05), random.uniform(-0.04, 0.04)))
     bloc(f"{nom}_houppe", (0.62, 0.12, 0.10), (0.02, -0.36, 0.47), m, 0.045, tete, rot=(-0.6, 0, 0.03))
+    # mèches fines par-dessus (volume et reflets, comme la référence)
+    for n in range(9):
+        xx = -0.30 + n * 0.075 + random.uniform(-0.01, 0.01)
+        bloc(f"{nom}_fine{n}", (0.07, 0.42, 0.07), (xx, -0.05 + random.uniform(-0.03, 0.03), 0.60 + random.uniform(-0.02, 0.03)),
+             m, 0.03, tete, rot=(-0.25 + random.uniform(-0.08, 0.08), 0, random.uniform(-0.08, 0.08)))
     for cote in (-1, 1):
         bloc(f"{nom}_cote{cote}", (0.06, 0.62, 0.30), (0.34 * cote, 0.05, 0.17), m, 0.025, tete)
         for k in range(3):
@@ -273,7 +413,13 @@ def personnage(nom, pos, rot_z, peau, haut_mat, bas_mat, chaussures, coiffure, c
         epaule = vide(f"{nom}_epaule{cote}", ((0.31 * k + 0.13) * cote, 0, 1.44))
         epaule.parent = racine
         bloc(f"{nom}_bras{cote}", (0.24, 0.28, 0.62), (0, 0, -0.27), haut_mat, 0.06, epaule, rot=(0, 0.06 * cote, 0))
-        bloc(f"{nom}_main{cote}", (0.20, 0.22, 0.17), (0.015 * cote, -0.005, -0.64), m_peau, 0.05, epaule)
+        main = bloc(f"{nom}_main{cote}", (0.19, 0.20, 0.13), (0.015 * cote, -0.005, -0.62), m_peau, 0.045, epaule)
+        # 4 doigts légèrement repliés vers l'avant + pouce côté corps
+        for d in range(4):
+            bloc(f"{nom}_doigt{cote}_{d}", (0.042, 0.06, 0.095), (-0.066 + d * 0.044, -0.03, -0.095), m_peau, 0.018, main,
+                 rot=(0.35, 0, 0))
+        bloc(f"{nom}_pouce{cote}", (0.05, 0.055, 0.09), (-0.10 * cote, -0.06, -0.01), m_peau, 0.02, main,
+             rot=(0.2, 0, 0.5 * cote))
     bloc(f"{nom}_cou", (0.22, 0.22, 0.10), (0, 0, 1.53), m_peau, 0.03, racine)
     tete = vide(f"{nom}_tete_pivot", (0, 0, 1.90))
     tete.parent = racine
@@ -288,7 +434,7 @@ def personnage(nom, pos, rot_z, peau, haut_mat, bas_mat, chaussures, coiffure, c
 
 def tenue_le_j(racine, nom, k):
     """Chalet chic : col roulé crème torsadé sous veste camel, montre à cadran vert."""
-    creme = mat_texture("maille_creme", (0.62, 0.55, 0.43), (0.86, 0.80, 0.68), 34, motif="maille", rough=0.9, bump=0.5)
+    creme = mat_texture("maille_creme", (0.58, 0.50, 0.38), (0.90, 0.84, 0.72), 26, motif="torsade", rough=0.9, bump=0.7)
     bloc(f"{nom}_plastron", (0.26, 0.04, 0.66), (0, -0.165 * k, 1.16), creme, 0.02, racine)
     bloc(f"{nom}_colroule", (0.34, 0.30, 0.13), (0, 0, 1.53), creme, 0.05, racine)
     for cote in (-1, 1):
@@ -308,19 +454,146 @@ def tenue_le_j(racine, nom, k):
 
 
 def tenue_momo(racine, nom, k):
-    barbe = mat_cheveux("barbe_momo", (0.05, 0.03, 0.02))
-    tete = bpy.data.objects[f"{nom}_tete_pivot"]
-    bloc(f"{nom}_menton", (0.50, 0.06, 0.11), (0, -0.34, -0.275), barbe, 0.03, tete)
-    for cote in (-1, 1):
-        bloc(f"{nom}_joue{cote}", (0.10, 0.06, 0.26), (0.28 * cote, -0.34, -0.19), barbe, 0.03, tete)
-        bloc(f"{nom}_favori{cote}", (0.05, 0.30, 0.30), (0.345 * cote, -0.12, -0.12), barbe, 0.02, tete)
-    bloc(f"{nom}_moustache", (0.26, 0.05, 0.05), (0.0, -0.345, -0.11), barbe, 0.02, tete)
+    barbe(nom, (0.05, 0.03, 0.02), "pleine")
 
 
 def tenue_nadia(racine, nom, k):
     or_ = mat_simple("or", (1.0, 0.72, 0.35), rough=0.15, metal=1.0)
     for cote in (-1, 1):
         sphere(f"{nom}_boucle{cote}", 0.03, (0.36 * cote, -0.02, 1.83), or_).parent = racine
+
+
+# ---------------------------------------------------------------- décor : dehors, accessoires, effets
+def sapin(nom, x, y, h, mat_v, mat_n):
+    """Sapin en blocs empilés, neige sur chaque étage."""
+    bloc(f"{nom}_tronc", (0.18, 0.18, 0.4), (x, y, 0.2), mat_simple("tronc", (0.10, 0.05, 0.02), 0.8), 0.03)
+    n = 5
+    for i in range(n):
+        l = h * 0.55 * (1 - i / n) + 0.15
+        z = 0.35 + i * h / n
+        bloc(f"{nom}_e{i}", (l, l, h / n * 0.9), (x, y, z + h / n / 2), mat_v, 0.05, rot=(0, 0, 0.3 * i))
+        bloc(f"{nom}_n{i}", (l * 0.8, l * 0.8, 0.05), (x, y, z + h / n * 0.92), mat_n, 0.03, rot=(0, 0, 0.3 * i))
+
+
+def dehors(neige_animee=True, duree=240):
+    """Paysage de nuit derrière la fenêtre : ciel bleu nuit, sol enneigé, sapins, flocons qui tombent en boucle."""
+    ciel = mat_simple("ciel_nuit", (0.02, 0.05, 0.15), emission=(0.08, 0.22, 0.7), force=3.0)
+    bloc("ciel", (16, 0.1, 4.4), (2.3, 11.0, 2.0), ciel, 0.0)
+    blanc_neige = mat_simple("sol_neige", (0.75, 0.82, 1.0), rough=0.6, emission=(0.18, 0.25, 0.5), force=0.4)
+    bloc("sol_dehors", (16, 7, 0.2), (2.3, 7.6, 0.4), blanc_neige, 0.05)
+    vert = mat_texture("aiguilles", (0.01, 0.05, 0.04), (0.04, 0.14, 0.10), 40, motif="bruit", rough=0.9, bump=0.3)
+    for k, (x, y, h) in enumerate([(1.3, 6.2, 2.6), (2.6, 7.6, 3.4), (3.6, 5.8, 2.2), (0.4, 8.4, 3.2), (4.4, 8.8, 3.6),
+                                   (2.0, 9.6, 3.0)]):
+        sapin(f"sapin{k}", x, y, h, vert, blanc_neige)
+    flocon = mat_simple("flocon", (1, 1, 1), emission=(0.8, 0.9, 1.0), force=2.5)
+    pivot = vide("neige")
+    rnd = random.Random(3)
+    for rep in (0, 1):  # deux couches empilées : la boucle ne se voit pas
+        for n in range(110):
+            f = bloc(f"flocon{rep}_{n}", (0.03, 0.03, 0.03), (rnd.uniform(0.9, 3.7), rnd.uniform(4.25, 8.0),
+                     rnd.uniform(0.6, 3.4) + rep * 2.8), flocon, 0.01)
+            f.parent = pivot
+    if neige_animee:
+        pivot.location.z = 0
+        pivot.keyframe_insert("location", index=2, frame=0)
+        pivot.location.z = -2.8
+        pivot.keyframe_insert("location", index=2, frame=duree)
+        try:
+            for fc in pivot.animation_data.action.fcurves:
+                for kp in fc.keyframe_points:
+                    kp.interpolation = "LINEAR"
+                fc.modifiers.new("CYCLES")
+        except AttributeError:  # actions à calques (Blender 5)
+            for lay in pivot.animation_data.action.layers:
+                for st in lay.strips:
+                    for cb in st.channelbags:
+                        for fc in cb.fcurves:
+                            for kp in fc.keyframe_points:
+                                kp.interpolation = "LINEAR"
+                            fc.modifiers.new("CYCLES")
+    lumiere("lune", "AREA", (2.3, 9.5, 5.0), 300, (0.45, 0.6, 1.0), 4.0, rot=(math.radians(-40), 0, 0))
+
+
+def yeux_dehors(positions, force=12):
+    """Paires d'yeux jaunes qui brillent dans la nuit, derrière la fenêtre (x, y, z)."""
+    m = mat_simple("yeux_loup_dehors", (1.0, 0.8, 0.1), emission=(1.0, 0.75, 0.08), force=force)
+    for k, (x, y, z) in enumerate(positions):
+        for cote in (-1, 1):
+            bloc(f"yeux_dehors{k}_{cote}", (0.13, 0.03, 0.06), (x + 0.11 * cote, y, z), m, 0.015, rot=(0, -0.25 * cote, 0))
+
+
+def tasse(nom, pos, couleur=(0.55, 0.32, 0.18)):
+    """Tasse en céramique avec anse."""
+    m = mat_simple(f"ceramique_{nom}", couleur, rough=0.25)
+    c = cylindre(nom, 0.07, 0.14, (pos[0], pos[1], pos[2] + 0.07), m, sommets=24)
+    bloc(f"{nom}_anse", (0.04, 0.03, 0.09), (pos[0] + 0.09, pos[1], pos[2] + 0.075), m, 0.015)
+    cafe = mat_simple("cafe", (0.06, 0.025, 0.01), rough=0.1)
+    cylindre(f"{nom}_cafe", 0.062, 0.01, (pos[0], pos[1], pos[2] + 0.13), cafe, sommets=24)
+    return c
+
+
+def post_effets(scene, halo=0.35, vignette=True):
+    """Effets du style de référence : halo autour des lumières (bloom) et léger vignetage."""
+    try:
+        if hasattr(scene, "compositing_node_group"):  # Blender 5
+            nt = bpy.data.node_groups.new("Compositing", "CompositorNodeTree")
+            scene.compositing_node_group = nt
+            N = nt.nodes
+            rl = N.new("CompositorNodeRLayers")
+            out = N.new("NodeGroupOutput")
+            nt.interface.new_socket("Image", in_out="OUTPUT", socket_type="NodeSocketColor")
+        else:
+            scene.use_nodes = True
+            nt = scene.node_tree
+            N = nt.nodes
+            N.clear()
+            rl = N.new("CompositorNodeRLayers")
+            out = N.new("CompositorNodeComposite")
+        g = N.new("CompositorNodeGlare")
+        try:
+            g.glare_type = "BLOOM"
+        except (AttributeError, TypeError):
+            g.inputs["Type"].default_value = "Bloom"
+        for nom_in, val in (("Strength", halo), ("Threshold", 1.2), ("Size", 0.45)):
+            if nom_in in g.inputs:
+                g.inputs[nom_in].default_value = val
+        nt.links.new(rl.outputs["Image"], g.inputs["Image"])
+        src = g.outputs["Image"]
+        if vignette:
+            el = N.new("CompositorNodeEllipseMask")
+            for nom_in, val in (("Size", (0.95, 0.85)),):
+                if nom_in in el.inputs:
+                    el.inputs[nom_in].default_value = val
+            try:
+                el.width, el.height = 0.95, 0.85
+            except AttributeError:
+                pass
+            bl = N.new("CompositorNodeBlur")
+            try:
+                bl.size_x = bl.size_y = 200
+            except AttributeError:
+                if "Size" in bl.inputs:
+                    bl.inputs["Size"].default_value = (200, 200)
+            mix = N.new("CompositorNodeMixRGB") if "CompositorNodeMixRGB" in dir(bpy.types) else N.new("ShaderNodeMix")
+            nt.links.new(el.outputs["Mask"], bl.inputs["Image"])
+            if mix.bl_idname == "ShaderNodeMix":
+                mix.data_type = "RGBA"
+                mix.blend_type = "MULTIPLY"
+                mix.inputs["Factor"].default_value = 0.45
+                nt.links.new(src, mix.inputs[6])
+                nt.links.new(bl.outputs["Image"], mix.inputs[7])
+                src = mix.outputs[2]
+            else:
+                mix.blend_type = "MULTIPLY"
+                mix.inputs[0].default_value = 0.45
+                nt.links.new(src, mix.inputs[1])
+                nt.links.new(bl.outputs["Image"], mix.inputs[2])
+                src = mix.outputs[0]
+        nt.links.new(src, out.inputs[0])
+        return True
+    except Exception as e:  # le rendu continue sans effets plutôt que d'échouer
+        print("POST_EFFETS indisponibles :", e)
+        return False
 
 
 # ---------------------------------------------------------------- décor : chalet
@@ -335,13 +608,23 @@ def chalet():
     for i in range(-9, 10):
         bloc(f"lame{i}", (0.48, 12, 0.10), (i * 0.5, 2, -0.05), parquet, 0.02)
     for i in range(12):
-        cylindre(f"rondin_fond{i}", 0.17, 11, (0, 4.2, 0.17 + i * 0.34), bois_mur, rot=(0, math.pi / 2, 0))
+        z = 0.17 + i * 0.34
+        if 3 <= i <= 7:  # trou de la fenêtre (x 1.5 à 3.1) : on voit dehors
+            cylindre(f"rondin_fond{i}", 0.17, 7.0, (-2.0, 4.2, z), bois_mur, rot=(0, math.pi / 2, 0))
+            cylindre(f"rondin_fond{i}b", 0.17, 2.4, (4.3, 4.2, z), bois_mur, rot=(0, math.pi / 2, 0))
+        else:
+            cylindre(f"rondin_fond{i}", 0.17, 11, (0, 4.2, z), bois_mur, rot=(0, math.pi / 2, 0))
+    dehors()
     for cote in (-1, 1):
         for i in range(12):
             cylindre(f"rondin_cote{cote}_{i}", 0.17, 9, (4.6 * cote, 0.0, 0.17 + i * 0.34), bois_mur,
                      rot=(math.pi / 2, 0, 0))
     for x in (-2.5, 0, 2.5):
         bloc(f"poutre{x}", (0.35, 9, 0.35), (x, 0, 4.1), bois_mur, 0.05)
+    # plafond en planches sombres (cache aussi le dessus du paysage)
+    plafond = mat_texture("plafond", (0.05, 0.025, 0.012), (0.13, 0.07, 0.03), 2.5, motif="bois", rough=0.8, bump=0.3,
+                          etire=(0.2, 1, 1))
+    bloc("plafond", (12, 16, 0.1), (0, 4.0, 4.35), plafond, 0.0)
 
     # cheminée en pierre
     for i in range(9):
@@ -358,9 +641,10 @@ def chalet():
     lumiere("feu", "POINT", (-3.4, 3.2, 0.6), 450, (1.0, 0.45, 0.15), 0.4)
 
     # fenêtre de nuit
-    nuit = mat_simple("nuit", (0.1, 0.2, 0.4), emission=(0.15, 0.30, 0.7), force=1.2)
+    nuit = mat_simple("vitre_givree", (0.6, 0.75, 1.0), rough=0.05)
+    _bsdf(nuit).inputs["Alpha"].default_value = 0.10
     cadre = mat_simple("cadre", (0.12, 0.06, 0.03), 0.6)
-    bloc("vitre", (1.6, 0.05, 1.5), (2.3, 4.0, 2.0), nuit, 0.0)
+    bloc("vitre", (1.6, 0.02, 1.5), (2.3, 4.0, 2.0), nuit, 0.0)
     bloc("cadre_h", (1.8, 0.15, 0.10), (2.3, 3.95, 2.78), cadre, 0.03)
     bloc("cadre_b", (1.8, 0.15, 0.10), (2.3, 3.95, 1.22), cadre, 0.03)
     bloc("cadre_v", (0.08, 0.15, 1.6), (2.3, 3.95, 2.0), cadre, 0.02)

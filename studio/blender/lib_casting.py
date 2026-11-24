@@ -60,15 +60,16 @@ def lunettes(nom, couleur=(0.02, 0.02, 0.02)):
     verre = mat_simple("verre", (0.8, 0.9, 1.0), rough=0.02)
     verre.node_tree.nodes["Principled BSDF"].inputs["Alpha"].default_value = 0.12
     tete = bpy.data.objects[f"{nom}_tete_pivot"]
+    y = -0.39  # devant les grands yeux (style 2)
     for cote in (-1, 1):
-        x = 0.14 * cote
-        bloc(f"{nom}_cadre_h{cote}", (0.21, 0.02, 0.02), (x, -0.36, 0.11), m, 0.01, tete)
-        bloc(f"{nom}_cadre_b{cote}", (0.21, 0.02, 0.02), (x, -0.36, -0.03), m, 0.01, tete)
-        bloc(f"{nom}_cadre_ext{cote}", (0.02, 0.02, 0.16), (x + 0.105 * cote, -0.36, 0.04), m, 0.01, tete)
-        bloc(f"{nom}_cadre_int{cote}", (0.02, 0.02, 0.16), (x - 0.095 * cote, -0.36, 0.04), m, 0.01, tete)
-        bloc(f"{nom}_verre{cote}", (0.17, 0.01, 0.13), (x, -0.355, 0.04), verre, 0.005, tete)
-        bloc(f"{nom}_branche{cote}", (0.02, 0.36, 0.025), (0.35 * cote, -0.18, 0.10), m, 0.008, tete)
-    bloc(f"{nom}_pont", (0.08, 0.03, 0.025), (0, -0.36, 0.07), m, 0.008, tete)
+        x = 0.145 * cote
+        bloc(f"{nom}_cadre_h{cote}", (0.25, 0.03, 0.035), (x, y, 0.135), m, 0.01, tete)
+        bloc(f"{nom}_cadre_b{cote}", (0.25, 0.03, 0.03), (x, y, -0.085), m, 0.01, tete)
+        bloc(f"{nom}_cadre_ext{cote}", (0.03, 0.03, 0.25), (x + 0.11 * cote, y, 0.025), m, 0.01, tete)
+        bloc(f"{nom}_cadre_int{cote}", (0.03, 0.03, 0.25), (x - 0.11 * cote, y, 0.025), m, 0.01, tete)
+        bloc(f"{nom}_verre{cote}", (0.20, 0.01, 0.19), (x, y + 0.005, 0.025), verre, 0.005, tete)
+        bloc(f"{nom}_branche{cote}", (0.025, 0.42, 0.03), (0.35 * cote, -0.18, 0.12), m, 0.008, tete)
+    bloc(f"{nom}_pont", (0.06, 0.03, 0.03), (0, y, 0.08), m, 0.008, tete)
 
 
 # ---------------------------------------------------------------- matières des tenues
@@ -141,10 +142,11 @@ def tenue_meneur(racine, nom, k):
         bpy.data.objects[f"{nom}_iris{cote}"].data.materials[0] = oeil
         bpy.data.objects[f"{nom}_reflet{cote}"].hide_render = True
         bpy.data.objects[f"{nom}_oeil{cote}"].data.materials[0] = mat_simple("ombre", (0.01, 0.01, 0.01), 0.9)
-    bpy.data.objects[f"{nom}_bouche"].hide_render = True
+    for part in ("bouche", "dents", "langue", "nez"):
+        bpy.data.objects[f"{nom}_{part}"].hide_render = True
     for cote in (-1, 1):
-        bpy.data.objects[f"{nom}_sourcil{cote}"].hide_render = True
-        bpy.data.objects[f"{nom}_oreille{cote}"].hide_render = True
+        for part in ("sourcil", "oreille", "pupille"):
+            bpy.data.objects[f"{nom}_{part}{cote}"].hide_render = True
     or_ = mat_simple("or", (1.0, 0.72, 0.35), rough=0.15, metal=1.0)
     bloc(f"{nom}_fermoir", (0.12, 0.03, 0.12), (0, -0.26 * k, 1.38), or_, 0.03, racine, rot=(0, 0.785, 0))
 
@@ -160,7 +162,7 @@ def _tenues():
     rouge = mat_texture("sweat_rouge", (0.40, 0.03, 0.03), (0.70, 0.10, 0.06), 120, motif="bruit", rough=0.9, bump=0.1)
     gris = mat_texture("jogging_gris", (0.18, 0.18, 0.19), (0.32, 0.32, 0.33), 120, motif="bruit", rough=0.9, bump=0.1)
     baskets = mat_simple("baskets", (0.85, 0.85, 0.85), 0.5)
-    carreaux = mat_texture("chemise_carreaux", (0.15, 0.05, 0.04), (0.45, 0.10, 0.07), 6, motif="maille", rough=0.9, bump=0.2)
+    carreaux = mat_texture("chemise_carreaux", (0.62, 0.08, 0.06), (0.06, 0.03, 0.03), 22, motif="tartan", rough=0.9, bump=0.15)
     noir_pant = mat_texture("pantalon_noir", (0.015, 0.015, 0.018), (0.05, 0.05, 0.06), 120, motif="bruit", rough=0.7, bump=0.08)
     velours = mat_texture("velours_brun", (0.20, 0.12, 0.06), (0.32, 0.20, 0.10), 45, motif="maille", rough=0.9, bump=0.3,
                           etire=(1, 0.2, 1))

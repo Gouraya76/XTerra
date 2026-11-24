@@ -25,3 +25,7 @@ de chaque vidéo : il présente, lance les épreuves, réagit, commente et parle
 
 ## À compléter
 - Voix Fish Audio : https://fish.audio/m/b268730efffc42a89fa4eaccdde1af48 (identifiant `b268730efffc42a89fa4eaccdde1af48`)
+
+## Style visuel
+- Depuis l'épisode 3 : style 2, voir `style/STYLE.md` (grands yeux, expressions, mains à doigts, décor riche).
+- Barbe : la référence ChatGPT donne une barbe courte à LE J. À valider par le propriétaire avant de l'adopter (option `barbe()`).
