@@ -16,7 +16,8 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 HERE = os.path.dirname(os.path.abspath(__file__))
 W, H, FPS = 1080, 1920, 30
 K = W / 941                                   # échelle de la maquette d'origine (941x1672)
-FONT = '/usr/share/fonts/opentype/inter/Inter-ExtraBold.otf'
+FONT = next((f for f in ('/usr/share/fonts/opentype/inter/Inter-ExtraBold.otf', os.path.join(HERE, 'fonts', 'Inter-ExtraBold.ttf')) if os.path.exists(f)))
+HAUT = 0.8                                    # échelle de l'étiquette lieu/date et du logo
 RED, RED_D, WHITE = (200, 6, 14), (140, 0, 6), (252, 252, 252)
 
 def font(sz): return ImageFont.truetype(FONT, sz)
@@ -48,10 +49,14 @@ def static_layer(lieu, date):
     red = gradient_box(w1, h1, (214, 18, 24), (160, 0, 8), 10)
     ImageDraw.Draw(red).text((w1 // 2, h1 // 2 + 1), lieu, font=f1, fill=WHITE, anchor='mm')
     tag.alpha_composite(white, (x0, y2)); tag.alpha_composite(red, (x0, y1))
-    L.alpha_composite(shadow(tag))
+    tag = shadow(tag)
+    # réduit de 20 % (demande du 24/11) en gardant le coin haut gauche de l'étiquette au même endroit
+    tag = tag.resize((round(tag.width * HAUT), round(tag.height * HAUT)), Image.LANCZOS)
+    L.alpha_composite(tag, (round(x0 * (1 - HAUT)), round(y1 * (1 - HAUT))))
     logo = Image.open(os.path.join(HERE, 'overlay', 'tera24_logo.png')).convert('RGBA')
-    logo = logo.resize((round(logo.width * K), round(logo.height * K)), Image.LANCZOS)
-    L.alpha_composite(logo, (round(596 * K), round(118 * K)))
+    droite = round(596 * K) + round(logo.width * K)          # bord droit d'origine du logo, gardé
+    logo = logo.resize((round(logo.width * K * HAUT), round(logo.height * K * HAUT)), Image.LANCZOS)
+    L.alpha_composite(logo, (droite - logo.width, round(118 * K)))
     return L
 
 def wrap(text, f, maxw):
@@ -134,7 +139,7 @@ def arrow(L, t, f):
     draw_supersampled(L, (x - m, y - m, x + m, y + m), fn)
 
 def main():
-    cfg = json.load(open(sys.argv[1])); src, out = sys.argv[2], sys.argv[3]
+    cfg = json.load(open(sys.argv[1], encoding='utf-8')); src, out = sys.argv[2], sys.argv[3]
     dur = float(subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', src],
                                capture_output=True, text=True).stdout)
     n = int(dur * FPS)
