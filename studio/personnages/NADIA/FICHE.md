@@ -14,7 +14,7 @@ détails veste #8B1E1E · contraste #FFFFFF · accent #6A2C91.
 6 yeux, 6 sourcils, 4 bouches d'émotion en grand, tête vide. 14 bouches de parole en grand : à recevoir.
 
 ## Point d'attention
-Très proche de LOUNA (mêmes cheveux longs ondulés, mêmes créoles, même visage). À distinguer (coiffure ou couleur).
+Proche de LOUNA (cheveux, créoles). Décision du propriétaire (24/11/2026) : on la garde telle quelle. On les distingue par la tenue (blazer rouge / sweat rose) et le cadrage.
 
 ## Garde-robe (sans logo)
 Élégant (référence), business, chic, formel, premium (manteau), casual.
