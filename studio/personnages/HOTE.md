@@ -16,6 +16,11 @@ et `LE_J/reference/pose_choc_*.png` (pose « main sur la tête »). On reproduit
 - Bouche grande et expressive : intérieur rouge, dents en haut, langue.
 - Goutte de sueur sur la joue quand il panique.
 
+## Palette officielle (planche A : `LE_J/reference/planche_officielle_A.png`)
+Peau #E89A5B · cheveux/barbe #1A0F0B · manteau #B5692A · pull #E8D6BB · pantalon #1F2024 ·
+chaussures #6B4A3A et #EDE6DF · cadran #0B5F2E · métal #C0C0C0.
+(La planche B donne des valeurs un peu différentes : on garde la A.)
+
 ## Tenue de référence (planche)
 - Long manteau camel en laine bouillie, 2 rangées de gros boutons noirs, poches à rabat, revers larges.
 - Pull col roulé crème en grosse maille torsadée, poignets côtelés qui dépassent des manches.
