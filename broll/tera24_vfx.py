@@ -17,7 +17,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 W, H, FPS = 1080, 1920, 30
 K = W / 941                                   # échelle de la maquette d'origine (941x1672)
 FONT = next((f for f in ('/usr/share/fonts/opentype/inter/Inter-ExtraBold.otf', os.path.join(HERE, 'fonts', 'Inter-ExtraBold.ttf')) if os.path.exists(f)))
-HAUT = 0.8                                    # échelle de l'étiquette lieu/date et du logo
+HAUT = 0.72                                   # échelle de l'étiquette lieu/date et du logo
 RED, RED_D, WHITE = (200, 6, 14), (140, 0, 6), (252, 252, 252)
 
 def font(sz): return ImageFont.truetype(FONT, sz)

@@ -1,0 +1,146 @@
+{
+ "end": 77.5,
+ "size": "1080x1920",
+ "shots": [
+  [
+   0.0,
+   "img/04_tajani_sommet.jpg",
+   {
+    "fx": 0.55,
+    "fy": 0.4
+   }
+  ],
+  [
+   2.9,
+   "img/05_navire_en_feu.jpg"
+  ],
+  [
+   5.7,
+   "img/02_carte_mediterranee.jpg",
+   {
+    "fx": 0.35,
+    "fy": 0.5
+   }
+  ],
+  [
+   7.4,
+   "img/02_carte_mediterranee.jpg",
+   {
+    "fx": 0.62,
+    "fy": 0.75
+   }
+  ],
+  [
+   11.1,
+   "img/07_tajani_conseil.jpg",
+   {
+    "fx": 0.5,
+    "fy": 0.35
+   }
+  ],
+  [
+   16.4,
+   "img/z_11_drone_magura.jpg"
+  ],
+  [
+   18.8,
+   "img/z_02_flotte_russe.jpg"
+  ],
+  [
+   20.4,
+   "img/z_26_port_benghazi_satellite.jpg"
+  ],
+  [
+   22.4,
+   "img/z_15_explosion_nuit.jpg"
+  ],
+  [
+   25.2,
+   "img/z_01_zelensky.jpg",
+   {
+    "fx": 0.55,
+    "fy": 0.4
+   }
+  ],
+  [
+   27.9,
+   "img/z_13_drone_sea_baby.jpg"
+  ],
+  [
+   29.8,
+   "img/z_14_drone_naval_drapeau.jpg"
+  ],
+  [
+   31.4,
+   "img/z_06_merkury_535.jpg"
+  ],
+  [
+   33.6,
+   "img/z_20_cargo_angara.jpg"
+  ],
+  [
+   36.2,
+   "img/z_03_carte_mer_noire.jpg"
+  ],
+  [
+   39.4,
+   "img/z_27_merkury_chavire_satellite.jpg"
+  ],
+  [
+   41.5,
+   "img/z_28_merkury_chavire_zoom.jpg"
+  ],
+  [
+   43.0,
+   "img/01_tajani.jpg",
+   {
+    "fx": 0.3,
+    "fy": 0.45
+   }
+  ],
+  [
+   44.9,
+   "img/04_tajani_sommet.jpg",
+   {
+    "fx": 0.45,
+    "fy": 0.3
+   }
+  ],
+  [
+   51.3,
+   "img/08_farnesina.jpg"
+  ],
+  [
+   54.7,
+   "img/z_12_drone_magura_rive.jpg"
+  ],
+  [
+   57.4,
+   "img/02_carte_mediterranee.jpg",
+   {
+    "fx": 0.2,
+    "fy": 0.5
+   }
+  ],
+  [
+   63.2,
+   "img/09_haftar.jpg",
+   {
+    "fx": 0.5,
+    "fy": 0.35
+   }
+  ],
+  [
+   67.7,
+   "img/10_onu_conseil.jpg"
+  ],
+  [
+   69.4,
+   "img/z_19_kiev.jpg"
+  ],
+  [
+   72.5,
+   "img/z_13_drone_sea_baby.jpg"
+  ]
+ ]
+}
