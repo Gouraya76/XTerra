@@ -8,7 +8,7 @@ Règle : chaque personnage a UNE planche de référence faite par le propriétai
 |---|---|---|---|
 | 1 | LE J | Hôte de la chaîne, joue ou présente | Complet le 24/11/2026 (avec moustache : `tete_vide_et_14_bouches_moustache.png`) |
 | 2 | LE MENEUR | Maître du jeu mystérieux (capuche, visage-écran, or et noir) : arbitre de tous les jeux | Complet le 24/11/2026 (`MENEUR/FICHE.md`) |
-| 3 | NADIA | La maligne qui devine tout | À faire |
+| 3 | NADIA | La maligne qui devine tout (blazer rouge) | Fiche reçue le 24/11/2026 (manque : 14 bouches en grand) |
 | 4 | KÉKÉ | Le bavard qui accuse tout le monde (casquette bleue, sweat rouge) | À faire |
 | 5 | LOUNA | La gentille… en apparence (sweat rose, chewing-gum, créoles dorées) | Complète le 24/11/2026 (`LOUNA/FICHE.md`) |
 | 6 | MOMO | Le gentil géant gourmand (barbe, chemise à carreaux) | Complet le 24/11/2026 (`MOMO/FICHE.md`) |
