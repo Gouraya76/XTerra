@@ -6,11 +6,11 @@ Règle : chaque personnage a UNE planche de référence faite par le propriétai
 ## Les 14 personnages (assez pour tous les jeux et concepts : 8 à 12 joueurs par vidéo + l'hôte + le maître du jeu)
 | # | Nom | Rôle permanent | Statut |
 |---|---|---|---|
-| 1 | LE J | Hôte de la chaîne, joue ou présente | Planche reçue le 24/11/2026 |
+| 1 | LE J | Hôte de la chaîne, joue ou présente | Complet le 24/11/2026 (avec moustache : `tete_vide_et_14_bouches_moustache.png`) |
 | 2 | LE MENEUR | Maître du jeu mystérieux (cape, capuche, yeux ambrés) : arbitre de tous les jeux | À faire |
 | 3 | NADIA | La maligne qui devine tout | À faire |
 | 4 | KÉKÉ | Le bavard qui accuse tout le monde (casquette bleue, sweat rouge) | À faire |
-| 5 | LOUNA | La gentille… en apparence (sweat rose, chewing-gum) | À faire |
+| 5 | LOUNA | La gentille… en apparence (sweat rose, chewing-gum, créoles dorées) | Planche + visage reçus le 24/11/2026 (manque : palette hex, 4 bouches d'émotion) |
 | 6 | MOMO | Le gentil géant gourmand (barbe, chemise à carreaux) | À faire |
 | 7 | ÉLISE | La menteuse de génie, élégante (rouge et noir) | À faire |
 | 8 | THÉO | Le complotiste à lunettes, toujours une théorie | À faire |

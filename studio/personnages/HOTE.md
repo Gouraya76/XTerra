@@ -12,8 +12,8 @@ et `LE_J/reference/pose_choc_*.png` (pose « main sur la tête »). On reproduit
 - Tête cubique, peau mate dorée (orangée sous la lumière chaude).
 - Cheveux noirs très épais, en grosses mèches coiffées en arrière avec du volume, côtés plus courts.
 - **Barbe courte taillée + moustache** (collier qui relie la moustache au menton), noire.
-  Décision du 24/11/2026 : on GARDE la moustache. Les images sans moustache (`tete_vide_face.png`, `bouches_phonemes.png`)
-  sont à refaire avec la moustache ; les yeux et les sourcils restent valables.
+  Décision du 24/11/2026 : on GARDE la moustache. Référence du visage : `LE_J/reference/tete_vide_et_14_bouches_moustache.png`
+  (tête vide + 14 bouches). Les anciennes `tete_vide_face.png` et `bouches_phonemes.png` (sans moustache) ne servent plus.
 - Sourcils noirs très épais, souvent froncés. Grands yeux carrés : blanc, iris brun très sombre, reflet blanc.
 - Bouche grande et expressive : intérieur rouge, dents en haut, langue.
 - Goutte de sueur sur la joue quand il panique.
