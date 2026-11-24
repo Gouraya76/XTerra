@@ -38,3 +38,6 @@ Une goutte de sueur (petit bloc bleu clair sur la joue) renforce le `choc` et la
 - L'image de référence est une illustration IA : elle a plus de détails peints (rides, plis, fourrure) que des blocs 3D animés.
 - Le rendu Blender garde la même direction : visages expressifs, couleurs chaudes, contraste, décor riche. Il reste « voxel ».
 - Pour les miniatures, le plus fort reste : rendu Cycles puis passage dans ChatGPT avec le prompt de `PUBLICATION.md`.
+
+## Casting et références
+Les personnages officiels et les images à fournir pour chacun : `../CASTING.md`. Planche de LE J : `../LE_J/reference/`.

@@ -5,18 +5,23 @@ Référence : `hote_reference.png`
 Rôle : le YouTubeur qui tient la chaîne, comme Squeezie, Michou ou Inoxtag. Il est le personnage principal
 de chaque vidéo : il présente, lance les épreuves, réagit, commente et parle à la caméra.
 
-## Design permanent (le visage, à respecter dans chaque épisode)
-- Tête cubique, peau mate et dorée.
-- Cheveux noirs épais en mèches de blocs, coiffés en arrière avec du volume (pompadour), côtés plus courts.
-- Sourcils noirs épais et droits, yeux bruns en amande.
-- Petit sourire en coin, air sûr de lui et décontracté.
+## Design officiel (depuis le 24/11/2026) : la planche est LA référence
+Références : `LE_J/reference/planche_complete_1.png` (vues 360°, expressions, bouche, yeux, mains, éléments séparés)
+et `LE_J/reference/pose_choc_*.png` (pose « main sur la tête »). On reproduit CE personnage, on n'en invente pas un autre.
 
-## Tenue de référence (peut changer selon la vidéo)
-- Pull col zippé (quart de zip) bleu marine en maille torsadée, zip argent.
-- Col de chemise blanche qui dépasse.
-- Pantalon crème ou blanc cassé.
-- Montre argentée à cadran vert, au poignet gauche.
-- Style « old money » parisien, chic sans en faire trop.
+- Tête cubique, peau mate dorée (orangée sous la lumière chaude).
+- Cheveux noirs très épais, en grosses mèches coiffées en arrière avec du volume, côtés plus courts.
+- **Barbe courte taillée + moustache** (collier qui relie la moustache au menton), noire.
+- Sourcils noirs très épais, souvent froncés. Grands yeux carrés : blanc, iris brun très sombre, reflet blanc.
+- Bouche grande et expressive : intérieur rouge, dents en haut, langue.
+- Goutte de sueur sur la joue quand il panique.
+
+## Tenue de référence (planche)
+- Long manteau camel en laine bouillie, 2 rangées de gros boutons noirs, poches à rabat, revers larges.
+- Pull col roulé crème en grosse maille torsadée, poignets côtelés qui dépassent des manches.
+- Pantalon cargo noir large (poches sur les cuisses).
+- Baskets montantes blanc / gris foncé **sans logo de marque** (pas de virgule Nike : droit des marques sur YouTube).
+- Montre argentée à cadran vert au poignet gauche.
 
 ## Règle sur les tenues
 - On garde toujours le visage, la coiffure et la peau. Les vêtements peuvent changer selon le concept.
@@ -28,4 +33,4 @@ de chaque vidéo : il présente, lance les épreuves, réagit, commente et parle
 
 ## Style visuel
 - Depuis l'épisode 3 : style 2, voir `style/STYLE.md` (grands yeux, expressions, mains à doigts, décor riche).
-- Barbe : la référence ChatGPT donne une barbe courte à LE J. À valider par le propriétaire avant de l'adopter (option `barbe()`).
+- Barbe : validée par le propriétaire le 24/11/2026 (planche officielle).
