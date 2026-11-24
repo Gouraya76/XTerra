@@ -108,7 +108,7 @@ const Mots: React.FC<{b: Item; t: number}> = ({b, t}) => {
   return (
     <div style={{position: 'absolute', left: 0, right: 0, bottom: 110, textAlign: 'center'}}>
       <span style={{display: 'inline-block', transform: `scale(${0.7 + 0.3 * s})`, fontFamily: 'ID', fontSize: 86, color: '#fff',
-        WebkitTextStroke: '14px #000', paintOrder: 'stroke fill', textShadow: '0 8px 0 rgba(0,0,0,0.35)'}}>{word.toLowerCase().replace(/^j$/, 'J')}</span>
+        WebkitTextStroke: '14px #000', paintOrder: 'stroke fill', textShadow: '0 8px 0 rgba(0,0,0,0.35)'}}>{word.toLowerCase().replace(/^[jm]$/, (c) => c.toUpperCase())}</span>
     </div>
   );
 };

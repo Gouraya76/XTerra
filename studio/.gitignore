@@ -5,3 +5,5 @@ blender/rendus/ep02_images/
 blender/rendus/*.log
 anim/node_modules/
 anim/public/ep02/fond.mp4
+anim/public/ep02/shorts/
+blender/rendus/ep02_*/

@@ -353,6 +353,14 @@ r.image_settings.file_format = "JPEG"
 r.image_settings.quality = 93
 r.use_overwrite = False
 r.use_placeholder = True
+if "--bordure" in ARGS:
+    # shorts 9:16 : seul le centre de l'image sert, on ne calcule que cette bande (environ 2 fois plus rapide)
+    r.use_border, r.use_crop_to_border = True, False
+    r.border_min_x, r.border_max_x, r.border_min_y, r.border_max_y = 0.24, 0.76, 0.0, 1.0
+if "--bande" in ARGS:
+    # réparation des sous-titres : seule la bande du bas (y 815 à 1045 px) est recalculée
+    r.use_border, r.use_crop_to_border = True, False
+    r.border_min_x, r.border_max_x, r.border_min_y, r.border_max_y = 0.0, 1.0, 0.03, 0.25
 os.makedirs(SORTIE, exist_ok=True)
 r.filepath = os.path.join(SORTIE, "img_#####")
 SC.frame_start, SC.frame_end = DEBUT, FIN

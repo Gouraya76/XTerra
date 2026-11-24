@@ -199,6 +199,9 @@ subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "s16le", "-ar", str(SR), "-
 os.remove(f"{PUB}/mix.raw")
 json.dump({"fps": FPS, "duration": round(total, 3), "titre": S["titre"], "noms": S["noms"], "joueurs": S["joueurs"], "shorts": S["shorts"], "items": out},
           open(TL, "w", encoding="utf-8"), ensure_ascii=False)
+# sous-titres : mots exacts du script calés sur les temps de Whisper (Whisper invente parfois des phrases)
+subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), "aligner_sous_titres.py"), TL], check=True)
+# NB : les champs « accroche » et « fond » des shorts sont ajoutés à la main dans la timeline (voir PUBLICATION.md)
 
 def ts(x):
     h, r = divmod(x, 3600); m, s = divmod(r, 60); return f"{int(h):02d}:{int(m):02d}:{int(s):02d},{int((s % 1) * 1000):03d}"

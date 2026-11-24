@@ -32,7 +32,8 @@
     2,
     3,
     4
-   ]
+   ],
+   "question": "QUI MENT DEPUIS LE DÉBUT ?"
   },
   {
    "n": 2,
@@ -40,92 +41,102 @@
    "beats": [
     35,
     36,
-    37
-   ]
+    37,
+    38,
+    39
+   ],
+   "question": "QUI A ÉTÉ SAUVÉ CETTE NUIT ?"
   },
   {
    "n": 3,
-   "titre": "Il était innocent (et il avait raison)",
+   "titre": "Il était innocent… et il avait raison",
    "beats": [
     48,
     49,
     50,
     51
-   ]
+   ],
+   "question": "TU AS COMPRIS SA DERNIÈRE PHRASE ?"
   },
   {
    "n": 4,
+   "titre": "La voyante a vu quelque chose d'impossible",
+   "beats": [
+    55,
+    56,
+    57,
+    58,
+    59
+   ],
+   "question": "QU'A VU LA VOYANTE ?"
+  },
+  {
+   "n": 5,
    "titre": "Le message secret de Nadia : un M",
    "beats": [
     61,
     62,
     63,
-    64
-   ]
+    64,
+    65
+   ],
+   "question": "M COMME… QUI ?"
   },
   {
-   "n": 5,
-   "titre": "Elle m'accuse d'être le loup",
+   "n": 6,
+   "titre": "Elle m'accuse d'être le loup 🐺",
    "beats": [
     66,
     67,
     68,
     69
-   ]
+   ],
+   "question": "ÉLISE DIT VRAI OU ELLE MENT ?"
   },
   {
-   "n": 6,
-   "titre": "« Objection ! » : Papi me sauve",
+   "n": 7,
+   "titre": "« OBJECTION ! » Papi me sauve la vie",
    "beats": [
     71,
     72,
     73,
     74
-   ]
-  },
-  {
-   "n": 7,
-   "titre": "Le gentil géant était un loup",
-   "beats": [
-    80,
-    81,
-    82,
-    83
-   ]
+   ],
+   "question": "TU AURAIS VOTÉ CONTRE MOI ?"
   },
   {
    "n": 8,
-   "titre": "Le chasseur tire sur la mauvaise personne",
+   "titre": "Elle a menti… pour piéger les loups",
+   "beats": [
+    75,
+    76,
+    77,
+    78
+   ],
+   "question": "MOMO OU LOUNA ? TON VOTE 👇"
+  },
+  {
+   "n": 9,
+   "titre": "Le chasseur tire sur la MAUVAISE personne",
    "beats": [
     88,
     89,
     90,
-    91,
-    92
-   ]
+    91
+   ],
+   "question": "IL AURAIT DÛ TIRER SUR QUI ?"
   },
   {
-   "n": 9,
-   "titre": "Le bruit qui a tout trahi : pop",
+   "n": 10,
+   "titre": "Le bruit qui a tout trahi : POP",
    "beats": [
     95,
     96,
     97,
     98,
-    99,
-    100,
-    101
-   ]
-  },
-  {
-   "n": 10,
-   "titre": "La troisième carte loup",
-   "beats": [
-    107,
-    108,
-    109,
-    110
-   ]
+    99
+   ],
+   "question": "TU VOTES QUI ? AVANT LA FIN 👇"
   }
  ],
  "beats": [
