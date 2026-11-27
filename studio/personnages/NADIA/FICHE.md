@@ -11,7 +11,7 @@ Veste #D43131 · pantalon / haut #1A1A1A · cheveux #3B2618 · peau #F7B787 · b
 détails veste #8B1E1E · contraste #FFFFFF · accent #6A2C91.
 
 ## Visage
-6 yeux, 6 sourcils, 4 bouches d'émotion en grand, tête vide. 14 bouches de parole en grand : à recevoir.
+6 yeux, 6 sourcils, 4 bouches d'émotion en grand, tête vide. 14 bouches en grand : `reference/bouches_14.png`.
 
 ## Point d'attention
 Proche de LOUNA (cheveux, créoles). Décision du propriétaire (24/11/2026) : on la garde telle quelle. On les distingue par la tenue (blazer rouge / sweat rose) et le cadrage.
